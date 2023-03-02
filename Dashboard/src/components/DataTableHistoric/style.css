@@ -1,0 +1,15 @@
+.tableItem{
+    cursor: pointer;
+    width: 100%;
+}
+table td{
+    padding: 1rem;
+    color: #6C757D;
+    font-size: .9rem;
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+table td > span {
+    font-weight: 500;
+}

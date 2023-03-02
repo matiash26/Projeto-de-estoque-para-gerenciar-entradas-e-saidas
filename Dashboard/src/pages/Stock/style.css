@@ -1,0 +1,43 @@
+.form-pop {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+}
+.table-content{
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFFFFF;
+    border-radius: .5rem;
+    box-shadow: -3px 3px 4px 1px #00000017;
+    margin-bottom: 1.5rem;
+}
+.main-product>.form-filter
+>.filter-container>
+.filter-content>
+.buscar {
+    width: 50%;
+}
+
+.product-content>input {
+    gap: 1rem;
+}
+
+.product-content>.btn {
+    margin: auto;
+}
+
+.form-items {
+    overflow-y: auto;
+    height: 206px;
+}
+
+.form-items::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.form-items::-webkit-scrollbar-thumb {
+    background-color: #c5c7c9;
+    border-radius: .5rem;
+}

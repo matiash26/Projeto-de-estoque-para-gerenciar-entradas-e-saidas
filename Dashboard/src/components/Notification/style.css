@@ -1,0 +1,79 @@
+.notification{
+    background-color: #FFFFFF;
+    height: 70px;
+    width: 400px;
+    align-items: center;
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    right: -400px;
+    z-index: 2;
+    border-radius: .3rem;
+    animation: toastOpen .8s forwards  cubic-bezier(0.3, 0.53, 0.5, 1.05);
+}
+.notification:before{
+    content: "";
+    width: 5px;
+    height: 100%;
+    border-radius: .3rem 0 0 .3rem;
+}
+.notification > svg{
+    margin: 0 .6rem;
+    font-size: 2rem;
+}
+
+.notification-msg > p{
+    color: #616466;
+}
+.btnExit{
+    position: absolute;
+    right: 5px;
+    top: 0;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.success > svg{
+    color: #28A745;
+}
+.success > span{
+    color: #28A745;
+}
+.error{
+    color: #DC3545;
+}
+.error > svg{
+    color: #DC3545;
+}
+.notification-msg > span{
+    font-size: 1.3rem;
+
+}
+
+.error .notification-msg > p {
+    font-size: .9rem;
+}
+.success::before{
+    background-color: #28A745;
+}
+.error::before{
+    background-color: #DC3545;
+}
+.hidden{
+    animation: toastHidden .8s forwards  cubic-bezier(0.42, 0.16, 0.14, 0.95);
+}
+@keyframes toastOpen {
+    from{
+        right: -400px;
+    }
+    to{
+        right: 10px;
+    }
+}
+@keyframes toastHidden {
+    from{
+        right: 10px;
+    }
+    to{
+        right: -400px;
+    }
+}

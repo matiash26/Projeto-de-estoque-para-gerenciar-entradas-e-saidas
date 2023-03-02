@@ -1,0 +1,50 @@
+.form-filter {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    box-shadow: -3px 3px 4px 1px #00000017;
+    border-radius: .5rem;
+    padding: 1rem 2.4rem;
+    height: 14vh;
+    gap: 1rem;
+}
+
+.form-filter .btn {
+    padding-top: calc(0.5rem + 25px);
+}
+
+.filter-container {
+    display: flex;
+    flex: 1;
+    gap: 2.6rem;
+}
+
+.filter-search, .filter-active {
+    flex: 1;
+    width: 38%;
+    display: grid;
+    gap: .5rem;
+    font-weight: bold;
+    color: #616466;
+
+}
+.filter-date{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+#date{
+    width:36%;
+    min-width: 160px;
+    height: 44px;
+    outline: none;
+    padding: 0 1rem;
+    border: 1px solid #ced4da;
+    text-align: center;
+    border-radius: .5rem;
+}
+.Container{
+    width: 100%;
+}

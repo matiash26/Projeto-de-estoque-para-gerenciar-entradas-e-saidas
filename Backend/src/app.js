@@ -1,0 +1,12 @@
+const StrockController = require("./Controllers/StockController")
+const ProductController = require("./Controllers/ProductController")
+// const historicController = require("./Controllers/HistoricController")
+// const StatisticsController = require("./Controllers/StatisticsController")
+const express = require("express")
+const app = express()
+
+app.use(StrockController)
+app.use(ProductController)
+// app.use(historicController)
+// app.use(StatisticsController)
+app.listen(3000, ()=> console.log("API ON"))

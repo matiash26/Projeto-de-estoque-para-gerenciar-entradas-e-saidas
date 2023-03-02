@@ -1,0 +1,74 @@
+header {
+    box-shadow: -3px 3px 4px 1px #00000017;
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+header nav {
+    width: 30%;
+}
+.userInfo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffffc2;
+    height: 70px;
+    border-bottom: 1px solid #ffffff11;
+}
+
+.userInfo img {
+    border-radius: 100%;
+    object-fit: cover;
+    width: 40px;
+    height: 40px;
+    margin-right: .5rem;
+}
+
+.userInfo>span {
+    font-size: .9rem;
+    font-weight: 800;
+    color: #616466;
+}
+ul.user_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btnUser{
+    position: relative;
+}
+.btnUser > svg{
+    font-size: 1rem;
+    font-size: 1.2rem;
+    color: black;
+    margin: 0 .5rem;
+    margin-top: 5px;
+    cursor: pointer;
+}
+.userOptions{
+    position: absolute;
+    right: 0;
+    border-radius: .5rem;
+    background-color: #FFFFFF;
+    width: 170px;
+    text-align: center;
+    box-shadow: -3px 3px 4px 1px #00000017;
+    display: none;
+}
+.userOptions > li {
+    font-size: .850rem;
+    margin: .3rem 0;
+    padding: .3rem 0;
+    color: #616466;
+    cursor: pointer;
+}
+.userOptions > li:hover {
+    background-color: #61646618;
+}
+.show {
+    display: block;
+}

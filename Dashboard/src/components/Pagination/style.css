@@ -1,0 +1,29 @@
+.paginationContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: .5rem;
+    padding-right: .5rem;
+    gap: .5rem;
+}
+.paginationContainer > p{
+    font-size: 1rem;
+    -webkit-user-select: none;
+}
+.paginationContainer > p > span{
+    color: #7c7c7c;
+}
+.btnPagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: #7c7c7c;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background-color: transparent;
+}
+.btnPagination:active{
+    color: #292929;
+}

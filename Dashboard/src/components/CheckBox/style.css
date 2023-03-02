@@ -1,0 +1,47 @@
+.checkBox-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1rem;
+}
+.checkboxContent{
+    display: flex;
+    align-items: center;
+}
+.checkboxContent > svg:nth-child(1) {
+    color: #dc3545;
+    font-weight: bolder;
+}
+.checkboxContent > svg {
+    color: #dc3545;
+    color: #28a745;
+    font-weight: bolder;
+}
+#checkboxStock{
+    -webkit-appearance: none;
+    width: 25px;
+    height: 15px;
+    background: #D8DEE3;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    margin: 0 .3rem;
+}
+
+#checkboxStock::before{
+    display: block;
+    content: "";
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    border-radius: 50%;
+    left: 0;
+    background: #3A3C3D;
+    transition: 200ms;
+    margin: .200rem;
+}
+#checkboxStock:checked:before{
+    left: 10px;
+    transition: 200ms;
+}

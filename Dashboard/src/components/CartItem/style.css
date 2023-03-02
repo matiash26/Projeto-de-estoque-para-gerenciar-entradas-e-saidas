@@ -1,0 +1,53 @@
+.product-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #EFF1F3;
+    padding: .6rem 1rem;
+    gap: .5rem;
+}
+
+.productTop,
+.productBottom {
+    display: flex;
+    justify-content: space-between;
+}
+.productTop > h4, .productTop > span{
+    color: #4c4e50;
+}
+#valueProduct{
+    font-size: .8rem;
+    font-weight: 500;
+}
+.quantity-content {
+    padding-left: 1rem;
+}
+
+.quantity-content label {
+    font-size: .8rem;
+    margin-right: .5rem;
+}
+
+.quantity-content>input[type="number"] {
+    height: 25px;
+    width: 76px;
+    padding: .5rem;
+    text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: .5rem;
+    outline: none;
+}
+
+.productBottom>.btn>button {
+    display: flex;
+    align-items: center;
+    border-radius: .3rem;
+    background: #dc3545;
+    width: 22px;
+    height: 22px;
+    font-size: 1.5rem;
+}
+
+.productBottom>.btn>button:active {
+    background-color: rgb(209, 6, 6);
+}

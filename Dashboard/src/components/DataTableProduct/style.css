@@ -1,0 +1,60 @@
+.options-container{
+    padding: 1rem;
+    position: relative;
+}
+.options-container > svg{
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+.options-container > svg:active, .options-btn > li:active{
+    color: #bbbbbb;
+}
+.options-btn{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    position: absolute;
+    right: 0;
+    width: 120px;
+    border-radius: .5rem;
+    box-shadow: 1px 1px 3px #0000005c;
+    z-index: 1;
+    display: none;
+}
+.options-btn > li {
+    width: 100%;
+    font-size: .9rem;
+    padding: .5rem 0;
+    margin: auto;
+    user-select: none;
+    text-transform: capitalize;
+    text-align: center;
+    cursor: pointer;
+}
+.options-btn > li:hover{
+    background-color: #EFF1F3;
+}
+.active-options{
+    display: block;
+}
+.active, .good{
+    color: #155724;
+    padding: .3rem .6rem;
+    background-color: #d4edda;
+    border-radius: .3rem;
+}
+.disabled, .bad{
+    background-color: #f8d7da;
+    padding: .3rem .6rem;
+    border-radius: .3rem;
+    font-size: .8rem;
+    color: #721c24;
+}
+.ok {
+    background-color: #fff3cd;
+    padding: .3rem .6rem;
+    border-radius: .3rem;
+    font-size: .8rem;
+    color: #856404;
+}

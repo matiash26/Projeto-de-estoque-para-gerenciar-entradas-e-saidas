@@ -1,0 +1,31 @@
+.btn > button{
+    width: 140px;
+    height: 44px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .5rem;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+}
+.green{
+    background-color: #28a745
+
+}
+.green:active {
+    background-color: #218838;
+}
+.blue{
+    background-color: #007bff;
+}
+.blue:active{
+    background-color:  #0069D9;
+}
+.poolBlue{
+    background-color: #17a2b8;
+}
+.poolBlue:active{
+    background-color: #178a9c;
+}

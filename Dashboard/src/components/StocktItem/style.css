@@ -1,0 +1,58 @@
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #EFF1F3;
+    padding: 1rem;
+}
+
+.product-item>div>h3 {
+    color: #616466;
+    font-size: .8rem;
+    text-transform: uppercase;
+}
+
+.product-item>div:not(:last-of-type){
+    width: 121px;
+    margin-bottom: auto; /*para igualar a altura caso algum elemento quebre e desalinhe*/
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.product-item>div>p {
+    color: #363636;
+    font-size: .8rem;
+}
+.btn-options{
+    display: flex;
+    gap: .5rem;
+}
+.btn-product {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .3rem;
+    width: 22px;
+    height: 22px;
+    font-size: 1.5rem;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+
+.remove-btn{
+    background: #dc3545;
+}
+.remove-btn:active{
+    background-color: rgb(209, 6, 6);
+}
+.edit-btn{
+    background-color: #28a745;
+}
+.edit-btn:active{
+    background-color: #25913e;
+}
+.edit-btn > svg{
+    font-size: 1rem;
+}

@@ -1,0 +1,111 @@
+.login-container{
+    display: grid;
+    grid-template-columns: 45% auto;
+    min-height: 100vh;
+    width: 100vw;
+}
+.form-container{
+    color: #595b5c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2.6rem;
+    background-color: #f6f5fb;
+}
+.form-container section {
+    min-width: 190px;
+    max-width: 460px;
+    width: 100%;
+    margin-bottom: 8rem;
+}
+.form-container section >  h3 {
+    color: #595b5cc7;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.form-login{
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+}
+.form-login{
+    padding-top: 2rem;
+}
+.form-login #label{
+    color: #595b5c5e;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+.form-login div > .search{
+    position: relative;
+}
+.form-login div > .search::before{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #94b2fd;
+    height: 3px;
+    width: 0px;
+    transition: .5s;
+    border-radius: 1rem;
+}
+.form-login div > .search:hover:before{
+    width: 100%;
+    transition: .8s;
+}
+.btn-login{
+    margin-top: 1rem;
+    background-color: black;
+    border-radius: .5rem;
+    width: 66%;
+    margin: auto;
+    margin-top: 1rem;
+}
+.btn-login > button{
+    display: inline-block;
+    border-radius: .5rem;
+    background-color: #2db84d;
+    padding: .5rem 0;
+    width: 100%;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-login > button:active{
+    background-color: #269741;
+}
+
+.btn-login > button {
+    transform: translateX(0px) translateY(0px);
+    transition: 200ms;
+}
+.btn-login > button:hover{
+    position: relative;
+    transform: translateX(5px) translateY(-5px);
+    transition: 200ms;
+} 
+.rightside{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("../../../public//background-login.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: rightSideAnimation 3s infinite alternate-reverse ease-in;
+}
+.rightside > div > h1{
+    color: white;
+    font-size: 3rem;
+}
+@keyframes rightSideAnimation {
+    from{
+        filter: brightness(.7);
+    }
+    to{
+        filter: brightness(1);
+    }
+
+}
