@@ -7,7 +7,6 @@
     margin: auto;
     margin-top: 1.5rem;
 }
-
 .main-content {
     max-width: 1400px;
     width: 100%;
@@ -18,22 +17,33 @@
     gap: 1.5rem;
 }
 .modal-search {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 1rem 0;
     border-bottom: 1px solid #EFF1F3;
 }
-
-.modal-search>h4 {
+.modal-search > div{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.modal-search > div > h4 {
     color: #6C757D;
 }
-
-.modal-search>.buscar {
-    width: 73%;
-    flex-direction: row-reverse;
+.modal-search > .btn > button {
+    margin: auto;
 }
-
+.modal-search > div >.autocomplet-Container{
+    width: 70%;
+    margin-left: .8rem;
+}
+.modal-search >.btn {
+ margin: auto;
+}
+.form-historic {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+}
 .listProducts {
     overflow-y: auto;
     height: 380px;

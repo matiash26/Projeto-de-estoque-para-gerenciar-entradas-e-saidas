@@ -9,14 +9,14 @@ function InputAutoComplet({ data, value, setValue, ...rest }) {
             if (item.produto.toLowerCase().startsWith(value) && value != '') {
                 setList(prev => [...prev, item])
             }
-        })
+            })
     }
     const selectField = (product) => {
         setValue(product.produto)
         setList([])
     }
     return (
-        <div>
+        <div className="autocomplet-Container">
             <Input onKeyUp={autoComplet} value={value} onChange={e => setValue(e.target.value)} {...rest} />
             {list.length ?
                 <ul className="list-input">

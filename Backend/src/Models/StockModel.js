@@ -2,14 +2,14 @@ const {client} = require("../../config/database")
 
 const selectStock = async () => {
     const mysql = await client();
-    const sql = "SELECT e.id, p.produto, e.data, e.status, e.quantidade, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.status = '1' ORDER BY e.id desc;";
+    const sql = "SELECT e.id, p.produto, e.data, e.status, e.estoque, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.status = '1' ORDER BY e.id desc;";
     const [row] = await mysql.query(sql);
     return row;
 }
 const insertStock = async (stock) => {
     const mysql = await client();
-    const status = stock.status === "ativado" ? '1' : '0'
-    const sql = "INSERT INTO estoque(idProduto, data, status, quantidade) VALUES(?, ?, ?, ?);";
+    const status = stock.status === "ativo" ? '1' : '0'
+    const sql = "INSERT INTO estoque(idProduto, data, status, estoque) VALUES(?, ?, ?, ?);";
     const insert = [stock.id, getDate(), status, +stock.estoque, +stock.valor];
     try {
         mysql.query(sql, insert);
@@ -21,7 +21,7 @@ const insertStock = async (stock) => {
 const updateStock = async (stock) => {
     const status = stock.status? "1" : "0"
     const mysql = await client();
-    const sql = "UPDATE estoque set idProduto = ?, data = ?, status = ?, quantidade = ? WHERE id = ?;";
+    const sql = "UPDATE estoque set idProduto = ?, data = ?, status = ?, estoque = ? WHERE id = ?;";
     const update = [stock.idProduto, getDate(), status, +stock.estoque, stock.id];
     try {
         mysql.query(sql, update);
@@ -45,19 +45,19 @@ const findStock = async (search, active) => {
     let sql = ""
     let params = []
     if(search && active) {
-        sql = 'SELECT e.id, e.idProduto, p.produto, e.quantidade, e.data, e.status, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.id = ? OR p.produto LIKE ? and e.status = ? ORDER BY e.id DESC;'
+        sql = 'SELECT e.id, e.idProduto, p.produto, e.estoque, e.data, e.status, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.id = ? OR p.produto LIKE ? and e.status = ? ORDER BY e.id DESC;'
         params.push(search, `${search}%`, active)
     }else{
-        sql = 'SELECT e.id, e.idProduto, p.produto, e.quantidade, e.data, e.status, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.id = ? or e.status = ? ORDER BY e.id DESC;'
+        sql = 'SELECT e.id, e.idProduto, p.produto, e.estoque, e.data, e.status, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.id = ? or e.status = ? ORDER BY e.id DESC;'
         params.push(search, active)
     }
     const [row] = await mysql.query(sql, params);
     return row;
 }
-const stockModifyEstoque = async (quantidade, id) => {
+const stockModifyEstoque = async (estoque, id) => {
     const mysql = await client()
-    const sql = "UPDATE estoque set quantidade = ?  WHERE id = ?"
-    return await mysql.query(sql, [quantidade, id])
+    const sql = "UPDATE estoque set estoque = ?  WHERE id = ?"
+    return await mysql.query(sql, [estoque, id])
 }
 const desativeStock = async (active, id) => {
     const mysql = await client()

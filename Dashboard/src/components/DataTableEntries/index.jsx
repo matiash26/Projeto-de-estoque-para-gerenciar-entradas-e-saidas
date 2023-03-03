@@ -1,13 +1,13 @@
 import { useState, useContext } from "react";
 import { FiMoreVertical } from "react-icons/fi";
 import { GlobalContext } from "../../Contexts/GlobalContext";
-import { HistoricContext } from "../../Contexts/HistoricContext"
+import { EntriesContext } from "../../Contexts/EntriesContext"
 import "./style.css";
 
-function DataTableHistoric({ item }) {
+function DataTableEntries({ item }) {
     const [optionModal, setOptionModal] = useState(false)
     const { btnModalIsOpen, btnModalConfirmIsOpen } = useContext(GlobalContext)
-    const { getOrderForEdit, setUpdate, setOrderID} = useContext(HistoricContext)
+    const { getOrderForEdit, setUpdate, setOrderID} = useContext(EntriesContext)
     const handleOptionModal = () => {
         setOptionModal(prev => !prev)
     }
@@ -25,10 +25,9 @@ function DataTableHistoric({ item }) {
     }
     return (
         <>
-            <tr id="tableHistoric">
+            <tr id="tableEntries">
                 <td>#{item.id}</td>
-                <td>{item.pedido}</td>
-                <td>{item.status}</td>
+                <td>#{item.pedido}</td>
                 <td>{item.data}</td>
                 <td>{item.produtos}</td>
                 <td>R$:{item.total}</td>
@@ -43,4 +42,4 @@ function DataTableHistoric({ item }) {
         </>
     )
 }
-export default DataTableHistoric
+export default DataTableEntries

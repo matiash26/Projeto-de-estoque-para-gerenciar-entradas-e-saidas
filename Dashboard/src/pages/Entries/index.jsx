@@ -1,8 +1,9 @@
 import { useContext, useCallback, useRef, useState, useEffect } from "react"
-import { HistoricContext } from "../../Contexts/HistoricContext"
+import { EntriesContext } from "../../Contexts/EntriesContext"
 import { GlobalContext } from "../../Contexts/GlobalContext"
 import { BsCart4 } from "react-icons/bs"
-import DataTableHistoric from "../../components/DataTableHistoric"
+import DataTableEntries from "../../components/DataTableEntries"
+import InputAutoComplet from "../../components/InputAutoComplet/Index"
 import Notification from "../../components/Notification"
 import ModalConfirm from "../../components/ModalConfirm"
 import NavbarSearch from "../../components/NavbarSearch"
@@ -15,31 +16,34 @@ import Modal from "../../components/Modal"
 import api from "../../services/Api"
 import "./style.css"
 
-function Historic() {
-    const [notificationValue, setNotificationValue] = useState("")
+function Entries() {
     const [itemsToPagination, setItemsToPagination] = useState([])
-    const [product, setProduct] = useState([])
-    const [historic, setHistoric] = useState([])
-    const { cart, setCart, update, setUpdate, oldCart, orderID } = useContext(HistoricContext)
-    const { modalConfirmIsOpen, modalValue, btnModalIsOpen, setModalConfirmValue, modalConfirmValue, } = useContext(GlobalContext)
+    const [productData, setProductData] = useState([])
+    const [entries, setEntries] = useState([])
+    const [alert, setAlert] = useState("")
+    const { cart, setCart, update, setUpdate, oldCart, orderID, produto, setProduto } = useContext(EntriesContext)
+    const { modalConfirmIsOpen, modalValue, btnModalIsOpen, setModalConfirmValue, modalConfirmValue } = useContext(GlobalContext)
     const startDateRef = useRef("")
     const offsetDateRef = useRef("")
 
-    const handleAddToCart = (getID) => {
-        const id = +getID.target.value
-        const AddAndTotal = product.find(product => {
-            if (product.id === id) {
-                product.total = product.quantidade * product.saida
-                return product
+    const handleAddToCart = () => {
+        const checkIfProductIsValid = productData.some(product => product.produto === produto)
+        if(checkIfProductIsValid){
+            const AddAndTotal = productData.find(productData => {
+                if (productData.produto === produto) {
+                    productData.total = productData.quantidade * +productData.valor
+                    return productData
+                }
+            })
+            const IfExistInCart = cart.some(item => item.produto === produto )
+            if (!IfExistInCart) {
+                setCart(prev => [...prev, AddAndTotal])
+                setProduto('')
             }
-        })
-        const IfExistInCart = cart.some(item => item.id == id)
-        if (!IfExistInCart) {
-            setCart(prev => [...prev, AddAndTotal])
         }
     }
     const handleRemoveFromCart = (getID) => {
-        const itemCartRemoved = cart.filter(product => product.id != getID)
+        const itemCartRemoved = cart.filter(productData => productData.id != getID)
         setCart(itemCartRemoved)
     }
     const handleQuantity = (number, id) => {
@@ -48,9 +52,10 @@ function Historic() {
             quantity = 1
         } else {
             let index = cart.findIndex(el => el.id === id)
+            console.log(cart)
             setCart(prev => {
                 prev[index].quantidade = quantity
-                prev[index].total = quantity * +prev[index].saida
+                prev[index].total = quantity * +prev[index].valor
                 return [...prev]
             })
         }
@@ -58,43 +63,43 @@ function Historic() {
     const calculateTotal = (cart) => {
         return cart.reduce((acc, { total }) => acc += +total, 0).toFixed(2)
     }
-    const handleUpdateHistoric = async () => {
-        const { data } = await api.put("/historico/", { cart, oldCart })
+    const handleUpdateEntries = async () => {
+        const { data } = await api.put("/entradas/", { cart, oldCart })
         if (data.status === "success") {
             setCart([])
             btnModalIsOpen()
             setUpdate(false)
         }
-        setNotificationValue(data)
+        setAlert(data)
     }
     const handleSubmit = async () => {
-        const { data } = await api.post("/historico/", cart)
+        const { data } = await api.post("/entradas/", cart)
         if (data.status === "success") {
             setCart([])
             btnModalIsOpen()
         }
-        setNotificationValue(data)
+        setAlert(data)
     }
     const handleFilter = async () => {
         const startDate = startDateRef.current.value
         const offsetDate = offsetDateRef.current.value
         if (startDate && offsetDate) {
-            const { data } = await api.get(`/historico/filter/${startDate}/${offsetDate}`)
+            const { data } = await api.get(`/entradas/filter/${startDate}/${offsetDate}`)
             setItemsToPagination(data)
         } else {
-            const { data } = await api.get("/historico/all")
+            const { data } = await api.get("/entradas/all")
             setItemsToPagination(data)
         }
     }
     const handleDelete = async () => {
-        const { data } = await api.delete("/historico/" + orderID)
-        setNotificationValue(data)
+        const { data } = await api.delete("/entradas/" + orderID)
+        setAlert(data)
     }
     const fetchData = useCallback(async () => {
-        const { data } = await api.get("/produtos/all")
-        const historic = await api.get("/historico/all")
-        setProduct(data.map(product => ({ ...product, quantidade: 1 })))
-        setItemsToPagination(historic.data)
+        const { data } = await api.get("/estoque/all")
+        const entries = await api.get("/entradas/all")
+        setProductData(data.map(productData => ({ ...productData, quantidade: 1 })))
+        setItemsToPagination(entries.data)
     }, [])
 
     useEffect(() => {
@@ -103,25 +108,23 @@ function Historic() {
             handleDelete()
             setModalConfirmValue(false)
         }
-    }, [notificationValue, modalConfirmValue])
+    }, [alert, modalConfirmValue])
 
     return (
         <div className="Container-Main">
-            {notificationValue && <Notification alert={notificationValue} />}
+            {alert && <Notification alert={alert} />}
             {modalConfirmIsOpen && <ModalConfirm title="Deletar o pedido" desc="Você realmente deseja deletar o pedido?" />}
             <main className="main-content">
-                {modalValue && <Modal title="ADICIONAR PEDIDO" updateExist={setUpdate} clearModal={setCart} icon={<BsCart4 />}>
+                {modalValue && <Modal title="ADICIONAR PEDIDO"  icon={<BsCart4 />} updateExist={setUpdate} clearModal={setCart}>
                     <div className="modal-search">
-                        <h4>Produtos</h4>
-                        <Select onChange={e => handleAddToCart(e)} disabled={update} label="Selecione um Produto">
-                            {
-                                product.map((produto, x) => <option key={x}
-                                    value={produto.id}>{`${produto.produto} - R$: ${produto.saida}`}</option>)
-                            }
-                        </Select>
+                        <div>
+                            <h4>Produtos</h4>
+                            <InputAutoComplet data={productData} value={produto} setValue={setProduto} disabled={update}/> 
+                        </div>
+                        <Button onClick={handleAddToCart} title="Adicionar" className="poolBlue"/>
                     </div>
-                    <form onSubmit={e => e.preventDefault(e)} className="form-pop">
-                        <ul className="listProducts">
+                    <form onSubmit={e => e.preventDefault(e)} className="form-historic">
+                        <ul className="listproductDatas">
                             {
                                 cart.map((item, index) => <CartItem
                                     key={index}
@@ -133,18 +136,19 @@ function Historic() {
                             }
                         </ul>
                         <div className="modal-total">
-                            {update ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateHistoric} /> : <Button title="FINALIZAR" onClick={handleSubmit} className="green" />}
+                            {update ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateEntries} /> : <Button title="FINALIZAR" onClick={handleSubmit} className="green" />}
                             <p>Total R$: {calculateTotal(cart)}</p>
                         </div>
                     </form>
                 </Modal>
+          
                 }
                 <NavbarSearch entrada={startDateRef} saida={offsetDateRef} withDate={true} btnFilter={handleFilter} value="Filtro" />
                 <section className="table-content">
-                    <Pagination dataItem={itemsToPagination} itemTable={setHistoric} />
-                    <Table th={['#id', "pedido", "status", "data do pedido", "produtos", "total"]}>
+                    <Pagination dataItem={itemsToPagination} itemTable={setEntries} />
+                    <Table th={['#id', "pedido", "data do pedido", "produtos", "total"]}>
                         {
-                            historic.map((item, x) => <DataTableHistoric key={x} item={item} btnRemoveDesative={update} />)
+                            entries.map((item, x) => <DataTableEntries key={x} item={item} btnRemoveDesative={update} />)
                         }
                     </Table>
                 </section>
@@ -152,4 +156,4 @@ function Historic() {
         </div>
     )
 }
-export default Historic
+export default Entries

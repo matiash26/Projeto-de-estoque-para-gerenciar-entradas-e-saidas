@@ -8,7 +8,7 @@ import NavbarSearch from "../../components/NavbarSearch"
 import Notification from "../../components/Notification"
 import StockItem from "../../components/StocktItem"
 import Pagination from "../../components/Pagination"
-import DataTableProduct from "../../components/DataTableProduct"
+import DataTableStock from "../../components/DataTableStock"
 import Button from "../../components/Button"
 import Input from "../../components/Input"
 import InputAutoComplet from "../../components/InputAutoComplet/Index"
@@ -89,6 +89,7 @@ function Stock() {
     }
     const handleSubmit = async () => {
         const { data } = await api.post("/estoque/", stockModal)
+        console.log(stockModal)
         if (data.status === "success") {
             setStockModal([])
             clearFields()
@@ -96,17 +97,14 @@ function Stock() {
         }
         setAlert(data)
     }
-    const fechProduct = useCallback(async () => {
+    const fetchData = useCallback(async () => {
         const { data } = await api.get("/produtos/all")
+        const stock = await api.get("/estoque/all")
+        setStockTable(stock.data)
         setProductData(data)
     }, [])
-    const FechStock = useCallback(async () => {
-        const { data } = await api.get("/estoque/all")
-        setStockTable(data)
-    }, [])
     useEffect(() => {
-        fechProduct()
-        FechStock()
+        fetchData()
         if (alert.success) {
             clearFields()
         }
@@ -124,7 +122,7 @@ function Stock() {
                 {modalConfirmIsOpen && <ModalConfirm setObject={setUniqueObject} title="Deletar o produto" desc="Você realmente deseja deletar o produto?" />}
                 <NavbarSearch btnFilter={handleFilter} search={filterRef} active={activeRef} />
                 {modalValue &&
-                    <Modal title="ADICIONAR AO ESTOQUE" icon={<BsBoxSeam />} clearModal={clearFields} setObject={setUniqueObject}>
+                    <Modal title="ADICIONAR AO ESTOQUE" icon={<BsBoxSeam />} clearModal={clearFields} updateExist={setUniqueObject}>
                         <form className="form-pop">
                             <div className="product-content">
                                 <InputAutoComplet title="Nome do Produto" type="text" data={productData} value={produto} setValue={setProduto} />
@@ -151,7 +149,7 @@ function Stock() {
                     <Pagination dataItem={deepCopyTable} itemTable={setStockTable} />
                     <Table th={["#ID", "produto", "data", "status", "em estoque", "preço"]}>
                         {
-                            stockTable.map((product, index) => <DataTableProduct key={index} data={product} />)
+                            stockTable.map((product, index) => <DataTableStock key={index} data={product} />)
                         }
                     </Table>
                 </section>

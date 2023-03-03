@@ -1,3 +1,7 @@
+.autocomplet-Container{
+    width: 100%;
+    position: relative;
+}
 .list-input {
     position: absolute;
     width: 100%;

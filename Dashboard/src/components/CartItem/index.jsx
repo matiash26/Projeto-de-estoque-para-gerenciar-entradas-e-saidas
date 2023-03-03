@@ -6,7 +6,7 @@ function CartItem(props) {
     return (
         <li className="product-content">
             <div className="productTop">
-                <h4>{props.item.produto}<span id="valueProduct"> - R$: {props.item.saida}</span></h4>
+                <h4>{props.item.produto}<span id="valueProduct"> - R$: {props.item.valor}</span></h4>
                 <span>R$: {props.item.total}</span>
             </div>
             <div className="productBottom">

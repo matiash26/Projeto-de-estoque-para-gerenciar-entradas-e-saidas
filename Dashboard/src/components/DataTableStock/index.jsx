@@ -4,15 +4,15 @@ import { StockContext } from "../../Contexts/StockContext"
 import { GlobalContext } from "../../Contexts/GlobalContext"
 import "./style.css"
 
-function DataTableProduct({ data }) {
+function DataTableStock({ data }) {
     const [optionModal, setOptionModal] = useState(false)
     const { btnModalIsOpen, btnModalConfirmIsOpen} = useContext(GlobalContext)
     const { btnEdit, setUniqueObject } = useContext(StockContext)
     
     const active = data.status === "1"
-    const good =  data.quantidade >= 50 && "good"
-    const ok = data.quantidade > 20 && data.quantidade < 50 && "ok"
-    const bad = data.quantidade >= 0 && data.quantidade <= 20 && "bad"
+    const good =  data.estoque >= 50 && "good"
+    const ok = data.estoque > 20 && data.estoque < 50 && "ok"
+    const bad = data.estoque >= 0 && data.estoque <= 20 && "bad"
     const stockStatus = good || ok || bad
     
     const handleOptionModal = () => {
@@ -35,7 +35,7 @@ function DataTableProduct({ data }) {
             <td>{data.produto}</td>
             <td>{data.data}</td>
             <td><span className={active ? "active": "disabled"}>{active? "ativo":"desativado"}</span></td>
-            <td> <span className={stockStatus}>{data.quantidade}</span></td>
+            <td> <span className={stockStatus}>{data.estoque}</span></td>
             <td>R$: {data.valor}</td>
             <td className="options-container">
                 <FiMoreVertical onClick={handleOptionModal} />
@@ -47,4 +47,4 @@ function DataTableProduct({ data }) {
         </tr>
     )
 }
-export default DataTableProduct
+export default DataTableStock

@@ -19,7 +19,7 @@ routes.get("/estoque/", async (req, res) => {
 })
 routes.post("/estoque/", (req, res) => {
     const itemsFromPost = req.body
-    const checkAllTheFieldsExist = itemsFromPost.every(el => el.produto && el.estoque)
+    const checkAllTheFieldsExist = itemsFromPost.every(el => el.id && el.estoque)
     const checkLenghFields = itemsFromPost.every(el => el.estoque.length >= 0 && el.estoque.length <= 8)
     if (checkAllTheFieldsExist) {
         if (checkLenghFields) {

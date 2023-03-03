@@ -14,7 +14,7 @@ function StockProvider({ children }) {
         const { data } = await api.get("/estoque/?search=" + id)
         setUniqueObject(...data)
         setProduto(data[0].produto)
-        setEstoque(data[0].quantidade)
+        setEstoque(data[0].estoque)
         statusRef.current.checked = data[0].status === "1"
     }
 

@@ -1,9 +1,3 @@
-.form-pop {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 100%;
-}
 .table-content{
     width: 100%;
     border-collapse: collapse;
