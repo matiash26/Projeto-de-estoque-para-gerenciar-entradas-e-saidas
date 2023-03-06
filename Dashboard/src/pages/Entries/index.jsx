@@ -9,7 +9,6 @@ import ModalConfirm from "../../components/ModalConfirm"
 import NavbarSearch from "../../components/NavbarSearch"
 import Pagination from "../../components/Pagination"
 import CartItem from "../../components/CartItem"
-import Select from "../../components/Select"
 import Button from "../../components/Button"
 import Table from "../../components/Table"
 import Modal from "../../components/Modal"
@@ -21,13 +20,14 @@ function Entries() {
     const [productData, setProductData] = useState([])
     const [entries, setEntries] = useState([])
     const [alert, setAlert] = useState("")
-    const { cart, setCart, update, setUpdate, oldCart, orderID, produto, setProduto } = useContext(EntriesContext)
+    const { cart, setCart, update, setUpdate, oldCart, orderID, produto, setProduto, clearFields} = useContext(EntriesContext)
     const { modalConfirmIsOpen, modalValue, btnModalIsOpen, setModalConfirmValue, modalConfirmValue } = useContext(GlobalContext)
     const startDateRef = useRef("")
     const offsetDateRef = useRef("")
 
     const handleAddToCart = () => {
         const checkIfProductIsValid = productData.some(product => product.produto === produto)
+        
         if(checkIfProductIsValid){
             const AddAndTotal = productData.find(productData => {
                 if (productData.produto === produto) {
@@ -42,9 +42,8 @@ function Entries() {
             }
         }
     }
-    const handleRemoveFromCart = (getID) => {
-        const itemCartRemoved = cart.filter(productData => productData.id != getID)
-        setCart(itemCartRemoved)
+    const handleRemoveFromCart = (index) => {
+        setCart(prev => prev.splice(index))
     }
     const handleQuantity = (number, id) => {
         let quantity = +number.currentTarget.value
@@ -115,7 +114,8 @@ function Entries() {
             {alert && <Notification alert={alert} />}
             {modalConfirmIsOpen && <ModalConfirm title="Deletar o pedido" desc="Você realmente deseja deletar o pedido?" />}
             <main className="main-content">
-                {modalValue && <Modal title="ADICIONAR PEDIDO"  icon={<BsCart4 />} updateExist={setUpdate} clearModal={setCart}>
+                {modalValue && 
+                <Modal title="ADICIONAR PEDIDO"  icon={<BsCart4 />} updateExist={setUpdate} clearModal={setCart} clearFields={clearFields}>
                     <div className="modal-search">
                         <div>
                             <h4>Produtos</h4>
@@ -127,10 +127,10 @@ function Entries() {
                         <ul className="listproductDatas">
                             {
                                 cart.map((item, index) => <CartItem
-                                    key={index}
+                                    key={item.id}
                                     item={item}
                                     quantity={item.quantidade}
-                                    onClick={() => handleRemoveFromCart(item.id)}
+                                    onClick={() => handleRemoveFromCart(index)}
                                     onChange={e => handleQuantity(e, item.id)}
                                     updateExist={update} />)
                             }

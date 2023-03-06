@@ -1,9 +1,10 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import {
-    BiBox, BiChevronLeft, BiChevronRight, BiInfoCircle,
-    BiLayout, BiLineChart, BiLogOutCircle
+    BiBox, BiChevronLeft, BiChevronRight,
+    BiLayout, BiBarChartAlt2
 } from "react-icons/bi"
+import { FiBox } from "react-icons/fi"
 import "./style.css"
 
 function Aside() {
@@ -20,8 +21,8 @@ function Aside() {
                     <ul className="menulist">
                         <li><Link to="/"><BiLayout /><span className={modelOpen && "text-btn"}>Dashboard</span></Link></li>
                         <li><Link to="/estoque"><BiBox /><span className={modelOpen && "text-btn"}>Estoque</span></Link></li>
-                        <li><Link to="/logs"><BiInfoCircle /><span className={modelOpen && "text-btn"}>finances</span></Link></li>
-                        <li><Link to="/graficos"><BiLineChart /><span className={modelOpen && "text-btn"}>Gráficos</span></Link></li>
+                        <li><Link to="/produtos"><FiBox /><span className={modelOpen && "text-btn"}>Produtos</span></Link></li>
+                        <li><Link to="/graficos"><BiBarChartAlt2 /><span className={modelOpen && "text-btn"}>Gráficos</span></Link></li>
                     </ul>
                     <div className="btnAside ">
                         <button onClick={handleAsideModel}> {modelOpen ? <BiChevronRight /> : <BiChevronLeft />}</button>

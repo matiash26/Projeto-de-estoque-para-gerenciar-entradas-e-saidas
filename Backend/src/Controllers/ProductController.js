@@ -8,13 +8,13 @@ routes.use(bodyParser.json())
 routes.use(cors())
 
 routes.get("/produtos/all", async (req, res) => {
-    const getData = product.selectProducts()
-    res.send(await getData)
+    const getData = await product.selectProducts()
+    res.send(getData)
 })
 routes.get("/produtos/", async (req, res) => {
     const search = req.query.search
-    const active = req.query.active
-    const found = await product.findProducts(search, active)
+    const status = req.query.status
+    const found = await product.findProducts(search, status)
     res.send(found)
 })
 routes.post("/produtos", (req, res) => {

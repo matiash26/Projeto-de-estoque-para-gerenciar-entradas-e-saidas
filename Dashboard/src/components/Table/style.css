@@ -1,25 +1,26 @@
-table {
+.tableScreen{
     width: 100%;
     border-collapse: collapse;
     border-radius: .5rem;
-}
+    background-color: #FFFFFF;
 
-table thead tr {
+}
+.tableScreen thead tr {
     border-bottom: 2px solid #DEE2E6;
 }
 
-table tr {
+.tableScreen tr {
     border-bottom: 1px solid #EFF1F3;
     font-weight: bold;
 }
 
-table thead th {
+.tableScreen thead th {
     padding: 1rem;
     color: #7c7c7c;
     font-size: .9rem;
     text-transform: uppercase;
     font-weight: bold;
 }
-table tbody tr:hover {
+.tableScreen tbody tr:hover {
     background: #EFF1F3;
 }

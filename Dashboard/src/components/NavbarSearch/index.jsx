@@ -29,7 +29,7 @@ function NavbarSearch(props) {
                         </div>
                         <div className="filter-active">
                             <label htmlFor="active" id="label">status</label>
-                            <Select title="active" refs={props.active}>
+                            <Select title="active" refs={props.status}>
                                 <option value="1">ativado</option>
                                 <option value="0">desativado</option>
                             </Select>

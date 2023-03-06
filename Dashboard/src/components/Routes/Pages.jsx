@@ -1,5 +1,6 @@
 import StockWithContext from "../../Contexts/WithContexts/StockWithContext"
 import EntriesWithContext from "../../Contexts/WithContexts/EntriesWithContext"
+import ProductWithContext from "../../Contexts/WithContexts/ProductsWithContext"
 import Statistics from "../../pages/Statistics"
 import { Routes, Route } from "react-router-dom"
 import Header from "../Header"
@@ -13,7 +14,8 @@ function Pages() {
                 <Routes>
                     <Route path="/" element={<EntriesWithContext />} />
                     <Route path="/estoque" element={<StockWithContext/>} />
-                    {/* <Route path="/graficos" element={<Statistics />} /> */}
+                    <Route path="/produtos" element={<ProductWithContext />} />
+                    <Route path="/graficos" element={<Statistics />} />
                 </Routes>
             </div>
         </>

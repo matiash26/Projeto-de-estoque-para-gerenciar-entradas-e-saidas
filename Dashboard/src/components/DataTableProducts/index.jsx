@@ -1,41 +1,32 @@
-import { useContext, useState } from "react"
+import { useState, useContext } from "react"
 import { FiMoreVertical } from "react-icons/fi"
-import { StockContext } from "../../Contexts/StockContext"
 import { GlobalContext } from "../../Contexts/GlobalContext"
+import { productContext } from "../../Contexts/ProductsContext"
 import "./style.css"
-
-function DataTableStock({ data }) {
+function DataTableProducts({ data }) {
     const [optionModal, setOptionModal] = useState(false)
-    const { btnModalIsOpen, btnModalConfirmIsOpen} = useContext(GlobalContext)
-    const { btnEdit, setUniqueObject } = useContext(StockContext)
-    
-    const status = data.status === "1"
-    const good =  data.estoque >= 50 && "good"
-    const ok = data.estoque > 20 && data.estoque < 50 && "ok"
-    const bad = data.estoque >= 0 && data.estoque <= 20 && "bad"
-    const stockStatus = good || ok || bad
-    
+    const { btnModalIsOpen, btnModalConfirmIsOpen } = useContext(GlobalContext)
+    const { btnEdit } = useContext(productContext)
     const handleOptionModal = () => {
         setOptionModal(prev => !prev)
     }
-    const handleEdit = () => {
-        btnEdit(data.id)
+    const handleEdit = async () => {
         btnModalIsOpen()
         handleOptionModal()
-
+        btnEdit(data.id)
     }
+
     const handleDelete = () => {
         btnModalConfirmIsOpen()
         handleOptionModal()
-        setUniqueObject({id:data.id, status:data.ativo})
+        setOrderID(data.id)
     }
+    const status = data.status === "1"
     return (
         <tr>
             <td>#{data.id}</td>
             <td>{data.produto}</td>
-            <td>{data.data}</td>
-            <td><span className={status ? "status": "disabled"}>{status? "ativo":"desativado"}</span></td>
-            <td> <span className={stockStatus}>{data.estoque}</span></td>
+            <td><span className={status ? "active" : "disabled"}>{status ? "ativo" : "desativado"}</span></td>
             <td>R$: {data.valor}</td>
             <td className="options-container">
                 <FiMoreVertical onClick={handleOptionModal} />
@@ -47,4 +38,4 @@ function DataTableStock({ data }) {
         </tr>
     )
 }
-export default DataTableStock
+export default DataTableProducts

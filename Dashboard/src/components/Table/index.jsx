@@ -1,10 +1,10 @@
 import "./style.css"
 function Table({ th, children }) {
     return (
-        <table>
+        <table className="tableScreen">
             <thead>
                 <tr>
-                    {th.map((column, x) => <th key={x}>{column}</th>)}
+                    {th?.map((column, x) => <th key={x}>{column}</th>)}
                 </tr>
             </thead>
             <tbody>

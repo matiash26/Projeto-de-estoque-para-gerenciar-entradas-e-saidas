@@ -16,10 +16,12 @@ function EntriesProvider({ children }) {
         setOldCart(JSON.parse(JSON.stringify(data)))
         //fazendo copia profunda para retirar a referencia do objeto
     }
-
+    const clearFields = () => {
+        setProduto('')
+    }
     return (
         <EntriesContext.Provider value={{ setCart, cart, getOrderForEdit, 
-        setUpdate, update, oldCart, orderID, setOrderID, setProduto,produto }}>
+        setUpdate, update, oldCart, orderID, setOrderID, setProduto, produto, clearFields }}>
             {children}
         </EntriesContext.Provider>
     )

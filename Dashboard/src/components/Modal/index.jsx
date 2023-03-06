@@ -3,14 +3,14 @@ import { useContext } from "react"
 import { FiX } from "react-icons/fi"
 import "./style.css"
 
-function Modal({ children, icon, title, updateExist, clearModal }) {
+function Modal({ children, icon, title, updateExist, clearModal, clearFields }) {
     const {btnModalIsOpen } = useContext(GlobalContext)
 
     const handleModal = () => {
         btnModalIsOpen()
         updateExist(false)
         clearModal([])
-        clearInput()
+        clearFields()
     }
     return (
         <div className={`modal-container`}>

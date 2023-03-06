@@ -1,3 +1,6 @@
+.open{
+    display: block;
+}
 .options-container{
     padding: 1rem;
     position: relative;

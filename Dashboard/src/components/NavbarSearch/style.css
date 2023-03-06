@@ -9,6 +9,7 @@
     padding: 1rem 2.4rem;
     height: 14vh;
     gap: 1rem;
+    width: 100%;
 }
 
 .form-filter .btn {
