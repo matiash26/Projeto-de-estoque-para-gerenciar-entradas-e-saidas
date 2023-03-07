@@ -20,7 +20,7 @@ import "./style.css"
 
 function Stock() {
     const filterRef = useRef(undefined)
-    const activeRef = useRef(undefined)
+    const statusRef = useRef(undefined)
     const [stockModal, setStockModal] = useState([])
     const [productData, setProductData] = useState([])
     const [stockTable, setStockTable] = useState([])
@@ -30,11 +30,11 @@ function Stock() {
     const { modalConfirmIsOpen, modalValue, btnModalIsOpen,
         modalConfirmValue, setModalConfirmValue } = useContext(GlobalContext)
     const { produto, setProduto, estoque, setEstoque,
-        index, setIndex, uniqueObject, setUniqueObject, clearFields, statusRef } = useContext(StockContext)
+        index, setIndex, updateOrDelete, setUpdateOrDelete, clearFields, checkbox, setCheckbox } = useContext(StockContext)
 
     const handleAddProductCart = () => {
         const addProduct = productData.filter(el => el.produto === produto)[0]
-        const status = statusRef.current.checked ? "ativo" : "desativado"
+        const status = checkbox ? "ativo" : "desativado"
         if (addProduct && estoque) {
             if (index != null) {
                 setStockModal(prev => prev.map((product, x) => x === index ? { ...addProduct, status, estoque } : product))
@@ -54,32 +54,34 @@ function Stock() {
         setStockModal(prev => prev.splice(index, 1))
     }
     const handleDeleteProduct = async () => {
-        const id = uniqueObject.id
-        const active = uniqueObject.active
+        const id = updateOrDelete.id
+        const active = updateOrDelete.active
         const { data } = await api.delete(`/estoque/${id}?active=${active}`)
         setAlert(data)
     }
     const handleUpdateProduct = async () => {
-        const status = statusRef.current.checked
-        const getProduct = productData.filter(el => el.produto === produto)[0]
-        const addProduct = {
-            id: uniqueObject.id,
-            idProduto: getProduct.id,
-            produto,
-            status,
-            estoque,
+        const checkProductIsValid = productData.filter(el => el.produto === produto)[0]
+        if (checkProductIsValid) {
+            const getProduct = productData.filter(el => el.produto === produto)[0]
+            const updateProduct = {
+                id: updateOrDelete.id,
+                idProduto: getProduct.id,
+                produto,
+                status: checkbox,
+                estoque,
+            }
+            const { data } = await api.put("/estoque/", updateProduct, updateOrDelete)
+            if (data.status === "success") {
+                clearFields()
+                setUpdateOrDelete(false)
+                btnModalIsOpen()
+            }
+            setAlert(data)
         }
-        const { data } = await api.put("/estoque/", addProduct, uniqueObject)
-        if (data.status === "success") {
-            clearFields()
-            setUniqueObject(false)
-            btnModalIsOpen()
-        }
-        setAlert(data)
     }
     const handleFilter = async () => {
         const filter = filterRef.current.value
-        const active = activeRef.current.value
+        const active = statusRef.current.value
         if (filter || active) {
             const { data } = await api.get(`/estoque/?search=${filter}&active=${active}`)
             setDeepCopyTable(data)
@@ -112,7 +114,6 @@ function Stock() {
         if (modalConfirmValue) {
             handleDeleteProduct()
             setModalConfirmValue(false)
-            setUniqueObject(false)
         }
     }, [alert, modalConfirmValue])
 
@@ -120,16 +121,16 @@ function Stock() {
         <div className="Container-Main">
             <main className="main-content">
                 {alert && <Notification alert={alert} />}
-                {modalConfirmIsOpen && <ModalConfirm setObject={setUniqueObject} title="Deletar o produto" desc="Você realmente deseja deletar o produto?" />}
-                <NavbarSearch btnFilter={handleFilter} search={filterRef} active={activeRef} />
+                {modalConfirmIsOpen && <ModalConfirm setObject={setUpdateOrDelete} title="Deletar o produto" desc="Você realmente deseja deletar o produto?" />}
+                <NavbarSearch btnFilter={handleFilter} search={filterRef} status={statusRef} />
                 {modalValue &&
-                    <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setStockModal} clearFields={clearFields} updateExist={setUniqueObject}>
+                    <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setStockModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
                         <form className="form-pop">
                             <div className="product-content">
                                 <InputAutoComplet title="Nome do Produto" type="text" data={productData} value={produto} setValue={setProduto} />
                                 <Input title="Quantidade" type="number" value={estoque} onChange={e => setEstoque(e.target.value)} />
-                                <CheckBox title="status" refs={statusRef} icon01={<FiX />} icon02={<FiCheck />} />
-                                {!uniqueObject && <Button title="ADICIONAR" type="button" className="poolBlue" onClick={handleAddProductCart} />}
+                                <CheckBox title="status" checked={checkbox} onChange={e => setCheckbox(e.target.checked)} icon01={<FiX />} icon02={<FiCheck />} />
+                                {!updateOrDelete && <Button title="ADICIONAR" type="button" className="poolBlue" onClick={handleAddProductCart} />}
                             </div>
                         </form>
                         <ol className="form-items">
@@ -141,7 +142,7 @@ function Stock() {
                             }
                         </ol>
                         <div className="modal-total">
-                            {uniqueObject ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateProduct} /> : <Button title="FINALIZAR" type="submit" className="green" onClick={handleSubmit} />}
+                            {updateOrDelete ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateProduct} /> : <Button title="FINALIZAR" type="submit" className="green" onClick={handleSubmit} />}
                         </div>
                     </Modal>
 

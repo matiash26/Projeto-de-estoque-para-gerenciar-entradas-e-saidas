@@ -10,7 +10,7 @@ const insertStock = async (stock) => {
     const mysql = await client();
     const status = stock.status === "ativo" ? '1' : '0'
     const sql = "INSERT INTO estoque(idProduto, data, status, estoque) VALUES(?, ?, ?, ?);";
-    const insert = [stock.id, getDate(), status, +stock.estoque, +stock.valor];
+    const insert = [stock.id, getDate(), status, +stock.estoque];
     try {
         mysql.query(sql, insert);
         return true

@@ -42,6 +42,8 @@
 .confirm-container > p {
     color: #343a40c2;
     padding: 1rem;
+    font-size: .9rem;
+
 }
 .btn-confirm{
     display: flex;

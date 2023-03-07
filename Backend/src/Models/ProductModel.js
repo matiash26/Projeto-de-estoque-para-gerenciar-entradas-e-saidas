@@ -1,8 +1,8 @@
 const { client } = require("../../config/database")
 
-const selectProducts = async () =>{
+const selectProducts = async () => {
     const mysql = await client()
-    const sql = "SELECT * FROM produtos WHERE status = '1';";
+    const sql = "SELECT * FROM produtos WHERE status = '1' ORDER BY id DESC;";
     const [row] = await mysql.query(sql)
     return row
 }
@@ -10,42 +10,34 @@ const findProducts = async (search, status) => {
     const mysql = await client();
     let sql = ""
     let params = []
-    if(search && status) {
+    if (search && status) {
         sql = 'SELECT * FROM produtos WHERE id = ? OR produto LIKE ? and status = ? ORDER BY id DESC;'
         params.push(search, `${search}%`, status)
-    }else{
+    } else {
         sql = 'SELECT * FROM produtos WHERE id = ? or status = ? ORDER BY id DESC;'
         params.push(search, status)
     }
     const [row] = await mysql.query(sql, params);
     return row;
 }
-const insertProducts = ({ produto, valor }) => {
-    const sql = "INSERT INTO produtos(produto, valor) VALUES(?, ?);";
-    const insert = [produto, valor];
+const insertProducts = async({ produto, status, valor }) => {
+    const mysql = await client();
+    const active = status ? "1" : "0"
+    const sql = "INSERT INTO produtos(produto, status, valor) VALUES(?, ?, ?);";
+    const insert = [produto, active, +valor];
     try {
-        client.query(sql, insert)
+        mysql.query(sql, insert)
         return true
     } catch {
         return false
     }
 }
-const updateProducts = async ({produto, valor}) => {
+const updateProducts = async ({ produto, status, valor, id }) => {
     const mysql = await client();
-    const sql = "UPDATE produtos set produto = ?, valor = ?";
-    const update = [produto, valor];
+    const sql = "UPDATE produtos set produto = ?, status = ?, valor = ? WHERE id = ?";
+    const update = [produto, status, +valor, id];
     try {
         mysql.query(sql, update);
-        return true
-    } catch (error) {
-        return false
-    }
-}
-const deleteProducts = async (id) => {
-    const mysql = await client();
-    const sql = "DELETE FROM produtos WHERE id = ?"
-    try {
-        await mysql.query(sql, id)
         return true
     } catch (error) {
         return false
@@ -62,7 +54,7 @@ const desativeProducts = async (active, id) => {
     }
 }
 module.exports = {
-    selectProducts,insertProducts, 
-    updateProducts, deleteProducts,
-    desativeProducts,findProducts
+    selectProducts, insertProducts,
+    updateProducts,desativeProducts, 
+    findProducts
 }

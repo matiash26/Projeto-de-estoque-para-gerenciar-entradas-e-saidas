@@ -7,7 +7,7 @@ import "./style.css"
 function DataTableStock({ data }) {
     const [optionModal, setOptionModal] = useState(false)
     const { btnModalIsOpen, btnModalConfirmIsOpen} = useContext(GlobalContext)
-    const { btnEdit, setUniqueObject } = useContext(StockContext)
+    const { btnEdit, setUpdateOrDelete } = useContext(StockContext)
     
     const status = data.status === "1"
     const good =  data.estoque >= 50 && "good"
@@ -19,7 +19,7 @@ function DataTableStock({ data }) {
         setOptionModal(prev => !prev)
     }
     const handleEdit = () => {
-        btnEdit(data.id)
+        btnEdit(data)
         btnModalIsOpen()
         handleOptionModal()
 
@@ -27,14 +27,14 @@ function DataTableStock({ data }) {
     const handleDelete = () => {
         btnModalConfirmIsOpen()
         handleOptionModal()
-        setUniqueObject({id:data.id, status:data.ativo})
+        setUpdateOrDelete({id:data.id, status:data.ativo})
     }
     return (
         <tr>
             <td>#{data.id}</td>
             <td>{data.produto}</td>
             <td>{data.data}</td>
-            <td><span className={status ? "status": "disabled"}>{status? "ativo":"desativado"}</span></td>
+            <td><span className={status ? "active": "disabled"}>{status? "ativo":"desativado"}</span></td>
             <td> <span className={stockStatus}>{data.estoque}</span></td>
             <td>R$: {data.valor}</td>
             <td className="options-container">

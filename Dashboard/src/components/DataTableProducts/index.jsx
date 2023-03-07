@@ -6,20 +6,20 @@ import "./style.css"
 function DataTableProducts({ data }) {
     const [optionModal, setOptionModal] = useState(false)
     const { btnModalIsOpen, btnModalConfirmIsOpen } = useContext(GlobalContext)
-    const { btnEdit } = useContext(productContext)
+    const { btnEdit, setUpdateOrDelete } = useContext(productContext)
     const handleOptionModal = () => {
         setOptionModal(prev => !prev)
     }
     const handleEdit = async () => {
         btnModalIsOpen()
         handleOptionModal()
-        btnEdit(data.id)
+        btnEdit(data)
     }
 
     const handleDelete = () => {
         btnModalConfirmIsOpen()
         handleOptionModal()
-        setOrderID(data.id)
+        setUpdateOrDelete(data)
     }
     const status = data.status === "1"
     return (
@@ -32,7 +32,7 @@ function DataTableProducts({ data }) {
                 <FiMoreVertical onClick={handleOptionModal} />
                 <ul className={`options-btn ${optionModal && 'active-options'}`}>
                     <li onClick={handleEdit} >Editar</li>
-                    <li onClick={handleDelete}>Deletar</li>
+                    <li onClick={handleDelete}>ativar/desativar</li>
                 </ul>
             </td>
         </tr>
