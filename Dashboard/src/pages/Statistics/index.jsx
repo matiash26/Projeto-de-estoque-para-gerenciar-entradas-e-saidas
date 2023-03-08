@@ -1,5 +1,5 @@
 import { Chart as Chartjs, BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement } from "chart.js"
-import { BiDollar, BiTrendingUp } from "react-icons/bi"
+import { BiDollar, BiTrendingUp, BiDetail } from "react-icons/bi"
 import { useCallback, useEffect, useState } from "react"
 import { Bar, Doughnut } from 'react-chartjs-2'
 import Cards from "../../components/Cards"
@@ -22,11 +22,6 @@ function Statistics() {
             {
                 label: 'lucro R$',
                 backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-                borderColor: 'rgb(32, 134, 55)',
-                data: statistic?.graph?.map(({ lucro }) => lucro)
-            }, {
-                label: 'despesa',
-                backgroundColor: ['#a30000'],
                 borderColor: 'rgb(32, 134, 55)',
                 data: statistic?.graph?.map(({ lucro }) => lucro)
             }
@@ -61,7 +56,7 @@ function Statistics() {
                 <div className="left-content">
                     <div className="top-item">
                         <Cards title="Total Ganho" icon={<BiDollar />} value={cardsData.ganhos} color="green" />
-                        <Cards title="Despesas" color="red" />
+                        <Cards title="Despesas" icon={<BiDetail/>} color="red"/>
                     </div>
                     <div className="middle-item">
                         <div className="top_content">
@@ -70,7 +65,7 @@ function Statistics() {
                             </div>
                             <select name="filter" id="filter_statistcs" onChange={e => setFilter(e.target.value)}>
                                 <option value="day">7 dias</option>
-                                <option value="monthsYear">mês do ano</option>
+                                <option value="monthsOfYear">mês do ano</option>
                                 <option value="year">todos anos</option>
                             </select>
                         </div>

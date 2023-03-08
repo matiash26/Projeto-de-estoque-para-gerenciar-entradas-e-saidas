@@ -1,12 +1,3 @@
-.product-content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid #EFF1F3;
-    padding: .6rem 1rem;
-    gap: .5rem;
-}
-
 .productTop,
 .productBottom {
     display: flex;

@@ -1,8 +1,9 @@
-import StockWithContext from "../../Contexts/WithContexts/StockWithContext"
+import { Routes, Route } from "react-router-dom"
 import EntriesWithContext from "../../Contexts/WithContexts/EntriesWithContext"
 import ProductWithContext from "../../Contexts/WithContexts/ProductsWithContext"
+import ServiceWithContext from "../../Contexts/WithContexts/ServicesWithContext"
+import StockWithContext from "../../Contexts/WithContexts/StockWithContext"
 import Statistics from "../../pages/Statistics"
-import { Routes, Route } from "react-router-dom"
 import Header from "../Header"
 import Aside from "../Aside"
 function Pages() {
@@ -13,8 +14,9 @@ function Pages() {
                 <Header />
                 <Routes>
                     <Route path="/" element={<EntriesWithContext />} />
-                    <Route path="/estoque" element={<StockWithContext/>} />
+                    <Route path="/estoque"  element={<StockWithContext />} />
                     <Route path="/produtos" element={<ProductWithContext />} />
+                    <Route path="/serviço"  element={<ServiceWithContext />} />
                     <Route path="/graficos" element={<Statistics />} />
                 </Routes>
             </div>

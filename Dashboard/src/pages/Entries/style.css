@@ -44,17 +44,17 @@
     justify-content: space-between;
     height: 300px;
 }
-.listProducts {
+.listProductDatas {
     overflow-y: auto;
     height: 380px;
 }
 
-.listProducts::-webkit-scrollbar {
+.listProductDatas::-webkit-scrollbar {
     width: 12px;
     background-color: #F5F5F5;
 }
 
-.listProducts::-webkit-scrollbar-thumb {
+.listProductDatas::-webkit-scrollbar-thumb {
     background-color: #c5c7c9;
     border-radius: .5rem;
 }

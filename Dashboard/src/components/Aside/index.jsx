@@ -5,6 +5,7 @@ import {
     BiLayout, BiBarChartAlt2
 } from "react-icons/bi"
 import { FiBox } from "react-icons/fi"
+import { BsGear } from "react-icons/bs"
 import "./style.css"
 
 function Aside() {
@@ -22,6 +23,7 @@ function Aside() {
                         <li><Link to="/"><BiLayout /><span className={modelOpen && "text-btn"}>Dashboard</span></Link></li>
                         <li><Link to="/estoque"><BiBox /><span className={modelOpen && "text-btn"}>Estoque</span></Link></li>
                         <li><Link to="/produtos"><FiBox /><span className={modelOpen && "text-btn"}>Produtos</span></Link></li>
+                        <li><Link to="/serviço"><BsGear /><span className={modelOpen && "text-btn"}>Serviços</span></Link></li>
                         <li><Link to="/graficos"><BiBarChartAlt2 /><span className={modelOpen && "text-btn"}>Gráficos</span></Link></li>
                     </ul>
                     <div className="btnAside ">

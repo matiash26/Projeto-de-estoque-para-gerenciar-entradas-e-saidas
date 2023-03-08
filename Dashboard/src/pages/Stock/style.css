@@ -13,11 +13,11 @@
     width: 50%;
 }
 
-.product-content>input {
+.form-content>input {
     gap: 1rem;
 }
 
-.product-content>.btn {
+.form-content>.btn {
     margin: auto;
 }
 

@@ -1,12 +1,12 @@
 const { client } = require("../../config/database")
 
-const selectProducts = async () => {
+const select = async () => {
     const mysql = await client()
     const sql = "SELECT * FROM produtos WHERE status = '1' ORDER BY id DESC;";
     const [row] = await mysql.query(sql)
     return row
 }
-const findProducts = async (search, status) => {
+const find = async (search, status) => {
     const mysql = await client();
     let sql = ""
     let params = []
@@ -20,7 +20,7 @@ const findProducts = async (search, status) => {
     const [row] = await mysql.query(sql, params);
     return row;
 }
-const insertProducts = async({ produto, status, valor }) => {
+const insert= async({ produto, status, valor }) => {
     const mysql = await client();
     const active = status ? "1" : "0"
     const sql = "INSERT INTO produtos(produto, status, valor) VALUES(?, ?, ?);";
@@ -32,7 +32,7 @@ const insertProducts = async({ produto, status, valor }) => {
         return false
     }
 }
-const updateProducts = async ({ produto, status, valor, id }) => {
+const update = async ({ produto, status, valor, id }) => {
     const mysql = await client();
     const sql = "UPDATE produtos set produto = ?, status = ?, valor = ? WHERE id = ?";
     const update = [produto, status, +valor, id];
@@ -43,7 +43,7 @@ const updateProducts = async ({ produto, status, valor, id }) => {
         return false
     }
 }
-const desativeProducts = async (active, id) => {
+const desative = async (active, id) => {
     const mysql = await client()
     const sql = "UPDATE produtos set status = ?  WHERE id = ?"
     try {
@@ -54,7 +54,7 @@ const desativeProducts = async (active, id) => {
     }
 }
 module.exports = {
-    selectProducts, insertProducts,
-    updateProducts,desativeProducts, 
-    findProducts
+    select, insert,
+    update,desative, 
+    find
 }

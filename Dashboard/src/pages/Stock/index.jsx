@@ -92,7 +92,6 @@ function Stock() {
     }
     const handleSubmit = async () => {
         const { data } = await api.post("/estoque/", stockModal)
-        console.log(stockModal)
         if (data.status === "success") {
             setStockModal([])
             clearFields()
@@ -137,8 +136,8 @@ function Stock() {
                             {
                                 stockModal.map((item, index) => <StockItem key={index}
                                     produto={item}
-                                    editCart={() => handleEditProductCart(index)}
-                                    removeCart={() => handleRemoveProductCart(index)} />)
+                                    editModal={() => handleEditProductCart(index)}
+                                    removeModal={() => handleRemoveProductCart(index)} />)
                             }
                         </ol>
                         <div className="modal-total">

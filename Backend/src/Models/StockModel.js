@@ -1,12 +1,12 @@
 const {client} = require("../../config/database")
 
-const selectStock = async () => {
+const select = async () => {
     const mysql = await client();
     const sql = "SELECT e.id, p.produto, e.data, e.status, e.estoque, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.status = '1' ORDER BY e.id desc;";
     const [row] = await mysql.query(sql);
     return row;
 }
-const insertStock = async (stock) => {
+const insert = async (stock) => {
     const mysql = await client();
     const status = stock.status === "ativo" ? '1' : '0'
     const sql = "INSERT INTO estoque(idProduto, data, status, estoque) VALUES(?, ?, ?, ?);";
@@ -18,7 +18,7 @@ const insertStock = async (stock) => {
         return false
     }
 }
-const updateStock = async (stock) => {
+const update = async (stock) => {
     const status = stock.status? "1" : "0"
     const mysql = await client();
     const sql = "UPDATE estoque set idProduto = ?, data = ?, status = ?, estoque = ? WHERE id = ?;";
@@ -30,7 +30,7 @@ const updateStock = async (stock) => {
         return false
     }
 }
-const deleteStock = async (id) => {
+const Delete = async (id) => {
     const mysql = await client();
     const sql = "DELETE FROM estoque WHERE id = ?"
     try {
@@ -40,7 +40,7 @@ const deleteStock = async (id) => {
         return false
     }
 }
-const findStock = async (search, active) => {
+const find = async (search, active) => {
     const mysql = await client();
     let sql = ""
     let params = []
@@ -54,12 +54,12 @@ const findStock = async (search, active) => {
     const [row] = await mysql.query(sql, params);
     return row;
 }
-const stockModifyEstoque = async (estoque, id) => {
+const stockModify = async (estoque, id) => {
     const mysql = await client()
     const sql = "UPDATE estoque set estoque = ?  WHERE id = ?"
     return await mysql.query(sql, [estoque, id])
 }
-const desativeStock = async (active, id) => {
+const desative = async (active, id) => {
     const mysql = await client()
     const sql = "UPDATE estoque set status = ?  WHERE id = ?"
     try {
@@ -74,8 +74,8 @@ const getDate = () => {
     return `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`
 }
 module.exports = {
-    selectStock,insertStock, 
-    updateStock, deleteStock,
-    findStock, stockModifyEstoque, 
-    desativeStock
+    select,insert, 
+    update, Delete,
+    find, stockModify, 
+    desative
 }

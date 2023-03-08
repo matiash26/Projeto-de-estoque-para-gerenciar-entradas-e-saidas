@@ -1,8 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react"
+import { FiCheck, FiX, FiBox } from "react-icons/fi"
 import { productContext } from "../../Contexts/ProductsContext"
 import { GlobalContext } from "../../Contexts/GlobalContext"
-import { FiCheck, FiX } from "react-icons/fi"
-import { FiBox } from "react-icons/fi"
 import DataTableProducts from "../../components/DataTableProducts"
 import NavbarSearch from "../../components/NavbarSearch"
 import Notification from "../../components/Notification"
@@ -15,6 +14,8 @@ import Modal from "../../components/Modal"
 import Table from "../../components/Table"
 import Input from "../../components/Input"
 import api from "../../services/Api"
+import "./style.css"
+
 function Products() {
     const [productTable, setProductTable] = useState([])
     const [productModal, setProductModal] = useState([])
@@ -115,7 +116,7 @@ function Products() {
                 {modalValue &&
                     <Modal title="ADICIONAR PRODUTO" icon={<FiBox />} clearModal={setProductModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
                         <form className="form-pop">
-                            <div className="product-content">
+                            <div className="form-content">
                                 <Input title="Produto" type="text" value={produto} onChange={e => setProduto(e.target.value)} />
                                 <Input title="valor" type="number" value={valor} onChange={e => setValor(e.target.value)} />
                                 <CheckBox title="status" checked={checkbox} onChange={e => setCheckbox(e.target.checked)} icon01={<FiX />} icon02={<FiCheck />} />

@@ -63,7 +63,7 @@ function Entries() {
         return cart.reduce((acc, { total }) => acc += +total, 0).toFixed(2)
     }
     const handleUpdateEntries = async () => {
-        const { data } = await api.put("/entradas/", { cart, oldCart })
+        const { data } = await api.put("/entries/", { cart, oldCart })
         if (data.status === "success") {
             setCart([])
             btnModalIsOpen()
@@ -72,7 +72,7 @@ function Entries() {
         setAlert(data)
     }
     const handleSubmit = async () => {
-        const { data } = await api.post("/entradas/", cart)
+        const { data } = await api.post("/entries/", cart)
         if (data.status === "success") {
             setCart([])
             btnModalIsOpen()
@@ -83,20 +83,20 @@ function Entries() {
         const startDate = startDateRef.current.value
         const offsetDate = offsetDateRef.current.value
         if (startDate && offsetDate) {
-            const { data } = await api.get(`/entradas/filter/${startDate}/${offsetDate}`)
+            const { data } = await api.get(`/entries/filter/${startDate}/${offsetDate}`)
             setItemsToPagination(data)
         } else {
-            const { data } = await api.get("/entradas/all")
+            const { data } = await api.get("/entries/all")
             setItemsToPagination(data)
         }
     }
     const handleDelete = async () => {
-        const { data } = await api.delete("/entradas/" + orderID)
+        const { data } = await api.delete("/entries/" + orderID)
         setAlert(data)
     }
     const fetchData = useCallback(async () => {
         const { data } = await api.get("/estoque/all")
-        const entries = await api.get("/entradas/all")
+        const entries = await api.get("/entries/all")
         setProductData(data.map(productData => ({ ...productData, quantidade: 1 })))
         setItemsToPagination(entries.data)
     }, [])
@@ -124,13 +124,13 @@ function Entries() {
                         <Button onClick={handleAddToCart} title="Adicionar" className="poolBlue"/>
                     </div>
                     <form onSubmit={e => e.preventDefault(e)} className="form-historic">
-                        <ul className="listproductDatas">
+                        <ul className="listProductDatas">
                             {
                                 cart.map((item, index) => <CartItem
                                     key={item.id}
                                     item={item}
                                     quantity={item.quantidade}
-                                    onClick={() => handleRemoveFromCart(index)}
+                                    removeModal={() => handleRemoveFromCart(index)}
                                     onChange={e => handleQuantity(e, item.id)}
                                     updateExist={update} />)
                             }

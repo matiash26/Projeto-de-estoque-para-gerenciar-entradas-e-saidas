@@ -4,7 +4,7 @@ import "./style.css"
 
 function CartItem(props) {
     return (
-        <li className="product-content">
+        <li className="modal-content">
             <div className="productTop">
                 <h4>{props.item.produto}<span id="valueProduct"> - R$: {props.item.valor}</span></h4>
                 <span>R$: {props.item.total}</span>
@@ -14,7 +14,7 @@ function CartItem(props) {
                     <label htmlFor="quantity">Unidade / KG</label>
                     <input type="number" value={props.item.quantidade} onChange={props.onChange} name="quantity" id="quantity" />
                 </div>
-                {!props.updateExist && <Button title={<FiX />} onClick={props.onClick} />}
+                {!props.updateExist && <Button title={<FiX />} onClick={props.removeModal} />}
             </div>
         </li>
     )

@@ -1,4 +1,4 @@
-.product-item {
+.modal-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -6,20 +6,20 @@
     padding: 1rem;
 }
 
-.product-item>div>h3 {
+.modal-item>div>h3 {
     color: #616466;
     font-size: .8rem;
     text-transform: uppercase;
 }
 
-.product-item>div:not(:last-of-type){
+.modal-item>div:not(:last-of-type){
     width: 121px;
     margin-bottom: auto; /*para igualar a altura caso algum elemento quebre e desalinhe*/
     word-wrap: break-word;
     text-align: center;
 }
 
-.product-item>div>p {
+.modal-item>div>p {
     color: #363636;
     font-size: .8rem;
 }
@@ -27,7 +27,7 @@
     display: flex;
     gap: .5rem;
 }
-.btn-product {
+.btn-modal {
     display: flex;
     align-items: center;
     justify-content: center;
