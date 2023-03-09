@@ -1,15 +1,13 @@
 import { useContext, useState } from "react"
 import { FiMoreVertical } from "react-icons/fi"
+import { ServiceContext } from "../../Contexts/ServiceContext"
 import { GlobalContext } from "../../Contexts/GlobalContext"
-import { StockContext } from "../../Contexts/StockContext"
 import "./style.css"
 
 function DataTableStock({ data }) {
     const [optionModal, setOptionModal] = useState(false)
     const { btnModalIsOpen, btnModalConfirmIsOpen} = useContext(GlobalContext)
-    const { btnEdit, setUpdateOrDelete } = useContext(StockContext)
-
-    const status = data.status === "1" ? "ativado" : "desativado"
+    const { btnEdit, setUpdateOrDelete } = useContext(ServiceContext)
 
     const handleOptionModal = () => {
         setOptionModal(prev => !prev)
@@ -28,10 +26,9 @@ function DataTableStock({ data }) {
     return (
         <tr>
             <td>#{data.id}</td>
-            <td>{data.produto}</td>
+            <td>{data.servico}</td>
             <td>{data.data}</td>
-            <td><span className={status ? "active" : "disabled"}>{status ? "ativo" : "desativado"}</span></td>
-            <td>{data.estoque}</td>
+            <td>R$: {data.gasto}</td>
             <td className="options-container">
                 <FiMoreVertical onClick={handleOptionModal} />
                 <ul className={`options-btn ${optionModal && 'active-options'}`}>

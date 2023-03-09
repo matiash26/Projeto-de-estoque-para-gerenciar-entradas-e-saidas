@@ -1,8 +1,8 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useMemo, useContext, useEffect, useRef, useState } from "react"
 import { GlobalContext } from "../../Contexts/GlobalContext"
 import { ServiceContext } from "../../Contexts/ServiceContext"
 import { BiBox } from "react-icons/bi"
-import DataTableStock from "../../components/DataTableStock"
+import DataTableService from "../../components/DataTableService"
 import ModalConfirm from "../../components/ModalConfirm"
 import NavbarSearch from "../../components/NavbarSearch"
 import Notification from "../../components/Notification"
@@ -43,8 +43,8 @@ function Service() {
         }
     }
     const handleEditServiceModal = (index) => {
-        setServico(stockModal[index].produto)
-        setGasto(stockModal[index].estoque)
+        setServico(serviceModal[index].service)
+        setGasto(serviceModal[index].gasto)
         setIndex(index)
     }
     const handleRemoveServiceModal = (index) => {
@@ -89,12 +89,12 @@ function Service() {
         }
         setAlert(data)
     }
-    const fetchData = useCallback(async () => {
+    const fetchData = useMemo(async () => {
         const { data } = await api.get("/services/all")
-        setDeepCopyTable(data)
-    }, [])
+        return data
+    }, [alert])
     useEffect(() => {
-        fetchData()
+        fetchData.then(data => setDeepCopyTable(data))
         if (alert.success) {
             clearFields()
         }
@@ -136,7 +136,7 @@ function Service() {
                     <Pagination dataItem={deepCopyTable} itemTable={setServiceTable} />
                     <Table th={["#ID", "serviço", "data", "gasto"]}>
                         {
-                            serviceTable.map((service, index) => <DataTableStock key={index} data={service} />)
+                            serviceTable.map((service, index) => <DataTableService key={index} data={service} />)
                         }
                     </Table>
                 </section>

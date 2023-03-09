@@ -23,7 +23,7 @@ const revenue = async (date, filter) => {
     } else {
         sql = "select sum(valor * quantidade) as total_ganho, count(DISTINCT pedido) as total_vendas from entradas;"
     }
-    let [row] = await mysql.query(sql, [date.filter, date.today])
+    const [row] = await mysql.query(sql, [date.filter, date.today])
     return row
 }
 const graphRevenue = async (date, filter) => {
@@ -39,8 +39,21 @@ const graphRevenue = async (date, filter) => {
     const [row] = await mysql.query(sql, [date.filter, date.today])
     return row
 }
+const expenses = async (date, filter) =>{
+    const mysql = await client()
+    let sql = ""
+    if (filter === "day") {
+        sql = "select sum(gasto) as despesas from servicos WHERE data between ? and ?;"
+    } else if (filter === "montesYear") {
+        sql = "select sum(gasto) as despesas fromnpm  WHERE DATE_FORMAT(data, '%Y') = ?;"
+    } else {
+        sql = "select sum(gasto) as despesas from servicos;"
+    }
+    const [row] = await mysql.query(sql, [date.filter, date.today])
+    return row
+}
 module.exports = {
     bestProducts,
-    revenue,
-    graphRevenue
+    revenue,graphRevenue,
+    expenses
 }

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useMemo, useContext, useEffect, useRef, useState } from "react"
 import { GlobalContext } from "../../Contexts/GlobalContext"
 import { StockContext } from "../../Contexts/StockContext"
 import { FiCheck, FiX } from "react-icons/fi"
@@ -19,13 +19,13 @@ import api from "../../services/Api"
 import "./style.css"
 
 function Stock() {
+    const [deepCopyTable, setDeepCopyTable] = useState([])
+    const [productData, setProductData] = useState([])
+    const [stockModal, setStockModal] = useState([])
+    const [stockTable, setStockTable] = useState([])
+    const [alert, setAlert] = useState("")
     const filterRef = useRef(undefined)
     const statusRef = useRef(undefined)
-    const [stockModal, setStockModal] = useState([])
-    const [productData, setProductData] = useState([])
-    const [stockTable, setStockTable] = useState([])
-    const [deepCopyTable, setDeepCopyTable] = useState([])
-    const [alert, setAlert] = useState("")
 
     const { modalConfirmIsOpen, modalValue, btnModalIsOpen,
         modalConfirmValue, setModalConfirmValue } = useContext(GlobalContext)
@@ -99,14 +99,17 @@ function Stock() {
         }
         setAlert(data)
     }
-    const fetchData = useCallback(async () => {
-        const { data } = await api.get("/produtos/all")
+    const fetchData = useMemo(async () => {
+        const products = await api.get("/produtos/all")
         const stock = await api.get("/estoque/all")
-        setStockTable(stock.data)
-        setProductData(data)
+        return [products.data, stock.data]
     }, [])
+
     useEffect(() => {
-        fetchData()
+        fetchData.then(data => {
+            setProductData(data[0])
+            setStockTable(data[1])
+        })
         if (alert.success) {
             clearFields()
         }
@@ -148,7 +151,7 @@ function Stock() {
                 }
                 <section className="table-content">
                     <Pagination dataItem={deepCopyTable} itemTable={setStockTable} />
-                    <Table th={["#ID", "produto", "data", "status", "em estoque", "preço"]}>
+                    <Table th={["#ID", "produto", "data", "status", "em estoque"]}>
                         {
                             stockTable.map((product, index) => <DataTableStock key={index} data={product} />)
                         }

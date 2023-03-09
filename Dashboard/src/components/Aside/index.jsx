@@ -15,16 +15,16 @@ function Aside() {
         setModelOpen(prev => !prev)
     }
     return (
-        <aside className={modelOpen && "close"}>
-            <div className={`asideContainer ${modelOpen && "close"}`}>
+        <aside className={modelOpen ? "close" : "open"}>
+            <div className={`asideContainer ${modelOpen ? "close" : "open"}`}>
                 <div className="asideContent">
                     <h5>MAIN MENU</h5>
                     <ul className="menulist">
-                        <li><Link to="/"><BiLayout /><span className={modelOpen && "text-btn"}>Dashboard</span></Link></li>
-                        <li><Link to="/estoque"><BiBox /><span className={modelOpen && "text-btn"}>Estoque</span></Link></li>
-                        <li><Link to="/produtos"><FiBox /><span className={modelOpen && "text-btn"}>Produtos</span></Link></li>
-                        <li><Link to="/serviço"><BsGear /><span className={modelOpen && "text-btn"}>Serviços</span></Link></li>
-                        <li><Link to="/graficos"><BiBarChartAlt2 /><span className={modelOpen && "text-btn"}>Gráficos</span></Link></li>
+                        <li><Link to="/"><BiLayout /><span className={modelOpen ? "text-btn" : "open"}>Dashboard</span></Link></li>
+                        <li><Link to="/estoque"><BiBox /><span className={modelOpen ? "text-btn" : "open"}>Estoque</span></Link></li>
+                        <li><Link to="/produtos"><FiBox /><span className={modelOpen ? "text-btn" : "open"}>Produtos</span></Link></li>
+                        <li><Link to="/serviço"><BsGear /><span className={modelOpen ? "text-btn" : "open"}>Serviços</span></Link></li>
+                        <li><Link to="/graficos"><BiBarChartAlt2 /><span className={modelOpen ? "text-btn" : "open"}>Gráficos</span></Link></li>
                     </ul>
                     <div className="btnAside ">
                         <button onClick={handleAsideModel}> {modelOpen ? <BiChevronRight /> : <BiChevronLeft />}</button>

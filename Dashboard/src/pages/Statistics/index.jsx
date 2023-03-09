@@ -26,7 +26,7 @@ function Statistics() {
                 data: statistic?.graph?.map(({ lucro }) => lucro)
             }
         ]
-        
+
     }
     const productData = {
         labels: statistic?.products?.map(({ produto }) => produto),
@@ -41,22 +41,23 @@ function Statistics() {
     const cardsData = {
         ganhos: statistic?.revenue?.[0]?.total_ganho,
         total_vendas: statistic?.revenue?.[0]?.total_vendas,
+        despesas: statistic?.expenses?.[0]?.despesas
     }
-    const fetchData = useCallback(async() =>{
+    const fetchData = useCallback(async () => {
         const { data } = await api.get(`/estatistica/historico/${filter}`)
-            setStatistic(data)
+        setStatistic(data)
     })
     useEffect(() => {
         fetchData()
     }, [filter])
-    
+
     return (
         <main className="Container-Main">
             <section className="section-container">
                 <div className="left-content">
                     <div className="top-item">
                         <Cards title="Total Ganho" icon={<BiDollar />} value={cardsData.ganhos} color="green" />
-                        <Cards title="Despesas" icon={<BiDetail/>} color="red"/>
+                        <Cards title="Despesas" icon={<BiDetail />} value={cardsData.despesas} color="red" />
                     </div>
                     <div className="middle-item">
                         <div className="top_content">

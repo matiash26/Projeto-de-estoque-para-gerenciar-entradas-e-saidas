@@ -17,9 +17,9 @@ import api from "../../services/Api"
 import "./style.css"
 
 function Products() {
+    const [deepCopyTable, setDeepCopyTable] = useState([])
     const [productTable, setProductTable] = useState([])
     const [productModal, setProductModal] = useState([])
-    const [itemsToPagination, setItemsToPagination] = useState([])
     const [alert, setAlert] = useState('')
 
     const { modalConfirmIsOpen, modalValue, btnModalIsOpen,
@@ -81,10 +81,10 @@ function Products() {
         const status = statusRef.current.value
         if (filter || status) {
             const { data } = await api.get(`/produtos/?search=${filter}&status=${status}`)
-            setItemsToPagination(data)
+            setDeepCopyTable(data)
         } else {
             const { data } = await api.get("/produtos")
-            setItemsToPagination(data)
+            setDeepCopyTable(data)
         }
     }
     const handleSubmit = async () => {
@@ -98,10 +98,11 @@ function Products() {
     }
     const fetchData = useCallback(async () => {
         const { data } = await api.get("/produtos/all")
-        setItemsToPagination(data)
+        setDeepCopyTable(data)
     }, [])
+    
     useEffect(() => {
-        fetchData();
+        fetchData()
         if (modalConfirmValue) {
             handleDeleteProduct()
             setModalConfirmValue(false)
@@ -111,7 +112,7 @@ function Products() {
         <div className="Container-Main">
             <main className="main-content">
                 {alert && <Notification alert={alert} />}
-                {modalConfirmIsOpen && <ModalConfirm title="Ocultar" desc="Você realmente deseja ocultar o produto?" setObject={setUpdateOrDelete}/>}
+                {modalConfirmIsOpen && <ModalConfirm title="Ocultar" desc="Você realmente deseja ocultar o produto?" setObject={setUpdateOrDelete} />}
                 <NavbarSearch btnFilter={handleFilter} search={filterRef} status={statusRef} />
                 {modalValue &&
                     <Modal title="ADICIONAR PRODUTO" icon={<FiBox />} clearModal={setProductModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
@@ -137,7 +138,7 @@ function Products() {
                     </Modal>
                 }
                 <section className="table-content">
-                    <Pagination dataItem={itemsToPagination} itemTable={setProductTable} />
+                    <Pagination dataItem={deepCopyTable} itemTable={setProductTable} />
                     <Table th={["#id", "produtos", "status", "valor"]}>
                         {productTable.map(product => <DataTableProducts key={product.id} data={product} />)}
                     </Table>

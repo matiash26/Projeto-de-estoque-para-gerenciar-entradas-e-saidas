@@ -1,4 +1,4 @@
-import { useContext, useCallback, useRef, useState, useEffect } from "react"
+import { useContext, useRef, useState, useEffect, useCallback } from "react"
 import { EntriesContext } from "../../Contexts/EntriesContext"
 import { GlobalContext } from "../../Contexts/GlobalContext"
 import { BsCart4 } from "react-icons/bs"
@@ -16,26 +16,26 @@ import api from "../../services/Api"
 import "./style.css"
 
 function Entries() {
-    const [itemsToPagination, setItemsToPagination] = useState([])
-    const [productData, setProductData] = useState([])
+    const [deepCopyTable, setDeepCopyTable] = useState([])
+    const [stockData, setStockData] = useState([])
     const [entries, setEntries] = useState([])
     const [alert, setAlert] = useState("")
-    const { cart, setCart, update, setUpdate, oldCart, orderID, produto, setProduto, clearFields} = useContext(EntriesContext)
+    const { cart, setCart, update, setUpdate, oldCart, orderID, produto, setProduto, clearFields } = useContext(EntriesContext)
     const { modalConfirmIsOpen, modalValue, btnModalIsOpen, setModalConfirmValue, modalConfirmValue } = useContext(GlobalContext)
     const startDateRef = useRef("")
     const offsetDateRef = useRef("")
 
     const handleAddToCart = () => {
-        const checkIfProductIsValid = productData.some(product => product.produto === produto)
-        
-        if(checkIfProductIsValid){
-            const AddAndTotal = productData.find(productData => {
-                if (productData.produto === produto) {
-                    productData.total = productData.quantidade * +productData.valor
-                    return productData
+        const checkIfProductIsValid = stockData.some(product => product.produto === produto)
+
+        if (checkIfProductIsValid) {
+            const AddAndTotal = stockData.find(stockData => {
+                if (stockData.produto === produto) {
+                    stockData.total = stockData.quantidade * +stockData.valor
+                    return stockData
                 }
             })
-            const IfExistInCart = cart.some(item => item.produto === produto )
+            const IfExistInCart = cart.some(item => item.produto === produto)
             if (!IfExistInCart) {
                 setCart(prev => [...prev, AddAndTotal])
                 setProduto('')
@@ -84,25 +84,26 @@ function Entries() {
         const offsetDate = offsetDateRef.current.value
         if (startDate && offsetDate) {
             const { data } = await api.get(`/entries/filter/${startDate}/${offsetDate}`)
-            setItemsToPagination(data)
+            setDeepCopyTable(data)
         } else {
             const { data } = await api.get("/entries/all")
-            setItemsToPagination(data)
+            setDeepCopyTable(data)
         }
     }
     const handleDelete = async () => {
         const { data } = await api.delete("/entries/" + orderID)
         setAlert(data)
     }
-    const fetchData = useCallback(async () => {
-        const { data } = await api.get("/estoque/all")
+    const fetchAllData = useCallback(async () => {
         const entries = await api.get("/entries/all")
-        setProductData(data.map(productData => ({ ...productData, quantidade: 1 })))
-        setItemsToPagination(entries.data)
+        const stock = await api.get("/estoque/all")
+        setDeepCopyTable(entries.data)
+        setStockData(stock.data.map(stockData => ({ ...stockData, quantidade: 1 })))
+
     }, [])
 
     useEffect(() => {
-        fetchData()
+        fetchAllData()
         if (modalConfirmValue) {
             handleDelete()
             setModalConfirmValue(false)
@@ -114,38 +115,38 @@ function Entries() {
             {alert && <Notification alert={alert} />}
             {modalConfirmIsOpen && <ModalConfirm title="Deletar o pedido" desc="Você realmente deseja deletar o pedido?" />}
             <main className="main-content">
-                {modalValue && 
-                <Modal title="ADICIONAR PEDIDO"  icon={<BsCart4 />} updateExist={setUpdate} clearModal={setCart} clearFields={clearFields}>
-                    <div className="modal-search">
-                        <div>
-                            <h4>Produtos</h4>
-                            <InputAutoComplet data={productData} value={produto} setValue={setProduto} disabled={update}/> 
+                {modalValue &&
+                    <Modal title="ADICIONAR PEDIDO" icon={<BsCart4 />} updateExist={setUpdate} clearModal={setCart} clearFields={clearFields}>
+                        <div className="modal-search">
+                            <div>
+                                <h4>Produtos</h4>
+                                <InputAutoComplet data={stockData} value={produto} setValue={setProduto} disabled={update} />
+                            </div>
+                            <Button onClick={handleAddToCart} title="Adicionar" className="poolBlue" />
                         </div>
-                        <Button onClick={handleAddToCart} title="Adicionar" className="poolBlue"/>
-                    </div>
-                    <form onSubmit={e => e.preventDefault(e)} className="form-historic">
-                        <ul className="listProductDatas">
-                            {
-                                cart.map((item, index) => <CartItem
-                                    key={item.id}
-                                    item={item}
-                                    quantity={item.quantidade}
-                                    removeModal={() => handleRemoveFromCart(index)}
-                                    onChange={e => handleQuantity(e, item.id)}
-                                    updateExist={update} />)
-                            }
-                        </ul>
-                        <div className="modal-total">
-                            {update ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateEntries} /> : <Button title="FINALIZAR" onClick={handleSubmit} className="green" />}
-                            <p>Total R$: {calculateTotal(cart)}</p>
-                        </div>
-                    </form>
-                </Modal>
-          
+                        <form onSubmit={e => e.preventDefault(e)} className="form-historic">
+                            <ul className="liststockDatas">
+                                {
+                                    cart.map((item, index) => <CartItem
+                                        key={item.id}
+                                        item={item}
+                                        quantity={item.quantidade}
+                                        removeModal={() => handleRemoveFromCart(index)}
+                                        onChange={e => handleQuantity(e, item.id)}
+                                        updateExist={update} />)
+                                }
+                            </ul>
+                            <div className="modal-total">
+                                {update ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateEntries} /> : <Button title="FINALIZAR" onClick={handleSubmit} className="green" />}
+                                <p>Total R$: {calculateTotal(cart)}</p>
+                            </div>
+                        </form>
+                    </Modal>
+
                 }
                 <NavbarSearch entrada={startDateRef} saida={offsetDateRef} withDate={true} btnFilter={handleFilter} value="Filtro" />
                 <section className="table-content">
-                    <Pagination dataItem={itemsToPagination} itemTable={setEntries} />
+                    <Pagination dataItem={deepCopyTable} itemTable={setEntries} />
                     <Table th={['#id', "pedido", "data do pedido", "produtos", "total"]}>
                         {
                             entries.map((item, x) => <DataTableEntries key={x} item={item} btnRemoveDesative={update} />)
