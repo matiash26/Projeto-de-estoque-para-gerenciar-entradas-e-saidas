@@ -39,7 +39,7 @@ function Statistics() {
         ]
     }
     const cardsData = {
-        ganhos: statistic?.revenue?.[0]?.total_ganho,
+        ganhos: (statistic?.revenue?.[0]?.total_ganho - statistic?.expenses?.[0]?.despesas),
         total_vendas: statistic?.revenue?.[0]?.total_vendas,
         despesas: statistic?.expenses?.[0]?.despesas
     }
