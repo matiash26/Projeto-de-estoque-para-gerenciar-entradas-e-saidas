@@ -106,7 +106,7 @@ function Service() {
     return (
         <div className="Container-Main">
             <main className="main-content">
-                {alert && <Notification alert={alert} />}
+                {alert && <Notification alert={alert} setAlert={setAlert}/>}
                 {modalConfirmIsOpen && <ModalConfirm setObject={setUpdateOrDelete} title="Deletar o produto" desc="Você realmente deseja deletar o produto?" />}
                 {modalValue &&
                     <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setServiceModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>

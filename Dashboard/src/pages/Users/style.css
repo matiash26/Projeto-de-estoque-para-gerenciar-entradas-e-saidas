@@ -1,0 +1,25 @@
+.users-container {
+    max-width: 450px;
+    margin: auto;
+    width: 100%;
+    background-color: white;
+    border-radius: .5rem;
+    padding: 1rem;
+    box-shadow: -3px 3px 4px 1px #0000000e;
+}
+.users-container > h2 {
+    color: #616466ec;
+    text-align: center;
+    margin-bottom: .5rem;
+} 
+.users-container > .search{
+    margin-bottom: 1.5rem;
+}
+.users-container > .btn > button{
+    margin: auto;
+}
+.user-content{
+    max-width: 450px;
+    width: 100%;
+    margin: auto;
+}

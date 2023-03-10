@@ -7,17 +7,17 @@ const routes = express.Router()
 routes.use(bodyParser.json())
 routes.use(cors())
 
-routes.get("/produtos/all", async (req, res) => {
+routes.get("/product/all", async (req, res) => {
     const getData = await product.select()
     res.send(getData)
 })
-routes.get("/produtos/", async (req, res) => {
+routes.get("/product/", async (req, res) => {
     const search = req.query.search
     const status = req.query.status
     const found = await product.find(search, status)
     res.send(found)
 })
-routes.post("/produtos", (req, res) => {
+routes.post("/product", (req, res) => {
     const productJSON = req.body
     const checkIfExist = productJSON.every(el => el.produto && el.valor)
     const checkLenght = productJSON.every(el => el.produto.length > 0 && el.produto.length <= 100 && String(el.valor).length <= 8)
@@ -34,7 +34,7 @@ routes.post("/produtos", (req, res) => {
         res.send({ status: "error", message: "verifique se todos os campos estão preenchidos!" })
     }
 })
-routes.put("/produtos", async (req, res) => {
+routes.put("/product", async (req, res) => {
     const update = req.body
     if (update.produto && update.valor) {
         if (update.produto.length > 0 && update.produto.length <= 100 && String(update.valor).length <= 8) {
@@ -51,7 +51,7 @@ routes.put("/produtos", async (req, res) => {
         res.send({ status: "error", message: "verifique se todos os campos estão preenchidos!" })
     }
 })
-routes.delete("/produtos/:id", async (req, res) => {
+routes.delete("/product/:id", async (req, res) => {
     const id = req.params.id
     const status = req.query.status === "0" ? "1" : "0"
     product.desative(status, id)

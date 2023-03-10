@@ -6,6 +6,7 @@ const cors = require("cors")
 const routes = express.Router()
 routes.use(bodyParser.json())
 routes.use(cors())
+
 routes.get("/services/all", async (req, res) => {
     const getData = await service.select()
     res.send(getData)

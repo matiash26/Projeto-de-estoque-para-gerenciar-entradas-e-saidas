@@ -62,7 +62,7 @@ function Products() {
             status: status,
             valor: valor
         }
-        const { data } = await api.put("/produtos/", updateProduct)
+        const { data } = await api.put("/product/", updateProduct)
         if (data.status === "success") {
             clearFields()
             btnModalIsOpen()
@@ -72,7 +72,7 @@ function Products() {
     const handleDeleteProduct = async () => {
         const id = updateOrDelete.id
         const active = updateOrDelete.status
-        const { data } = await api.delete(`/produtos/${id}?status=${active}`)
+        const { data } = await api.delete(`/product/${id}?status=${active}`)
         setAlert(data)
         setUpdateOrDelete(undefined)
     }
@@ -80,15 +80,15 @@ function Products() {
         const filter = filterRef.current.value
         const status = statusRef.current.value
         if (filter || status) {
-            const { data } = await api.get(`/produtos/?search=${filter}&status=${status}`)
+            const { data } = await api.get(`/product/?search=${filter}&status=${status}`)
             setDeepCopyTable(data)
         } else {
-            const { data } = await api.get("/produtos")
+            const { data } = await api.get("/product")
             setDeepCopyTable(data)
         }
     }
     const handleSubmit = async () => {
-        const { data } = await api.post("/produtos/", productModal)
+        const { data } = await api.post("/product/", productModal)
         if (data.status === "success") {
             setProductModal([])
             clearFields()
@@ -96,13 +96,13 @@ function Products() {
         }
         setAlert(data)
     }
-    const fetchData = useCallback(async () => {
-        const { data } = await api.get("/produtos/all")
+    const fetchAllData = useCallback(async () => {
+        const { data } = await api.get("/product/all")
         setDeepCopyTable(data)
     }, [])
     
     useEffect(() => {
-        fetchData()
+        fetchAllData()
         if (modalConfirmValue) {
             handleDeleteProduct()
             setModalConfirmValue(false)
@@ -111,7 +111,7 @@ function Products() {
     return (
         <div className="Container-Main">
             <main className="main-content">
-                {alert && <Notification alert={alert} />}
+                {alert && <Notification alert={alert} setAlert={setAlert}/>}
                 {modalConfirmIsOpen && <ModalConfirm title="Ocultar" desc="Você realmente deseja ocultar o produto?" setObject={setUpdateOrDelete} />}
                 <NavbarSearch btnFilter={handleFilter} search={filterRef} status={statusRef} />
                 {modalValue &&

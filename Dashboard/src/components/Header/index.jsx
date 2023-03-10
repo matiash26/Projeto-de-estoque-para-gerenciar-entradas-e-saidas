@@ -1,6 +1,7 @@
-import "./style.css"
 import { FiChevronDown } from "react-icons/fi"
+import { Link } from "react-router-dom"
 import { useState } from "react"
+import "./style.css"
 function Header() {
     const[userMenu, setUserMenu] = useState(false)
     const handleBtnUser = () =>{
@@ -17,8 +18,8 @@ function Header() {
                     <div className="btnUser">
                         <FiChevronDown  onClick={handleBtnUser}/>
                         <ul className={`userOptions ${userMenu ? "show" : ""}`}>
-                            <li>Perfil</li>
-                            <li>Usuários</li>
+                            <li onClick={handleBtnUser}><Link to="perfil">Perfil</Link></li>
+                            <li onClick={handleBtnUser}><Link to="users">Usuários</Link></li>
                             <li>Sair</li>
                         </ul>
                     </div>

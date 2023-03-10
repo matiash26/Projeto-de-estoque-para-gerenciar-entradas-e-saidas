@@ -54,7 +54,7 @@ function Entries() {
             console.log(cart)
             setCart(prev => {
                 prev[index].quantidade = quantity
-                prev[index].total = quantity * +prev[index].valor
+                prev[index].total = (quantity * +prev[index].valor).toFixed(2)
                 return [...prev]
             })
         }
@@ -96,7 +96,7 @@ function Entries() {
     }
     const fetchAllData = useCallback(async () => {
         const entries = await api.get("/entries/all")
-        const stock = await api.get("/estoque/all")
+        const stock = await api.get("/stock/all")
         setDeepCopyTable(entries.data)
         setStockData(stock.data.map(stockData => ({ ...stockData, quantidade: 1 })))
 
@@ -112,7 +112,7 @@ function Entries() {
 
     return (
         <div className="Container-Main">
-            {alert && <Notification alert={alert} />}
+            {alert && <Notification alert={alert} setAlert={setAlert}/>}
             {modalConfirmIsOpen && <ModalConfirm title="Deletar o pedido" desc="Você realmente deseja deletar o pedido?" />}
             <main className="main-content">
                 {modalValue &&

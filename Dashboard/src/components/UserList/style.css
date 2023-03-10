@@ -1,0 +1,35 @@
+.listUsers{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #EFF1F3;
+    padding: 1rem .5rem;
+    border-radius: .5rem;
+    background: rgba(255, 255, 255, 0.521);
+    box-shadow: -3px 3px 4px 1px #0000000e;
+    margin-bottom: .8rem;
+
+}
+.listUsers > div > span{
+    display: block;
+    text-align: center;
+    
+}
+.column{
+    color: #616466d0;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: .8rem;
+}
+.userItem{
+    font-size: .9rem;
+    color: #222324e3;
+}
+.removeUser{
+    color: #dc3545;
+    background: transparent;
+    width: 25px;
+}
+.removeUser:active{
+    color: #dc35467e;
+}

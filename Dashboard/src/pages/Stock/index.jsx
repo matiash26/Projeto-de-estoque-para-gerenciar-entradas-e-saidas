@@ -1,4 +1,4 @@
-import { useMemo, useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { GlobalContext } from "../../Contexts/GlobalContext"
 import { StockContext } from "../../Contexts/StockContext"
 import { FiCheck, FiX } from "react-icons/fi"
@@ -56,7 +56,7 @@ function Stock() {
     const handleDeleteProduct = async () => {
         const id = updateOrDelete.id
         const active = updateOrDelete.active
-        const { data } = await api.delete(`/estoque/${id}?active=${active}`)
+        const { data } = await api.delete(`/stock/${id}?active=${active}`)
         setAlert(data)
     }
     const handleUpdateProduct = async () => {
@@ -70,7 +70,7 @@ function Stock() {
                 status: checkbox,
                 estoque,
             }
-            const { data } = await api.put("/estoque/", updateProduct, updateOrDelete)
+            const { data } = await api.put("/stock/", updateProduct, updateOrDelete)
             if (data.status === "success") {
                 clearFields()
                 setUpdateOrDelete(false)
@@ -83,15 +83,15 @@ function Stock() {
         const filter = filterRef.current.value
         const active = statusRef.current.value
         if (filter || active) {
-            const { data } = await api.get(`/estoque/?search=${filter}&active=${active}`)
+            const { data } = await api.get(`/stock/?search=${filter}&active=${active}`)
             setDeepCopyTable(data)
         } else {
-            const { data } = await api.get("/estoque/all")
+            const { data } = await api.get("/stock/all")
             setDeepCopyTable(data)
         }
     }
     const handleSubmit = async () => {
-        const { data } = await api.post("/estoque/", stockModal)
+        const { data } = await api.post("/stock/", stockModal)
         if (data.status === "success") {
             setStockModal([])
             clearFields()
@@ -99,17 +99,16 @@ function Stock() {
         }
         setAlert(data)
     }
-    const fetchData = useMemo(async () => {
-        const products = await api.get("/produtos/all")
-        const stock = await api.get("/estoque/all")
-        return [products.data, stock.data]
+    const fetchData = useCallback(async () => {
+        const products = await api.get("/product/all")
+        const stock = await api.get("/stock/all")
+        setProductData(products.data)
+        setStockTable(stock.data)
     }, [])
 
     useEffect(() => {
-        fetchData.then(data => {
-            setProductData(data[0])
-            setStockTable(data[1])
-        })
+        fetchData()
+          
         if (alert.success) {
             clearFields()
         }
@@ -122,13 +121,13 @@ function Stock() {
     return (
         <div className="Container-Main">
             <main className="main-content">
-                {alert && <Notification alert={alert} />}
+                {alert && <Notification alert={alert} setAlert={setAlert}/>}
                 {modalConfirmIsOpen && <ModalConfirm setObject={setUpdateOrDelete} title="Deletar o produto" desc="Você realmente deseja deletar o produto?" />}
                 <NavbarSearch btnFilter={handleFilter} search={filterRef} status={statusRef} />
                 {modalValue &&
                     <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setStockModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
                         <form className="form-pop">
-                            <div className="product-content">
+                            <div className="form-content">
                                 <InputAutoComplet title="Nome do Produto" type="text" data={productData} value={produto} setValue={setProduto} />
                                 <Input title="Quantidade" type="number" value={estoque} onChange={e => setEstoque(e.target.value)} />
                                 <CheckBox title="status" checked={checkbox} onChange={e => setCheckbox(e.target.checked)} icon01={<FiX />} icon02={<FiCheck />} />

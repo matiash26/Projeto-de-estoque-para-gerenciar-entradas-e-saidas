@@ -2,7 +2,7 @@ const { client } = require("../../config/database")
 
 const select = async() => {
     const mysql =  await client()
-    const sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y') as data , COUNT(pedido) AS produtos, SUM(quantidade * valor) AS total FROM entradas GROUP BY pedido ORDER BY data DESC;";
+    const sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y') as data , COUNT(pedido) AS produtos, SUM(quantidade * valor) AS total FROM entradas GROUP BY pedido ORDER BY id DESC;";
     const [row] = await mysql.query(sql);
     return row;
 }

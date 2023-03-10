@@ -63,8 +63,14 @@ ul.user_container {
     font-size: .850rem;
     margin: .3rem 0;
     padding: .3rem 0;
-    color: #616466;
     cursor: pointer;
+    color: #616466;
+}
+.userOptions > li > a {
+    display: block;
+    width: 100%;
+    color: #616466;
+    text-decoration: none;
 }
 .userOptions > li:hover {
     background-color: #61646618;
