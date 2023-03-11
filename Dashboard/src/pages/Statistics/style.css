@@ -3,6 +3,7 @@
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
+    margin-left: 63px;
 }
 .top-item{
     display: flex;
@@ -16,7 +17,7 @@
     flex: 1;
 }
 .middle-item{
-    height: 500px;
+    height: 510px;
     margin-top: 1.5rem;
     border-radius: .5rem;
     background-color: #FFFFFF;

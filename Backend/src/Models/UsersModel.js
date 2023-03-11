@@ -27,8 +27,23 @@ const Delete = async (id) => {
         return false
     }
 }
+const update = async (picture, user, newPassword) => {
+    const mysql = await client()
+    let sql = "UPDATE usuario set picture = ?, user = ? password = ?"
+    if (newPassword) {
+        sql = "UPDATE usuario set picture = ?, user = ? password = ?"
+    } else {
+        sql = "UPDATE usuario set picture = ?, user = ?"
+    }
+    try {
+        mysql.query(sql, [picture, user, newPassword])
+        return true
+    } catch {
+        return false
+    }
+}
 const getDate = () => {
     const date = new Date()
     return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`
 }
-module.exports = { select, insert, Delete }
+module.exports = { select, insert, Delete, update }

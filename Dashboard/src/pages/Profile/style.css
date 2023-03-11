@@ -1,0 +1,43 @@
+.profile-content{
+    margin: auto;
+    max-width: 360px;
+    width: 100%;
+}
+.profile-content > .search {
+    height: 56px;
+}
+.input-img{
+    margin: auto;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background-color: #949596;
+    margin-bottom: 1rem;
+    position: relative;
+}
+.input-img > #file{
+    display: none;
+}
+.input-img > label {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    border: 1px solid #ced4da;
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    cursor: pointer;
+}
+.input-img > label > svg{
+    font-size: 1.6rem;
+}
+.profile-content > .search {
+    margin-bottom: 1rem;
+}
+.profile-content > .btn > button {
+    margin: auto;
+}

@@ -5,7 +5,7 @@ function ServiceProvider({ children }) {
     const [updateOrDelete, setUpdateOrDelete] = useState('')
     const [servico, setServico] = useState('')
     const [gasto, setGasto] = useState('')
-    const [index, setIndex] = useState('')
+    const [index, setIndex] = useState(undefined)
     
     const btnEdit = (data) => {
         setServico(data.servico)

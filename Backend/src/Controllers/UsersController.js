@@ -27,10 +27,19 @@ routes.get("/users/list", async (req, res) => {
 routes.delete("/users/delete", async (req, res) => {
     const id = req.query.id
     const user = await users.Delete(id)
-    if(user) {
+    if (user) {
         res.send({ status: "success", message: "Usuário deletado com sucesso!" })
-    }else{
+    } else {
         res.send({ status: "error", message: "falha ao deletar o usuário!" })
+    }
+})
+routes.put("/users/update", (req, res) => {
+    const update = req.body
+    if (update.newPassword || update.picture || update.user || update.password) {
+        users.update(update)
+        res.send({ status: "success", message: "Perfil atualizado com sucesso!" })
+    } else {
+        res.send({ status: "error", message: "Preencha os campos!" })
     }
 })
 module.exports = routes

@@ -1,4 +1,4 @@
-import { useMemo, useContext, useEffect, useRef, useState } from "react"
+import { useMemo, useContext, useEffect, useRef, useState, useCallback } from "react"
 import { GlobalContext } from "../../Contexts/GlobalContext"
 import { ServiceContext } from "../../Contexts/ServiceContext"
 import { BiBox } from "react-icons/bi"
@@ -33,12 +33,16 @@ function Service() {
             gasto: gasto
         }
         if (servico && gasto) {
-            setServiceModal(prev => [...prev, addService])
-            // if (index != null) {
-            //     setIndex(null)
-            // } else if (addService) {
-            //     setServiceModal(prev => [...prev, { ...addService }])
-            // }
+            if (index != undefined) {
+                setServiceModal(prev => {
+                    prev[index].service = servico
+                    prev[index].gasto = gasto
+                    return prev
+                })
+                setIndex(undefined)
+            } else {
+                setServiceModal(prev => [...prev, addService])
+            }
             clearFields()
         }
     }
@@ -48,7 +52,7 @@ function Service() {
         setIndex(index)
     }
     const handleRemoveServiceModal = (index) => {
-        setServiceModal(prev => prev.splice(index, 1))
+        setServiceModal(service => service.filter((el, x) => x != index))
     }
     const handleDeleteService = async () => {
         const id = updateOrDelete.id
@@ -89,12 +93,13 @@ function Service() {
         }
         setAlert(data)
     }
-    const fetchData = useMemo(async () => {
+    const fetchData = useCallback(async () => {
         const { data } = await api.get("/services/all")
-        return data
-    }, [alert])
+        setDeepCopyTable(data)
+    }, [])
+
     useEffect(() => {
-        fetchData.then(data => setDeepCopyTable(data))
+        fetchData()
         if (alert.success) {
             clearFields()
         }
@@ -106,7 +111,7 @@ function Service() {
     return (
         <div className="Container-Main">
             <main className="main-content">
-                {alert && <Notification alert={alert} setAlert={setAlert}/>}
+                {alert && <Notification alert={alert} setAlert={setAlert} />}
                 {modalConfirmIsOpen && <ModalConfirm setObject={setUpdateOrDelete} title="Deletar o produto" desc="Você realmente deseja deletar o produto?" />}
                 {modalValue &&
                     <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setServiceModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>

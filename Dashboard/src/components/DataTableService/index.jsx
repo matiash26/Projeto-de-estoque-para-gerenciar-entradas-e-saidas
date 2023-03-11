@@ -8,7 +8,7 @@ function DataTableStock({ data }) {
     const [optionModal, setOptionModal] = useState(false)
     const { btnModalIsOpen, btnModalConfirmIsOpen} = useContext(GlobalContext)
     const { btnEdit, setUpdateOrDelete } = useContext(ServiceContext)
-
+    
     const handleOptionModal = () => {
         setOptionModal(prev => !prev)
     }

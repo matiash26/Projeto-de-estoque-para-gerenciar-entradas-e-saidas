@@ -52,7 +52,7 @@ function Products() {
         setIndex(index)
     }
     const handleRemoveProductModal = async (index) => {
-        setProductModal(prev => prev.splice(index, 1))
+        setProductModal(product => product.filter((el, x) => x != index))
     }
     const handleUpdateProduct = async () => {
         const status = checkbox ? "1" : "0"

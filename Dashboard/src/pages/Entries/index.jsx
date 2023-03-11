@@ -43,7 +43,7 @@ function Entries() {
         }
     }
     const handleRemoveFromCart = (index) => {
-        setCart(prev => prev.splice(index))
+        setCart(entrie => entrie.filter((el, x) => x != index))
     }
     const handleQuantity = (number, id) => {
         let quantity = +number.currentTarget.value

@@ -1,7 +1,7 @@
-import { Chart as Chartjs, BarElement, CategoryScale, LinearScale, Tooltip, Legend, ArcElement } from "chart.js"
+import { Chart as Chartjs, BarElement, CategoryScale, PointElement, LineElement, LinearScale, Tooltip, Legend, ArcElement, LineController, BarController } from "chart.js"
 import { BiDollar, BiTrendingUp, BiDetail } from "react-icons/bi"
 import { useCallback, useEffect, useState } from "react"
-import { Bar, Doughnut } from 'react-chartjs-2'
+import { Chart, Doughnut } from 'react-chartjs-2'
 import Cards from "../../components/Cards"
 import api from "../../services/Api"
 import "./style.css"
@@ -9,22 +9,41 @@ function Statistics() {
     const [statistic, setStatistic] = useState({})
     const [filter, setFilter] = useState("day")
     Chartjs.register(
-        ArcElement,
         BarElement,
         CategoryScale,
+        PointElement,
+        LineElement,
         LinearScale,
         Tooltip,
         Legend,
+        ArcElement,
+        LineController,
+        BarController
     )
+    const gastoTotal = () => {
+        return statistic?.expenses?.reduce((acc, el) => acc += parseFloat(el.gasto), 0)
+    }
     const salesHistory = {
         labels: statistic?.graph?.map(({ mes }) => mes),
         datasets: [
             {
-                label: 'lucro R$',
+                type: "line",
+                label: 'Despesas: R$ ',
+                borderWidth: 2.4,
+                fill: true,
+                borderColor: '#dc3545',
+                backgroundColor: ['rgb(32, 134, 55)'],
+                data: filter != 'day' ? statistic?.expenses?.map(({ gasto }) => gasto) : null
+            },
+            {
+                type: "bar",
+                label: 'lucro R$ ',
                 backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-                borderColor: 'rgb(32, 134, 55)',
-                data: statistic?.graph?.map(({ lucro }) => lucro)
+                borderWidth: 2,
+                fill: false,
+                data: statistic?.graph?.map(({ lucro }) => lucro),
             }
+
         ]
 
     }
@@ -39,9 +58,9 @@ function Statistics() {
         ]
     }
     const cardsData = {
-        ganhos: (statistic?.revenue?.[0]?.total_ganho - statistic?.expenses?.[0]?.despesas),
+        ganhos: (statistic?.revenue?.[0]?.total_ganho - gastoTotal()),
         total_vendas: statistic?.revenue?.[0]?.total_vendas,
-        despesas: statistic?.expenses?.[0]?.despesas
+        gasto: gastoTotal()
     }
     const fetchData = useCallback(async () => {
         const { data } = await api.get(`/estatistica/historico/${filter}`)
@@ -57,7 +76,7 @@ function Statistics() {
                 <div className="left-content">
                     <div className="top-item">
                         <Cards title="Total Ganho" icon={<BiDollar />} value={cardsData.ganhos} color="green" />
-                        <Cards title="Despesas" icon={<BiDetail />} value={cardsData.despesas} color="red" />
+                        <Cards title="Despesas" icon={<BiDetail />} value={cardsData.gasto} color="red" />
                     </div>
                     <div className="middle-item">
                         <div className="top_content">
@@ -70,7 +89,7 @@ function Statistics() {
                                 <option value="year">todos anos</option>
                             </select>
                         </div>
-                        <Bar data={salesHistory}></Bar>
+                        <Chart data={salesHistory}></Chart>
                     </div>
                 </div>
                 <div className="right-content">

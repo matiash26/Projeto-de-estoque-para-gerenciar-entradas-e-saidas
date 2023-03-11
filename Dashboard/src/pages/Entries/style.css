@@ -3,15 +3,13 @@
     justify-content: center;
     max-width: 1400px;
     width: 100%;
-    border-radius: 0.5rem;
     margin: auto;
     margin-top: 1.5rem;
 }
 .main-content {
-    max-width: 1400px;
     width: 100%;
     border-radius: .5rem;
-    margin-left: 63px;
+    margin-left: 50px;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
