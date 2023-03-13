@@ -1,5 +1,5 @@
 const express = require("express")
-const stockModel = require("../../../Backend/src/Models/stockModel")
+const stock = require("../Models/stockModel")
 const bodyParser = require("body-parser")
 const cors = require("cors")
 
@@ -8,7 +8,7 @@ routes.use(bodyParser.json())
 routes.use(cors())
 
 routes.get("/stock/all", async (req, res) => {
-    const result = await stockModel.select()
+    const result = await stock.select()
     res.send(result)
 })
 routes.get("/stock/", async (req, res) => {
@@ -24,9 +24,9 @@ routes.post("/stock/", (req, res) => {
     if (checkAllTheFieldsExist) {
         if (checkLenghFields) {
             itemsFromPost.forEach(item => {
-                stockModel.insert(item)
+                stock.insert(item)
             })
-            //se colocar dentro do loop vai dar problema de conexão
+            // se colocar dentro do loop vai dar problema de conexão
             res.send({ status: "success", message: "Estoque inserido com sucesso!" })
         } else {
             res.send({ status: "error", message: "Limite de caracteres: Estoque: 10" })
@@ -40,7 +40,7 @@ routes.put("/stock/", async (req, res) => {
     const update = req.body
     if (update.produto && update.estoque) {
         if (update.produto.length >= 1 && update.produto.length <= 100 &&  String(update.estoque).length <= 8 &&  String(update.estoque).length >= 1) {
-            const response = await stockModel.update(update)
+            const response = await stock.update(update)
             if (response) {
                 res.send({ status: "success", message: "Estoque atualizado com sucesso!" })
             } else {
@@ -56,7 +56,7 @@ routes.put("/stock/", async (req, res) => {
 routes.delete("/stock/:id", async (req, res) => {
     const id = req.params.id
     const active = req.query.active === "0" ? "1" : "0"
-    const response =  await stockModel.Delete(id)
+    const response =  await stock.Delete(id)
     if (response) {
         res.send({ status: "success", message: "Deletado com sucesso!" })
     } else {

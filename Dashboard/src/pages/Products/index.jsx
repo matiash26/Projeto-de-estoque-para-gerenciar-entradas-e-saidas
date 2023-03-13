@@ -17,7 +17,7 @@ import api from "../../services/Api"
 import "./style.css"
 
 function Products() {
-    const [deepCopyTable, setDeepCopyTable] = useState([])
+    const [copyTable, setCopyTable] = useState([])
     const [productTable, setProductTable] = useState([])
     const [productModal, setProductModal] = useState([])
     const [alert, setAlert] = useState('')
@@ -81,10 +81,10 @@ function Products() {
         const status = statusRef.current.value
         if (filter || status) {
             const { data } = await api.get(`/product/?search=${filter}&status=${status}`)
-            setDeepCopyTable(data)
+            setCopyTable(data)
         } else {
             const { data } = await api.get("/product")
-            setDeepCopyTable(data)
+            setCopyTable(data)
         }
     }
     const handleSubmit = async () => {
@@ -98,7 +98,7 @@ function Products() {
     }
     const fetchAllData = useCallback(async () => {
         const { data } = await api.get("/product/all")
-        setDeepCopyTable(data)
+        setCopyTable(data)
     }, [])
     
     useEffect(() => {
@@ -138,7 +138,7 @@ function Products() {
                     </Modal>
                 }
                 <section className="table-content">
-                    <Pagination dataItem={deepCopyTable} itemTable={setProductTable} />
+                    <Pagination dataItem={copyTable} itemTable={setProductTable} />
                     <Table th={["#id", "produtos", "status", "valor"]}>
                         {productTable.map(product => <DataTableProducts key={product.id} data={product} />)}
                     </Table>

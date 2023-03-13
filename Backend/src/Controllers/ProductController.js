@@ -1,5 +1,5 @@
 const express = require("express")
-const product = require("../../../Backend/src/Models/ProductModel")
+const product = require("../Models/ProductModel")
 const bodyParser = require("body-parser")
 const cors = require("cors")
 
@@ -8,8 +8,8 @@ routes.use(bodyParser.json())
 routes.use(cors())
 
 routes.get("/product/all", async (req, res) => {
-    const getData = await product.select()
-    res.send(getData)
+    const getProduct = await product.select()
+    res.send(getProduct)
 })
 routes.get("/product/", async (req, res) => {
     const search = req.query.search

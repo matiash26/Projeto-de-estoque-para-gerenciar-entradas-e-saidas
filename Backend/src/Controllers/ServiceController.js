@@ -1,5 +1,5 @@
 const express = require("express")
-const service = require("../../../Backend/src/Models/ServiceModel")
+const service = require("../Models/ServiceModel")
 const bodyParser = require("body-parser")
 const cors = require("cors")
 

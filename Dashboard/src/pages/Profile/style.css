@@ -41,3 +41,9 @@
 .profile-content > .btn > button {
     margin: auto;
 }
+#img-profile{
+    width: 100%;
+    border-radius: 100%;
+    border: .4rem solid white;
+    object-fit: contain;
+}

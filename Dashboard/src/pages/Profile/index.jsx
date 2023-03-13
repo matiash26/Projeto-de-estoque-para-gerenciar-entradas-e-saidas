@@ -25,9 +25,10 @@ function Profile() {
         <div className="Container-Main">
             <main className="main-content">
                 <section className="profile-content">
-                    {alert && <Notification alert={alert} setAlert={setAlert}/>}
+                    {alert && <Notification alert={alert} setAlert={setAlert} />}
                     <div className="input-img">
                         <label htmlFor="file"><AiOutlineCamera /></label>
+                            <img id="img-profile" src="https://akamai.sscdn.co/uploadfile/letras/fotos/c/4/e/9/c4e987143a79ddc7769d979b49d86456.jpg" alt="profile picture" />
                         <input type="file" name="file" id="file" />
                     </div>
                     <Input placeholder="usuário..." onChange={e => setUser(e.target.value)} />

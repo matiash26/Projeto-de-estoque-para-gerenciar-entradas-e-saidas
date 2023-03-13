@@ -16,7 +16,7 @@ import api from "../../services/Api"
 import "./style.css"
 
 function Entries() {
-    const [deepCopyTable, setDeepCopyTable] = useState([])
+    const [copyTable, setCopyTable] = useState([])
     const [stockData, setStockData] = useState([])
     const [entries, setEntries] = useState([])
     const [alert, setAlert] = useState("")
@@ -51,7 +51,6 @@ function Entries() {
             quantity = 1
         } else {
             let index = cart.findIndex(el => el.id === id)
-            console.log(cart)
             setCart(prev => {
                 prev[index].quantidade = quantity
                 prev[index].total = (quantity * +prev[index].valor).toFixed(2)
@@ -84,10 +83,10 @@ function Entries() {
         const offsetDate = offsetDateRef.current.value
         if (startDate && offsetDate) {
             const { data } = await api.get(`/entries/filter/${startDate}/${offsetDate}`)
-            setDeepCopyTable(data)
+            setCopyTable(data)
         } else {
             const { data } = await api.get("/entries/all")
-            setDeepCopyTable(data)
+            setCopyTable(data)
         }
     }
     const handleDelete = async () => {
@@ -97,7 +96,7 @@ function Entries() {
     const fetchAllData = useCallback(async () => {
         const entries = await api.get("/entries/all")
         const stock = await api.get("/stock/all")
-        setDeepCopyTable(entries.data)
+        setCopyTable(entries.data)
         setStockData(stock.data.map(stockData => ({ ...stockData, quantidade: 1 })))
 
     }, [])
@@ -146,7 +145,7 @@ function Entries() {
                 }
                 <NavbarSearch entrada={startDateRef} saida={offsetDateRef} withDate={true} btnFilter={handleFilter} value="Filtro" />
                 <section className="table-content">
-                    <Pagination dataItem={deepCopyTable} itemTable={setEntries} />
+                    <Pagination dataItem={copyTable} itemTable={setEntries} />
                     <Table th={['#id', "pedido", "data do pedido", "produtos", "total"]}>
                         {
                             entries.map((item, x) => <DataTableEntries key={x} item={item} btnRemoveDesative={update} />)

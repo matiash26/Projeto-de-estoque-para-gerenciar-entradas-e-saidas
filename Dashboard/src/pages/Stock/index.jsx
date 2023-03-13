@@ -19,7 +19,7 @@ import api from "../../services/Api"
 import "./style.css"
 
 function Stock() {
-    const [deepCopyTable, setDeepCopyTable] = useState([])
+    const [copyTable, setCopyTable] = useState([])
     const [productData, setProductData] = useState([])
     const [stockModal, setStockModal] = useState([])
     const [stockTable, setStockTable] = useState([])
@@ -84,10 +84,10 @@ function Stock() {
         const active = statusRef.current.value
         if (filter || active) {
             const { data } = await api.get(`/stock/?search=${filter}&active=${active}`)
-            setDeepCopyTable(data)
+            setCopyTable(data)
         } else {
             const { data } = await api.get("/stock/all")
-            setDeepCopyTable(data)
+            setCopyTable(data)
         }
     }
     const handleSubmit = async () => {
@@ -102,8 +102,17 @@ function Stock() {
     const fetchData = useCallback(async () => {
         const products = await api.get("/product/all")
         const stock = await api.get("/stock/all")
-        setProductData(products.data)
-        setStockTable(stock.data)
+        const producItem = await products.data
+        const stockItem = await stock.data
+        const PromiseResolve = await Promise.all(
+            producItem.map(async el => {
+              const productExistInStock = await stockItem.find(stock => stock.produto === el.produto);
+              return productExistInStock ? null : el;
+            })
+          );
+        const ifProductNotExistInStock = PromiseResolve.filter(el => el !== null);
+        setProductData(ifProductNotExistInStock)
+        setCopyTable(stockItem)
     }, [])
 
     useEffect(() => {
@@ -149,7 +158,7 @@ function Stock() {
 
                 }
                 <section className="table-content">
-                    <Pagination dataItem={deepCopyTable} itemTable={setStockTable} />
+                    <Pagination dataItem={copyTable} itemTable={setStockTable} />
                     <Table th={["#ID", "produto", "data", "status", "em estoque"]}>
                         {
                             stockTable.map((product, index) => <DataTableStock key={index} data={product} />)
