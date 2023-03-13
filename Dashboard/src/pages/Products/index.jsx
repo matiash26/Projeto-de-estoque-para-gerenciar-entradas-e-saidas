@@ -32,17 +32,26 @@ function Products() {
             valor,
             status: checkbox
         }
-        if (produto && valor) {
-            if (index != undefined) {
-                productObj.produto = produto
-                productObj.valor = valor
-                productObj.status = checkbox
-                setProductModal(prev => prev.map((product, x) => x === index ? { ...productObj } : product))
-                setIndex(undefined)
-            } else {
-                setProductModal(prev => [...prev, productObj])
+        const checkIfProductExist = productTable.some(el => el.produto.toLowerCase() === produto.toLowerCase())
+        if (checkIfProductExist) {
+            const alertObject = {
+                status: "error",
+                message: "O produto já existe!"
             }
-            clearFields()
+            setAlert(alertObject)
+        } else {
+            if (produto && valor) {
+                if (index != undefined) {
+                    productObj.produto = produto
+                    productObj.valor = valor
+                    productObj.status = checkbox
+                    setProductModal(prev => prev.map((product, x) => x === index ? { ...productObj } : product))
+                    setIndex(undefined)
+                } else {
+                    setProductModal(prev => [...prev, productObj])
+                }
+                clearFields()
+            }
         }
     }
     const handleEditProductModal = async (index) => {
@@ -100,7 +109,7 @@ function Products() {
         const { data } = await api.get("/product/all")
         setCopyTable(data)
     }, [])
-    
+
     useEffect(() => {
         fetchAllData()
         if (modalConfirmValue) {
@@ -111,7 +120,7 @@ function Products() {
     return (
         <div className="Container-Main">
             <main className="main-content">
-                {alert && <Notification alert={alert} setAlert={setAlert}/>}
+                {alert && <Notification alert={alert} setAlert={setAlert} />}
                 {modalConfirmIsOpen && <ModalConfirm title="Ocultar" desc="Você realmente deseja ocultar o produto?" setObject={setUpdateOrDelete} />}
                 <NavbarSearch btnFilter={handleFilter} search={filterRef} status={statusRef} />
                 {modalValue &&
