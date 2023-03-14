@@ -5,6 +5,10 @@
     width: 100%;
     margin: auto;
     margin-top: 1.5rem;
+    position: relative;
+    opacity: 0;
+    left: -20px;
+    animation: main-content .3s forwards;
 }
 .main-content {
     width: 100%;
@@ -78,4 +82,10 @@
 .btn-main {
     display: flex;
     gap: 1rem;
+}
+@keyframes main-content {
+    to{
+        opacity: 1;
+        left: 0;
+    }
 }

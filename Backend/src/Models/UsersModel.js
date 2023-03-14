@@ -2,7 +2,7 @@ const { client } = require("../../config/database")
 
 const select = async () => {
     const mysql = await client()
-    const sql = "SELECT *, DATE_FORMAT(data, '%d/%m/%Y') as data FROM usuarios"
+    const sql = "SELECT id, user, DATE_FORMAT(data, '%d/%m/%Y') as data FROM usuarios"
     const [row] = await mysql.query(sql)
     return row
 }
@@ -46,4 +46,14 @@ const getDate = () => {
     const date = new Date()
     return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getDate().toString().padStart(2, "0")}`
 }
-module.exports = { select, insert, Delete, update }
+const signIn = async (user) => {
+    const mysql = await client()
+    const sql = "SELECT * FROM usuarios WHERE user = ?"
+    try {
+        const [row] = await mysql.query(sql, [user])
+        return row
+    } catch {
+        return false
+    }
+}
+module.exports = { select, insert, Delete, update, signIn }

@@ -16,10 +16,12 @@
     max-height: 830px;
     padding: 1rem 1rem;
     background-color: #FFFFFF;
-    overflow: hidden;
     position: relative;
     border-radius: .5rem;
-    border-bottom: 1px solid #EFF1F3
+    border-bottom: 1px solid #EFF1F3;
+    opacity: 0;
+    top: -20px;
+    animation: modal .3s forwards;
 }
 .modal-header{
     display: flex;
@@ -55,4 +57,11 @@
 }
 .exitModal > svg:active{
     color: rgb(209, 6, 6);
+}
+
+@keyframes modal {
+    to{
+        opacity: 1;
+        top: 0px
+    }
 }

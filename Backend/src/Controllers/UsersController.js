@@ -11,14 +11,18 @@ routes.use(cors())
 routes.post("/users/register", (req, res) => {
     const userName = req.body.userName
     const password = req.body.password
-    bcrypt.hash(password, 10, async (err, hash) => {
-        const response = users.insert(userName, hash)
-        if (response) {
-            res.send({ status: "success", message: "Usuario cadastrado com sucesso!" })
-        } else {
-            res.send({ status: "error", message: "Erro ao cadastrar o usuário!" })
-        }
-    })
+    if (userName && password) {
+        bcrypt.hash(password, 10, async (err, hash) => {
+            const response = await users.insert(userName, hash)
+            if (response) {
+                res.send({ status: "success", message: "Usuario cadastrado com sucesso!" })
+            } else {
+                res.send({ status: "error", message: "Erro ao cadastrar o usuário!" })
+            }
+        })
+    } else{
+        res.send({ status: "error", message: "Preencha todos os campos!" })
+    }
 })
 routes.get("/users/list", async (req, res) => {
     const user = await users.select()
@@ -40,6 +44,24 @@ routes.put("/users/update", (req, res) => {
         res.send({ status: "success", message: "Perfil atualizado com sucesso!" })
     } else {
         res.send({ status: "error", message: "Preencha os campos!" })
+    }
+})
+routes.put("/users/update", (req, res) => {
+    const update = req.body
+    if (update.newPassword || update.picture || update.user || update.password) {
+        users.update(update)
+        res.send({ status: "success", message: "Perfil atualizado com sucesso!" })
+    } else {
+        res.send({ status: "error", message: "Preencha os campos!" })
+    }
+})
+routes.post("/sign-in/", async (req, res) => {
+    const { userName, password } = req.body
+    const getUser = await users.signIn(userName)
+    if (getUser) {
+        bcrypt.compare(password, getUser[0].password, function (err, results) {
+            res.send(results)
+        })
     }
 })
 module.exports = routes

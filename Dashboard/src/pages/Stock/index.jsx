@@ -36,6 +36,7 @@ function Stock() {
         const addProduct = productData.filter(el => el.produto === produto)[0]
         const status = checkbox ? "ativo" : "desativado"
         if (addProduct && estoque) {
+            setProductData(product => product.filter(el => el.produto != produto))
             if (index != null) {
                 setStockModal(prev => prev.map((product, x) => x === index ? { ...addProduct, status, estoque } : product))
                 setIndex(null)
@@ -44,6 +45,7 @@ function Stock() {
             }
             clearFields()
         }
+        //remover os produtos caso estiver no modal ou se existir a index edite o produto do modal
     }
     const handleEditProductCart = (index) => {
         setProduto(stockModal[index].produto)
@@ -106,10 +108,10 @@ function Stock() {
         const stockItem = await stock.data
         const PromiseResolve = await Promise.all(
             producItem.map(async el => {
-              const productExistInStock = await stockItem.find(stock => stock.produto === el.produto);
-              return productExistInStock ? null : el;
+                const productExistInStock = await stockItem.find(stock => stock.produto === el.produto);
+                return productExistInStock ? null : el;
             })
-          );
+        );
         const ifProductNotExistInStock = PromiseResolve.filter(el => el !== null);
         setProductData(ifProductNotExistInStock)
         setCopyTable(stockItem)
@@ -117,7 +119,7 @@ function Stock() {
 
     useEffect(() => {
         fetchData()
-          
+
         if (alert.success) {
             clearFields()
         }
@@ -129,34 +131,33 @@ function Stock() {
 
     return (
         <div className="Container-Main">
+            {modalValue &&
+                <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setStockModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
+                    <form className="form-pop">
+                        <div className="form-content">
+                            <InputAutoComplet title="Nome do Produto" type="text" data={productData} value={produto} setValue={setProduto} />
+                            <Input title="Quantidade" type="number" value={estoque} onChange={e => setEstoque(e.target.value)} />
+                            <CheckBox title="status" checked={checkbox} onChange={e => setCheckbox(e.target.checked)} icon01={<FiX />} icon02={<FiCheck />} />
+                            {!updateOrDelete && <Button title="ADICIONAR" type="button" className="poolBlue" onClick={handleAddProductCart} />}
+                        </div>
+                    </form>
+                    <ol className="form-items">
+                        {
+                            stockModal.map((item, index) => <StockItem key={index}
+                                produto={item}
+                                editModal={() => handleEditProductCart(index)}
+                                removeModal={() => handleRemoveProductCart(index)} />)
+                        }
+                    </ol>
+                    <div className="modal-total">
+                        {updateOrDelete ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateProduct} /> : <Button title="FINALIZAR" type="submit" className="green" onClick={handleSubmit} />}
+                    </div>
+                </Modal>
+            }
             <main className="main-content">
-                {alert && <Notification alert={alert} setAlert={setAlert}/>}
+                {alert && <Notification alert={alert} setAlert={setAlert} />}
                 {modalConfirmIsOpen && <ModalConfirm setObject={setUpdateOrDelete} title="Deletar o produto" desc="Você realmente deseja deletar o produto?" />}
                 <NavbarSearch btnFilter={handleFilter} search={filterRef} status={statusRef} />
-                {modalValue &&
-                    <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setStockModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
-                        <form className="form-pop">
-                            <div className="form-content">
-                                <InputAutoComplet title="Nome do Produto" type="text" data={productData} value={produto} setValue={setProduto} />
-                                <Input title="Quantidade" type="number" value={estoque} onChange={e => setEstoque(e.target.value)} />
-                                <CheckBox title="status" checked={checkbox} onChange={e => setCheckbox(e.target.checked)} icon01={<FiX />} icon02={<FiCheck />} />
-                                {!updateOrDelete && <Button title="ADICIONAR" type="button" className="poolBlue" onClick={handleAddProductCart} />}
-                            </div>
-                        </form>
-                        <ol className="form-items">
-                            {
-                                stockModal.map((item, index) => <StockItem key={index}
-                                    produto={item}
-                                    editModal={() => handleEditProductCart(index)}
-                                    removeModal={() => handleRemoveProductCart(index)} />)
-                            }
-                        </ol>
-                        <div className="modal-total">
-                            {updateOrDelete ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateProduct} /> : <Button title="FINALIZAR" type="submit" className="green" onClick={handleSubmit} />}
-                        </div>
-                    </Modal>
-
-                }
                 <section className="table-content">
                     <Pagination dataItem={copyTable} itemTable={setStockTable} />
                     <Table th={["#ID", "produto", "data", "status", "em estoque"]}>

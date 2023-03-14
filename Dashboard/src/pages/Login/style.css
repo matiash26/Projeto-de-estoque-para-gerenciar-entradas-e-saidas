@@ -52,7 +52,7 @@
 }
 .form-login div > .search:hover:before{
     width: 100%;
-    transition: .8s;
+    transition: .5s;
 }
 .btn-login{
     margin-top: 1rem;
@@ -64,6 +64,7 @@
 }
 .btn-login > button{
     display: inline-block;
+    height: 44px;
     border-radius: .5rem;
     background-color: #2db84d;
     padding: .5rem 0;
@@ -77,15 +78,6 @@
     background-color: #269741;
 }
 
-.btn-login > button {
-    transform: translateX(0px) translateY(0px);
-    transition: 200ms;
-}
-.btn-login > button:hover{
-    position: relative;
-    transform: translateX(5px) translateY(-5px);
-    transition: 200ms;
-} 
 .rightside{
     display: flex;
     align-items: center;
