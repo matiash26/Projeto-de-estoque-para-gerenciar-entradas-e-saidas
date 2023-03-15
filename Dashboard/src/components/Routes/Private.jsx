@@ -15,7 +15,7 @@ function Pages() {
             <div className="Container">
                 <Header />
                 <Routes>
-                    <Route path="/" element={<EntriesWithContext />} />
+                    <Route path="/vendas" element={<EntriesWithContext />} />
                     <Route path="/estoque" element={<StockWithContext />} />
                     <Route path="/produtos" element={<ProductWithContext />} />
                     <Route path="/serviço" element={<ServiceWithContext />} />

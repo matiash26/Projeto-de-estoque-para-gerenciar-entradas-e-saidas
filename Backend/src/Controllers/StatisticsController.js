@@ -1,7 +1,9 @@
-const express = require("express")
 const statistics = require("../Models/StatisticsModel")
 const bodyParser = require("body-parser")
+const jwt = require("jsonwebtoken")
+const express = require("express")
 const cors = require("cors")
+require("dotenv").config()
 
 const routes = express.Router()
 routes.use(bodyParser.json())
@@ -28,4 +30,19 @@ routes.get("/estatistica/historico/:filter", async (req, res) => {
     const expenses = await statistics.expenses(currentDate, filter)
     res.send({ revenue, graph, products, expenses })
 })
+function verifyToken(req, res, next) {
+    const authHeader = req.headers.authorization
+    const token = authHeader && authHeader
+    if (!token) {
+        return res.send({ status: "error", msg: "Acesso negado!" })
+    }
+    try {
+        const secret = process.env.SECRET_KEY
+        jwt.verify(token, secret)
+        next()
+    } catch (error) {
+        res.send({ status: "error", msg: "Token inválido!" })
+    }
+
+}
 module.exports = routes;

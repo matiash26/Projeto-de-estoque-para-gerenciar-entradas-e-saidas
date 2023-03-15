@@ -7,6 +7,11 @@ function Header() {
     const handleBtnUser = () =>{
         setUserMenu(prev => !prev)
     }
+    const handleLogOut = () => {
+        window.localStorage.removeItem("token")
+        handleBtnUser()
+    
+    }
     return (
         <header>
             <nav>
@@ -20,7 +25,7 @@ function Header() {
                         <ul className={`userOptions ${userMenu ? "show" : ""}`}>
                             <li onClick={handleBtnUser}><Link to="perfil">Perfil</Link></li>
                             <li onClick={handleBtnUser}><Link to="users">Usuários</Link></li>
-                            <li>Sair</li>
+                            <li onClick={handleLogOut}>Sair</li>
                         </ul>
                     </div>
                 </ul>

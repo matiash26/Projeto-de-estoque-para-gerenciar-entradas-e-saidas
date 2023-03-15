@@ -48,7 +48,7 @@ const getDate = () => {
 }
 const signIn = async (user) => {
     const mysql = await client()
-    const sql = "SELECT * FROM usuarios WHERE user = ?"
+    const sql = "SELECT id, user FROM usuarios WHERE user = ?"
     try {
         const [row] = await mysql.query(sql, [user])
         return row

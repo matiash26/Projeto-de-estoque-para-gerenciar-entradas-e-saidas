@@ -15,12 +15,12 @@ function Users() {
         setPassword('')
         setUserName('')
     }
-    const registerUser = async () => {
+    const signUp = async () => {
         const register = {
             userName: userName,
             password: password
         }
-        const { data } = await api.post("/users/register", register)
+        const { data } = await api.post("/sign-up", register)
         setAlert(data)
         clearFiuserd()
     }
@@ -29,7 +29,10 @@ function Users() {
         setAlert(data)
     }
     const fetchUser = useCallback(async () => {
-        const { data } = await api.get("/users/list")
+        const token = window.localStorage.getItem("token")
+        const { data } = await api.get("/users/list",{
+            auth:`bearer ${token}`
+        })
         setListUsers(data)
     })
     useEffect(() => fetchUser, [alert])
@@ -41,9 +44,10 @@ function Users() {
                     <h2>Cadastrar usuário</h2>
                     <Input placeholder="Usuario..." type="text" value={userName} onChange={e => setUserName(e.target.value)} />
                     <Input placeholder="Senha..." type="password" value={password} onChange={e => setPassword(e.target.value)} />
-                    <Button onClick={registerUser} title="Registrar" className="poolBlue" />
+                    <Button onClick={signUp} title="Registrar" className="poolBlue" />
                 </div>
                 <section className="user-content">
+                    {console.log(listUsers)}
                     <ul>
                         {listUsers.map(user => <UserList key={user.id} userName={user.user} data={user.data} deleteItem={() => deleteUser(user.id)} />)}
                     </ul>

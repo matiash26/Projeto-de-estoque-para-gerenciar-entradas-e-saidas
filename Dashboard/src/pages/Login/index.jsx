@@ -1,8 +1,20 @@
-import React from "react";
-import Input from "../../components/Input";
 import { FiUser, FiUnlock } from "react-icons/fi"
+import { useState } from "react";
+import Input from "../../components/Input";
+import api from "../../services/Api"
 import "./style.css"
 function Login() {
+    const [userName, setUserName] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleLogin = async () => {
+        const objectLogin = { userName, password }
+        const { data } = await api.post("/sign-in/", objectLogin)
+        if (data) {
+            window.localStorage.setItem("token", data.token)
+            //a terminar
+        }
+    }
     return (
         <div className="login-container">
             <main className="form-container">
@@ -10,13 +22,13 @@ function Login() {
                     <h3>Faça Login</h3>
                     <form className="form-login">
                         <div>
-                            <Input type="email" title="Email" id="email" icon={<FiUser />} />
+                            <Input type="user" title="user" value={userName} onChange={({ target }) => setUserName(target.value)} icon={<FiUser />} />
                         </div>
                         <div>
-                            <Input type="password" title="senha" id="password" icon={<FiUnlock />} />
+                            <Input type="password" title="senha" value={password} onChange={({ target }) => setPassword(target.value)} icon={<FiUnlock />} />
                         </div>
                         <div className="btn-login">
-                            <button type="button">Login</button>
+                            <button type="button" onClick={handleLogin}>Login</button>
                         </div>
                     </form>
                 </section>

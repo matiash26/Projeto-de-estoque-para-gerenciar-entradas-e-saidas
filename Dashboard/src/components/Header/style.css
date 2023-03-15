@@ -77,4 +77,5 @@ ul.user_container {
 }
 .show {
     display: block;
+    z-index: 1;
 }

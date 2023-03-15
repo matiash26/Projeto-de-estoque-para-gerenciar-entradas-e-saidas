@@ -1,7 +1,9 @@
-const express = require("express")
 const service = require("../Models/ServiceModel")
 const bodyParser = require("body-parser")
+const jwt = require("jsonwebtoken")
+const express = require("express")
 const cors = require("cors")
+require("dotenv").config()
 
 const routes = express.Router()
 routes.use(bodyParser.json())
@@ -60,4 +62,19 @@ routes.delete("/services/:id", async (req, res) => {
     )
 
 })
+function verifyToken(req, res, next) {
+    const authHeader = req.headers.authorization
+    const token = authHeader && authHeader
+    if (!token) {
+        return res.send({ status: "error", msg: "Acesso negado!" })
+    }
+    try {
+        const secret = process.env.SECRET_KEY
+        jwt.verify(token, secret)
+        next()
+    } catch (error) {
+        res.send({ status: "error", msg: "Token inválido!" })
+    }
+
+}
 module.exports = routes

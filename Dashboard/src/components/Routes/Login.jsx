@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom"
 function Auth() {
     return (
         <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/*" element={<Login />} />
         </Routes>
     )
 }
