@@ -2,7 +2,7 @@ const { client } = require("../../config/database")
 
 const select = async () => {
     const mysql = await client()
-    const sql = "SELECT * FROM produtos WHERE status = '1' ORDER BY id DESC;";
+    const sql = "SELECT * FROM produtos WHERE status = '1' ORDER BY id DESC;"
     const [row] = await mysql.query(sql)
     return row
 }

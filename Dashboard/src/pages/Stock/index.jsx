@@ -62,9 +62,8 @@ function Stock() {
         setAlert(data)
     }
     const handleUpdateProduct = async () => {
-        const checkProductIsValid = productData.filter(el => el.produto === produto)[0]
-        if (checkProductIsValid) {
-            const getProduct = productData.filter(el => el.produto === produto)[0]
+        const getProduct = productData.filter(el => el.produto === produto)[0]
+        if (getProduct) {
             const updateProduct = {
                 id: updateOrDelete.id,
                 idProduto: getProduct.id,
@@ -104,22 +103,12 @@ function Stock() {
     const fetchData = useCallback(async () => {
         const products = await api.get("/product/all")
         const stock = await api.get("/stock/all")
-        const producItem = await products.data
-        const stockItem = await stock.data
-        const PromiseResolve = await Promise.all(
-            producItem.map(async el => {
-                const productExistInStock = await stockItem.find(stock => stock.produto === el.produto);
-                return productExistInStock ? null : el;
-            })
-        );
-        const ifProductNotExistInStock = PromiseResolve.filter(el => el !== null);
-        setProductData(ifProductNotExistInStock)
-        setCopyTable(stockItem)
+        setProductData(products.data)
+        setCopyTable(stock.data)
     }, [])
 
     useEffect(() => {
         fetchData()
-
         if (alert.success) {
             clearFields()
         }

@@ -9,7 +9,6 @@ import Profile from "../../pages/Profile"
 import Users from "../../pages/Users"
 import Header from "../Header"
 import Aside from "../Aside"
-import { useContext, useEffect } from "react"
 function Pages() {
     return (
         <>

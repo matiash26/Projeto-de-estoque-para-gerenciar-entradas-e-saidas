@@ -1,5 +1,4 @@
 const stock = require("../Models/stockModel")
-const jwt = require("jsonwebtoken")
 const express = require("express")
 require("dotenv").config()
 
@@ -12,7 +11,7 @@ routes.get("/stock/all", async (req, res) => {
 routes.get("/stock/", async (req, res) => {
     const search = req.query.search
     const active = req.query.active
-    const found = await stockModel.find(search, active)
+    const found = await stock.find(search, active)
     res.send(found)
 })
 routes.post("/stock/", (req, res) => {
@@ -63,19 +62,4 @@ routes.delete("/stock/:id", async (req, res) => {
             : res.send({ status: "success", message: "Ocultado com sucesso!" })
     }
 })
-function verifyToken(req, res, next) {
-    const authHeader = req.headers.authorization
-    const token = authHeader && authHeader
-    if (!token) {
-        return res.send({ status: "error", msg: "Acesso negado!" })
-    }
-    try {
-        const secret = process.env.SECRET_KEY
-        jwt.verify(token, secret)
-        next()
-    } catch (error) {
-        res.send({ status: "error", msg: "Token inválido!" })
-    }
-
-}
 module.exports = routes

@@ -26,21 +26,29 @@ function Entries() {
     const offsetDateRef = useRef("")
 
     const handleAddToCart = () => {
-        const checkIfProductIsValid = stockData.some(product => product.produto === produto)
-
-        if (checkIfProductIsValid) {
-            const AddAndTotal = stockData.find(stockData => {
-                if (stockData.produto === produto) {
-                    stockData.total = stockData.quantidade * +stockData.valor
-                    return stockData
-                }
-            })
+        const foundProduct = stockData.find(product => product.produto === produto)
+        if (foundProduct && foundProduct.estoque > 0) {
+            const AddAndTotal = {
+                id: foundProduct.id,
+                produto: foundProduct.produto,
+                quantidade: foundProduct.quantidade = 1,
+                estoque: foundProduct.estoque,
+                valor: foundProduct.valor,
+                total: foundProduct.quantidade * + foundProduct.valor
+            }
             const IfExistInCart = cart.some(item => item.produto === produto)
             if (!IfExistInCart) {
                 setCart(prev => [...prev, AddAndTotal])
                 setProduto('')
             }
+            return;
         }
+        //se o produto que for adicionado não tiver estoque mostre o erro
+        const alertObject = {
+            status: "error",
+            message: `O produto ${foundProduct.produto} tem ${foundProduct.estoque} no estoque`
+        }
+        setAlert(alertObject)
     }
     const handleRemoveFromCart = (index) => {
         setCart(entrie => entrie.filter((el, x) => x != index))
@@ -51,11 +59,21 @@ function Entries() {
             quantity = 1
         } else {
             let index = cart.findIndex(el => el.id === id)
-            setCart(prev => {
-                prev[index].quantidade = quantity
-                prev[index].total = (quantity * +prev[index].valor).toFixed(2)
-                return [...prev]
-            })
+            const ifExistQuantityInStock = (cart[index].estoque - quantity)
+            if (ifExistQuantityInStock >= 0) {
+                setCart(prev => {
+                    prev[index].quantidade = quantity
+                    prev[index].total = (quantity * +prev[index].valor).toFixed(2)
+                    return [...prev]
+                })
+                return
+            }
+            //se a quantidade for maior que o estoque mostre o erro
+            const alertObject = {
+                status: "error",
+                message: `O produto ${cart[index].produto} tem ${cart[index].estoque} no estoque`
+            }
+            setAlert(alertObject)
         }
     }
     const calculateTotal = (cart) => {
@@ -97,8 +115,7 @@ function Entries() {
         const entries = await api.get("/entries/all")
         const stock = await api.get("/stock/all")
         setCopyTable(entries.data)
-        setStockData(stock.data.map(stockData => ({ ...stockData, quantidade: 1 })))
-
+        setStockData(stock.data)
     }, [])
 
     useEffect(() => {
@@ -111,7 +128,8 @@ function Entries() {
 
     return (
         <div className="Container-Main">
-            {alert && <Notification alert={alert} setAlert={setAlert}/>}
+            {console.log(cart)}
+            {alert && <Notification alert={alert} setAlert={setAlert} />}
             {modalConfirmIsOpen && <ModalConfirm title="Deletar o pedido" desc="Você realmente deseja deletar o pedido?" />}
             <main className="main-content">
                 {modalValue &&

@@ -29,10 +29,11 @@ routes.post("/sign-in/", async (req, res) => {
         bcrypt.compare(password, getUser[0].password, function (err, results) {
             const secret = process.env.SECRET_KEY
             const token = jwt.sign({
-                id: getUser[0].id,
+                picture: '',
                 userName: getUser[0].user,
             }, secret)
-            res.send({ status: "success", permission:true, token })
+            const userData = jwt.decode(token)
+            res.send({ status: "success", permission: true, token, userData})
         })
     }
 })
@@ -67,8 +68,11 @@ routes.put("/users/update", (req, res) => {
         res.send({ status: "error", message: "Preencha os campos!" })
     }
 })
-routes.post("/verifyToken", verifyToken, (req, res) =>{
-    res.send({ status: "success", permission: true })
+routes.post("/verifyToken",verifyToken, (req, res) =>{
+    const token = req.body.token
+    const userData = jwt.decode(token)
+    res.send({ status: "success", permission: true, userData})
+
 })
 function verifyToken(req, res, next) {
     const authHeader = req.body.token

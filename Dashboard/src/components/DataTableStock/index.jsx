@@ -9,7 +9,7 @@ function DataTableStock({ data }) {
     const { btnModalIsOpen, btnModalConfirmIsOpen} = useContext(GlobalContext)
     const { btnEdit, setUpdateOrDelete } = useContext(StockContext)
 
-    const status = data.status === "1" ? "ativado" : "desativado"
+    const status = data.status === "1" ? true : false
 
     const handleOptionModal = () => {
         setOptionModal(prev => !prev)

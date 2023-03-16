@@ -1,9 +1,9 @@
+import { useContext, useState } from "react";
 import { FiUser, FiUnlock } from "react-icons/fi"
 import { AuthContext } from "../../Contexts/AuthContext";
-import { useContext, useState } from "react";
 import Input from "../../components/Input";
-import api from "../../services/Api"
 import "./style.css"
+
 function Login() {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')

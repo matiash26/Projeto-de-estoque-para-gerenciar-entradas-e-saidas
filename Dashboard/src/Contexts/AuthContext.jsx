@@ -4,11 +4,13 @@ export const AuthContext = createContext('')
 
 function AuthProvider({ children }) {
     const [isLogged, setIsLogged] = useState(false)
+    const [userName, setUserName] = useState('')
 
     const verifyToken = async () => {
         const token = window.localStorage.getItem("token")
         if(token){
             const { data } = await api.post("/verifyToken", { token })
+            setUserName(data.userData.userName)
             setIsLogged(data.permission)
         }
     }
@@ -17,17 +19,19 @@ function AuthProvider({ children }) {
         if (data.permission) {
             window.localStorage.setItem("token", data.token)
             setIsLogged(data.permission)
+            setUserName(data.userData.userName)
         }
     }
     const handleLogOut = () => {
-        setIsLogged(false)
         window.localStorage.removeItem("token")
+        setIsLogged(false)
     }
     useEffect(()=>{
         verifyToken()
     },[])
     return (
-        <AuthContext.Provider value={{ setIsLogged, isLogged, verifyToken, handleLogin, handleLogOut }}>
+        <AuthContext.Provider value={{ setIsLogged, isLogged, verifyToken, handleLogin, handleLogOut,
+            userName, setUserName }}>
             {children}
         </AuthContext.Provider>
     )

@@ -17,7 +17,7 @@ function GlobalProvider({ children }) {
         <GlobalContext.Provider value={{
             modalValue, btnModalIsOpen,
             modalConfirmIsOpen, btnModalConfirmIsOpen,
-            modalConfirmValue, setModalConfirmValue,    
+            modalConfirmValue, setModalConfirmValue,
         }}>
             {children}
         </GlobalContext.Provider>

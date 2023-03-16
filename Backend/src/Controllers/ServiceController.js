@@ -62,19 +62,4 @@ routes.delete("/services/:id", async (req, res) => {
     )
 
 })
-function verifyToken(req, res, next) {
-    const authHeader = req.headers.authorization
-    const token = authHeader && authHeader
-    if (!token) {
-        return res.send({ status: "error", msg: "Acesso negado!" })
-    }
-    try {
-        const secret = process.env.SECRET_KEY
-        jwt.verify(token, secret)
-        next()
-    } catch (error) {
-        res.send({ status: "error", msg: "Token inválido!" })
-    }
-
-}
 module.exports = routes

@@ -56,8 +56,9 @@ const find = async (search, active) => {
 }
 const stockModify = async (estoque, id) => {
     const mysql = await client()
-    const sql = "UPDATE estoque set estoque = ?  WHERE id = ?"
-    return await mysql.query(sql, [estoque, id])
+    const status = estoque === 0 ? "0" : "1"
+    const sql = "UPDATE estoque set estoque = ?, status = ?  WHERE id = ?"
+    return await mysql.query(sql, [estoque,status, id])
 }
 const desative = async (active, id) => {
     const mysql = await client()

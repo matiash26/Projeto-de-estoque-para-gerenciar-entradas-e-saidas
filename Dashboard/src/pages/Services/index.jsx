@@ -117,8 +117,8 @@ function Service() {
                     <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setServiceModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
                         <form className="form-pop">
                             <div className="form-content">
-                                <Input title="Serviço" type="text" value={servico} onChange={e => setServico(e.target.value)} />
-                                <Input title="Gasto" type="number" value={gasto} onChange={e => setGasto(e.target.value)} />
+                                <Input title="Serviço" type="text" value={servico} onChange={({target}) => setServico(target.value)} />
+                                <Input title="Gasto" type="number" value={gasto} onChange={({target}) => setGasto(target.value)} />
                                 {!updateOrDelete && <Button title="ADICIONAR" type="button" className="poolBlue" onClick={handleAddServiceModal} />}
                             </div>
                         </form>

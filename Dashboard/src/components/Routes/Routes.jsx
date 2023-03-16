@@ -1,6 +1,6 @@
 import { BrowserRouter as Router} from "react-router-dom"
 import { AuthContext } from "../../Contexts/AuthContext"
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import GlobalProvider from "../../Contexts/GlobalContext"
 import Private from "./Private"
 import Login from "./Login"
