@@ -1,22 +1,12 @@
 import { BrowserRouter as Router} from "react-router-dom"
-import { useEffect, useState } from "react"
+import { AuthContext } from "../../Contexts/AuthContext"
+import { useContext, useEffect } from "react"
 import GlobalProvider from "../../Contexts/GlobalContext"
 import Private from "./Private"
 import Login from "./Login"
-import api from "../../services/Api"
 
 function Routes() {
-    const [isLogged, setIsLogged] = useState(false)
-
-    useEffect(() => {
-        const verifyToken = async () => {
-            const token = window.localStorage.getItem("token")
-            const { data } = await api.post('/verifyToken', {token:token})
-            setIsLogged(data.permission)
-            //a terminar
-        }
-        verifyToken()
-    }, [])
+    const {isLogged} = useContext(AuthContext)
     return (
         <div className="App">
             <GlobalProvider>

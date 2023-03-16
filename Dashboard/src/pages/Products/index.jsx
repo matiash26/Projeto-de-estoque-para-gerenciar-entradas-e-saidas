@@ -107,7 +107,9 @@ function Products() {
     }
     const fetchAllData = useCallback(async () => {
         const { data } = await api.get("/product/all")
-        setCopyTable(data)
+        if(data.status !="error"){
+            setCopyTable(data)
+        }
     }, [])
 
     useEffect(() => {
@@ -119,6 +121,7 @@ function Products() {
     }, [modalConfirmValue, alert])
     return (
         <div className="Container-Main">
+            {console.log("render")}
             <main className="main-content">
                 {alert && <Notification alert={alert} setAlert={setAlert} />}
                 {modalConfirmIsOpen && <ModalConfirm title="Ocultar" desc="Você realmente deseja ocultar o produto?" setObject={setUpdateOrDelete} />}

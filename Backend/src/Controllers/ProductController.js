@@ -1,11 +1,6 @@
 const express = require("express")
 const product = require("../Models/ProductModel")
-const bodyParser = require("body-parser")
-const cors = require("cors")
-
 const routes = express.Router()
-routes.use(bodyParser.json())
-routes.use(cors())
 
 routes.get("/product/all", async (req, res) => {
     const getProduct = await product.select()
@@ -64,10 +59,10 @@ routes.delete("/product/:id", async (req, res) => {
 
 })
 function verifyToken(req, res, next) {
-    const authHeader = req.headers.authorization
-    const token = authHeader && authHeader
+    const authHeader = req.headers["authorization"]
+    const token = authHeader && authHeader.split(" ")[1]
     if (!token) {
-        return res.send({ status: "error", msg: "Acesso negado!" })
+        return res.send({ status: "error", msg: "Acesso negado!", permission: false })
     }
     try {
         const secret = process.env.SECRET_KEY

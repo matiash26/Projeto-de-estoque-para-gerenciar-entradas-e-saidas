@@ -1,13 +1,9 @@
 const stock = require("../Models/stockModel")
-const bodyParser = require("body-parser")
 const jwt = require("jsonwebtoken")
 const express = require("express")
-const cors = require("cors")
 require("dotenv").config()
 
 const routes = express.Router()
-routes.use(bodyParser.json())
-routes.use(cors())
 
 routes.get("/stock/all", async (req, res) => {
     const result = await stock.select()

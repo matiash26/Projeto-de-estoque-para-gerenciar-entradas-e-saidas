@@ -1,16 +1,14 @@
+import { useContext, useState } from "react"
 import { FiChevronDown } from "react-icons/fi"
+import { AuthContext } from "../../Contexts/AuthContext"
 import { Link } from "react-router-dom"
-import { useState } from "react"
 import "./style.css"
 function Header() {
     const[userMenu, setUserMenu] = useState(false)
+    const {handleLogOut} = useContext(AuthContext)
+
     const handleBtnUser = () =>{
         setUserMenu(prev => !prev)
-    }
-    const handleLogOut = () => {
-        window.localStorage.removeItem("token")
-        handleBtnUser()
-    
     }
     return (
         <header>

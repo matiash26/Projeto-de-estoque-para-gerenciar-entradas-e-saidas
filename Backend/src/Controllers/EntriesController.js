@@ -1,12 +1,7 @@
 const express = require("express")
 const entries = require("../Models/EntriesModel")
 const stock = require("../Models/StockModel")
-const bodyParser = require("body-parser")
-const cors = require("cors")
-
 const routes = express.Router()
-routes.use(bodyParser.json())
-routes.use(cors())
 
 routes.get("/entries/all", async (req, res) => {
     const select = await entries.select();

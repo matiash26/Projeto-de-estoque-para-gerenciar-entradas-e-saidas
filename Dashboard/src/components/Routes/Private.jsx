@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom"
+import { AuthContext } from "../../Contexts/AuthContext"
 import EntriesWithContext from "../../Contexts/WithContexts/EntriesWithContext"
 import ProductWithContext from "../../Contexts/WithContexts/ProductsWithContext"
 import ServiceWithContext from "../../Contexts/WithContexts/ServicesWithContext"
@@ -8,6 +9,7 @@ import Profile from "../../pages/Profile"
 import Users from "../../pages/Users"
 import Header from "../Header"
 import Aside from "../Aside"
+import { useContext, useEffect } from "react"
 function Pages() {
     return (
         <>
@@ -15,7 +17,7 @@ function Pages() {
             <div className="Container">
                 <Header />
                 <Routes>
-                    <Route path="/vendas" element={<EntriesWithContext />} />
+                    <Route path="/" element={<EntriesWithContext />} />
                     <Route path="/estoque" element={<StockWithContext />} />
                     <Route path="/produtos" element={<ProductWithContext />} />
                     <Route path="/serviço" element={<ServiceWithContext />} />

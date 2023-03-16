@@ -1,14 +1,10 @@
-const bodyParser = require("body-parser")
 const express = require("express")
 const bcrypt = require("bcrypt")
 const users = require("../Models/UsersModel.js")
-const cors = require("cors")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
 const routes = express.Router()
-routes.use(bodyParser.json())
-routes.use(cors())
 
 routes.post("/sign-up", (req, res) => {
     const userName = req.body.userName
@@ -40,11 +36,11 @@ routes.post("/sign-in/", async (req, res) => {
         })
     }
 })
-routes.post("/users/list", verifyToken, async (req, res) => {
+routes.get("/users/list", async (req, res) => {
     const user = await users.select()
     res.send(user)
 })
-routes.delete("/users/delete",verifyToken, async (req, res) => {
+routes.delete("/users/delete", async (req, res) => {
     const id = req.query.id
     const user = await users.Delete(id)
     if (user) {
@@ -53,7 +49,7 @@ routes.delete("/users/delete",verifyToken, async (req, res) => {
         res.send({ status: "error", message: "falha ao deletar o usuário!" })
     }
 })
-routes.put("/users/update", verifyToken,  (req, res) => {
+routes.put("/users/update",  (req, res) => {
     const update = req.body
     if (update.newPassword || update.picture || update.user || update.password) {
         users.update(update)
@@ -62,7 +58,7 @@ routes.put("/users/update", verifyToken,  (req, res) => {
         res.send({ status: "error", message: "Preencha os campos!" })
     }
 })
-routes.put("/users/update", verifyToken, (req, res) => {
+routes.put("/users/update", (req, res) => {
     const update = req.body
     if (update.newPassword || update.picture || update.user || update.password) {
         users.update(update)
@@ -70,6 +66,9 @@ routes.put("/users/update", verifyToken, (req, res) => {
     } else {
         res.send({ status: "error", message: "Preencha os campos!" })
     }
+})
+routes.post("/verifyToken", verifyToken, (req, res) =>{
+    res.send({ status: "success", permission: true })
 })
 function verifyToken(req, res, next) {
     const authHeader = req.body.token
@@ -86,7 +85,4 @@ function verifyToken(req, res, next) {
     }
 
 }
-routes.post("/verifyToken",verifyToken, (req, res) =>{
-    res.send({ status: "success", permission: true })
-})
 module.exports = routes
