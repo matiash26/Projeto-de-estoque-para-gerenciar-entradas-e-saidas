@@ -5,8 +5,10 @@ require("dotenv").config()
 const routes = express.Router()
 
 routes.get("/stock/all", async (req, res) => {
-    const result = await stock.select()
-    res.send(result)
+    const stockItems = await stock.select()
+    const onlyStatusActive = stockItems.filter( each => each.status === "1")
+    res.send(onlyStatusActive)
+    //não filtrei pela query porque eu preciso dos itens inátivo no end point product/filtered
 })
 routes.get("/stock/", async (req, res) => {
     const search = req.query.search
@@ -35,8 +37,9 @@ routes.post("/stock/", (req, res) => {
 })
 routes.put("/stock/", async (req, res) => {
     const update = req.body
+    console.log(update)
     if (update.produto && update.estoque) {
-        if (update.produto.length >= 1 && update.produto.length <= 100 &&  String(update.estoque).length <= 8 &&  String(update.estoque).length >= 1) {
+        if (update.produto.length >= 1 && update.produto.length <= 100 && String(update.estoque).length <= 8 && String(update.estoque).length >= 1) {
             const response = await stock.update(update)
             if (response) {
                 res.send({ status: "success", message: "Estoque atualizado com sucesso!" })
@@ -53,7 +56,7 @@ routes.put("/stock/", async (req, res) => {
 routes.delete("/stock/:id", async (req, res) => {
     const id = req.params.id
     const active = req.query.active === "0" ? "1" : "0"
-    const response =  await stock.Delete(id)
+    const response = await stock.Delete(id)
     if (response) {
         res.send({ status: "success", message: "Deletado com sucesso!" })
     } else {

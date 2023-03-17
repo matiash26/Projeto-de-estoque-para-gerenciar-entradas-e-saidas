@@ -34,7 +34,7 @@ function Entries() {
                 quantidade: foundProduct.quantidade = 1,
                 estoque: foundProduct.estoque,
                 valor: foundProduct.valor,
-                total: foundProduct.quantidade * + foundProduct.valor
+                total: foundProduct.quantidade * +foundProduct.valor
             }
             const IfExistInCart = cart.some(item => item.produto === produto)
             if (!IfExistInCart) {
@@ -54,7 +54,7 @@ function Entries() {
         setCart(entrie => entrie.filter((el, x) => x != index))
     }
     const handleQuantity = (number, id) => {
-        let quantity = +number.currentTarget.value
+        let quantity = +number.value
         if (quantity === 0) {
             quantity = 1
         } else {
@@ -128,7 +128,6 @@ function Entries() {
 
     return (
         <div className="Container-Main">
-            {console.log(cart)}
             {alert && <Notification alert={alert} setAlert={setAlert} />}
             {modalConfirmIsOpen && <ModalConfirm title="Deletar o pedido" desc="Você realmente deseja deletar o pedido?" />}
             <main className="main-content">
@@ -149,7 +148,7 @@ function Entries() {
                                         item={item}
                                         quantity={item.quantidade}
                                         removeModal={() => handleRemoveFromCart(index)}
-                                        onChange={e => handleQuantity(e, item.id)}
+                                        onChange={({currentTarget}) => handleQuantity(currentTarget, item.id)}
                                         updateExist={update} />)
                                 }
                             </ul>

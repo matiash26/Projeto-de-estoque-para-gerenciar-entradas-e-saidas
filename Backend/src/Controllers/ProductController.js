@@ -1,10 +1,22 @@
 const express = require("express")
 const product = require("../Models/ProductModel")
+const stock = require("../Models/StockModel")
 const routes = express.Router()
 
 routes.get("/product/all", async (req, res) => {
     const getProduct = await product.select()
     res.send(getProduct)
+})
+routes.get("/product/filtered", async (req, res) => {
+    const stockData = await stock.select()
+    const productData = await product.select()
+    const productFiltered = productData.map(product => {
+        const item = stockData.find(stock => stock.produto === product.produto)
+        return item ? undefined : product
+    })
+    const productNotInStock = productFiltered.filter(each => each)
+    res.send(productNotInStock)
+    //filtrar itens que já estão cadastrado para evitar chaves duplicadas
 })
 routes.get("/product/", async (req, res) => {
     const search = req.query.search

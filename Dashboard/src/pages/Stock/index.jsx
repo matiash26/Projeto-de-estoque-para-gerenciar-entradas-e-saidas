@@ -53,7 +53,7 @@ function Stock() {
         setIndex(index)
     }
     const handleRemoveProductCart = (index) => {
-        setStockModal(prev => prev.splice(index, 1))
+        setStockModal(prev => prev.filter((el, x) => x != index))
     }
     const handleDeleteProduct = async () => {
         const id = updateOrDelete.id
@@ -62,23 +62,19 @@ function Stock() {
         setAlert(data)
     }
     const handleUpdateProduct = async () => {
-        const getProduct = productData.filter(el => el.produto === produto)[0]
-        if (getProduct) {
-            const updateProduct = {
-                id: updateOrDelete.id,
-                idProduto: getProduct.id,
-                produto,
-                status: checkbox,
-                estoque,
-            }
-            const { data } = await api.put("/stock/", updateProduct, updateOrDelete)
-            if (data.status === "success") {
-                clearFields()
-                setUpdateOrDelete(false)
-                btnModalIsOpen()
-            }
-            setAlert(data)
+        const updateProduct = {
+            id: updateOrDelete.id,
+            produto,
+            status: checkbox,
+            estoque,
         }
+        const { data } = await api.put("/stock/", updateProduct, updateOrDelete)
+        if (data.status === "success") {
+            clearFields()
+            setUpdateOrDelete(false)
+            btnModalIsOpen()
+        }
+        setAlert(data)
     }
     const handleFilter = async () => {
         const filter = filterRef.current.value
@@ -101,7 +97,7 @@ function Stock() {
         setAlert(data)
     }
     const fetchData = useCallback(async () => {
-        const products = await api.get("/product/all")
+        const products = await api.get("/product/filtered")
         const stock = await api.get("/stock/all")
         setProductData(products.data)
         setCopyTable(stock.data)
@@ -124,9 +120,9 @@ function Stock() {
                 <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setStockModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
                     <form className="form-pop">
                         <div className="form-content">
-                            <InputAutoComplet title="Nome do Produto" type="text" data={productData} value={produto} setValue={setProduto} />
-                            <Input title="Quantidade" type="number" value={estoque} onChange={e => setEstoque(e.target.value)} />
-                            <CheckBox title="status" checked={checkbox} onChange={e => setCheckbox(e.target.checked)} icon01={<FiX />} icon02={<FiCheck />} />
+                            <InputAutoComplet title="Nome do Produto" type="text" data={productData} value={produto} setValue={setProduto} disabled={updateOrDelete} />
+                            <Input title="Quantidade" type="number" value={estoque} onChange={({ target }) => setEstoque(target.value)} />
+                            <CheckBox title="status" checked={checkbox} onChange={({ target }) => setCheckbox(target.checked)} icon01={<FiX />} icon02={<FiCheck />} />
                             {!updateOrDelete && <Button title="ADICIONAR" type="button" className="poolBlue" onClick={handleAddProductCart} />}
                         </div>
                     </form>
@@ -149,7 +145,7 @@ function Stock() {
                 <NavbarSearch btnFilter={handleFilter} search={filterRef} status={statusRef} />
                 <section className="table-content">
                     <Pagination dataItem={copyTable} itemTable={setStockTable} />
-                    <Table th={["#ID", "produto", "data", "status", "em estoque"]}>
+                    <Table th={["#ID", "produto", "data", "status", "em estoque", "preço"]}>
                         {
                             stockTable.map((product, index) => <DataTableStock key={index} data={product} />)
                         }

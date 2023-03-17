@@ -32,6 +32,7 @@ function DataTableStock({ data }) {
             <td>{data.data}</td>
             <td><span className={status ? "active" : "disabled"}>{status ? "ativo" : "desativado"}</span></td>
             <td>{data.estoque}</td>
+            <td>{data.valor}</td>
             <td className="options-container">
                 <FiMoreVertical onClick={handleOptionModal} />
                 <ul className={`options-btn ${optionModal && 'active-options'}`}>

@@ -10,7 +10,6 @@ const selectByOrder = async (order) => {
     const mysql = await client()
     const sql = "select e.id, e.idEstoque, es.idProduto, p.produto, e.valor * e.quantidade as total, es.estoque, e.quantidade, e.valor from entradas as e join estoque as es on es.id = e.idEstoque join produtos as p on p.id = es.idProduto WHERE e.pedido = ?;"
     const [row] = await mysql.query(sql, order)
-    console.log(order, sql)
     return row
 }
 const insert = async (entries) => {

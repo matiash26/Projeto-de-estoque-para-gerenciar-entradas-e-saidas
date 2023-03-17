@@ -2,7 +2,7 @@ const {client} = require("../../config/database")
 
 const select = async () => {
     const mysql = await client();
-    const sql = "SELECT e.id, p.produto, e.data, e.status, e.estoque, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.status = '1' ORDER BY e.id desc;";
+    const sql = "SELECT e.id,p.id as idProduto, p.produto, e.data, e.status, e.estoque, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto ORDER BY e.id desc;";
     const [row] = await mysql.query(sql);
     return row;
 }
@@ -21,8 +21,8 @@ const insert = async (stock) => {
 const update = async (stock) => {
     const status = stock.status? "1" : "0"
     const mysql = await client();
-    const sql = "UPDATE estoque set idProduto = ?, data = ?, status = ?, estoque = ? WHERE id = ?;";
-    const update = [stock.idProduto, getDate(), status, +stock.estoque, stock.id];
+    const sql = "UPDATE estoque set data = ?, status = ?, estoque = ? WHERE id = ?;";
+    const update = [getDate(), status, +stock.estoque, stock.id];
     try {
         mysql.query(sql, update);
         return true

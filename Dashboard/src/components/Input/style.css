@@ -19,6 +19,12 @@
     width: 100%;
     background: transparent;
 }
+.search>input:disabled{
+    background-color: #ced4da7c;
+    height: 100%;
+    border-radius: .5rem;
+    color: #6f71747c;
+}
 .search>svg {
     font-size: 1.5rem;
     color: #afb1b3;
