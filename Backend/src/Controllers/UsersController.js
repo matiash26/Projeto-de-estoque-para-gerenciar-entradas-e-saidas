@@ -1,12 +1,15 @@
 const express = require("express")
 const bcrypt = require("bcrypt")
+const path = require("path")
 const users = require("../Models/UsersModel.js")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
 const routes = express.Router()
+const pathImage = path.join(__dirname, "../images")
+routes.use("/images", express.static(pathImage))
 
-routes.post("/sign-up", (req, res) => {
+routes.post("/sign-up",verifyToken, (req, res) => {
     const userName = req.body.userName
     const password = req.body.password
     if (userName && password) {
@@ -24,24 +27,25 @@ routes.post("/sign-up", (req, res) => {
 })
 routes.post("/sign-in/", async (req, res) => {
     const { userName, password } = req.body
-    const getUser = await users.signIn(userName)
-    if (getUser.length) {
-        bcrypt.compare(password, getUser[0].password, function (err, results) {
+    const [getUser] = await users.signIn(userName)
+    if (getUser) {
+        bcrypt.compare(password, getUser.password, function (err, results) {
             const secret = process.env.SECRET_KEY
             const token = jwt.sign({
-                picture: '',
-                userName: getUser[0].user,
+                id: getUser.id,
+                userName: getUser.user,
+                picture: getUser.picture
             }, secret)
             const userData = jwt.decode(token)
-            res.send({ status: "success", permission: true, token, userData})
+            res.send({ status: "success", permission: results, token, userData })
         })
     }
 })
-routes.get("/users/list", async (req, res) => {
+routes.get("/users/list",verifyToken, async (req, res) => {
     const user = await users.select()
     res.send(user)
 })
-routes.delete("/users/delete", async (req, res) => {
+routes.delete("/users/delete",verifyToken, async (req, res) => {
     const id = req.query.id
     const user = await users.Delete(id)
     if (user) {
@@ -50,33 +54,45 @@ routes.delete("/users/delete", async (req, res) => {
         res.send({ status: "error", message: "falha ao deletar o usuário!" })
     }
 })
-routes.put("/users/update",  (req, res) => {
-    const update = req.body
-    if (update.newPassword || update.picture || update.user || update.password) {
-        users.update(update)
-        res.send({ status: "success", message: "Perfil atualizado com sucesso!" })
+routes.put("/users/update",verifyToken, async (req, res) => {
+    const { picture, userName, password, newPassword } = req.body
+    if (userName && password) {
+        const [userData] = await users.signIn(userName)
+        if (userData) {
+            bcrypt.compare(password, userData.password, async (err, confirm) => {
+                if (confirm) {
+                    if (newPassword) {
+                        bcrypt.hash(newPassword, 10, async (erro, hash) => {
+                            const response = await users.update(picture, userName, hash, userData.id)
+                            if (response) {
+                                res.send({ status: "success", message: "Senha atualizada com sucesso!" })
+                            }
+                        })
+                    } else {
+                        const response = await users.update(picture, userName, userData.id)
+                        if (response) {
+                            res.send({ status: "success", message: "Senha atualizada com sucesso!" })
+                        }
+                    }
+                } else {
+                    res.send({ status: "error", message: "Senha inválida!" })
+                }
+            })
+        }
     } else {
         res.send({ status: "error", message: "Preencha os campos!" })
     }
 })
-routes.put("/users/update", (req, res) => {
-    const update = req.body
-    if (update.newPassword || update.picture || update.user || update.password) {
-        users.update(update)
-        res.send({ status: "success", message: "Perfil atualizado com sucesso!" })
-    } else {
-        res.send({ status: "error", message: "Preencha os campos!" })
-    }
-})
-routes.post("/verifyToken",verifyToken, (req, res) =>{
+routes.post("/verifyToken", (req, res) => {
     const token = req.body.token
     const userData = jwt.decode(token)
-    res.send({ status: "success", permission: true, userData})
+    console.log(userData)
+    res.send({ status: "success", permission: true, userData })
 
 })
 function verifyToken(req, res, next) {
-    const authHeader = req.body.token
-    const token = authHeader && authHeader
+    const authHeader = req.headers["authorization"]
+    const token = authHeader && authHeader.split(" ")[1]
     if (!token) {
         return res.send({ status: "error", msg: "Acesso negado!" })
     }

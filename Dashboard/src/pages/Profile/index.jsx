@@ -10,33 +10,37 @@ import "./style.css"
 function Profile() {
     const [newPassword, setNewPassword] = useState('')
     const [password, setPassword] = useState('')
-    const [picture, setPicture] = useState('')
     const [alert, setAlert] = useState('')
-    const { userName, setUserName } = useContext(AuthContext)
-
+    const { userName, setUserName, setPicture, picture } = useContext(AuthContext)
     const handleUpdate = async () => {
-        const update = {
-            picture,
-            user,
-            password,
-            newPassword
+        const Token = window.localStorage.getItem("token")
+        if (Token) {
+            const update = {
+                picture,
+                userName,
+                password,
+                newPassword
+            }
+            const { data } = await api.put("/users/update", update)
+            if (data.status === "success") {
+                setAlert(data)
+                setPassword('')
+                setNewPassword('')
+            }
         }
-        const { data } = await api.put("/users/update", update)
-        setAlert(data)
     }
     return (
         <div className="Container-Main">
             <main className="main-content">
                 <section className="profile-content">
                     {alert && <Notification alert={alert} setAlert={setAlert} />}
-                    <div className="input-img">
+                    <div className="imageProfile" style={{ backgroundImage: (`url(http://127.0.0.1:3000/images/${picture}`) }}>
                         <label htmlFor="file"><AiOutlineCamera /></label>
-                        <img id="img-profile" src="https://akamai.sscdn.co/uploadfile/letras/fotos/c/4/e/9/c4e987143a79ddc7769d979b49d86456.jpg" alt="profile picture" />
-                        <input type="file" name="file" id="file" />
+                        <input type="file" name="file" id="file" onChange={({ target }) => setPicture(target.files[0])} />
                     </div>
                     <Input placeholder="usuário..." onChange={({ target }) => setUserName(target.value)} value={userName} />
-                    <Input placeholder="senha atual..." onChange={({ target }) => setPassword(target.value)} value={password} />
-                    <Input placeholder="nova senha..." onChange={({ target }) => setNewPassword(target.value)} value={newPassword} />
+                    <Input placeholder="senha atual..." type="password" onChange={({ target }) => setPassword(target.value)} value={password} />
+                    <Input placeholder="nova senha..." type="password" onChange={({ target }) => setNewPassword(target.value)} value={newPassword} />
                     <Button title="Atualizar" className="blue" onClick={handleUpdate} />
                 </section>
             </main>

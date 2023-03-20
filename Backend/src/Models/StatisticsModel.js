@@ -44,7 +44,7 @@ const expenses = async (date, filter) =>{
     const mysql = await client()
     let sql = ""
     if (filter === "day") {
-        sql = "select DATE_FORMAT(data, '%d/%m/%Y') AS mes, sum(gasto) as gasto from servicos WHERE data between ? and ? GROUP BY DATE_FORMAT(data, '%d') ORDER BY mes;"
+        sql = "select DATE_FORMAT(data, '%d/%m/%Y') AS mes, sum(gasto) as gasto FROM servicos WHERE data between ? and ? GROUP BY id ORDER BY mes;"
     } else if (filter === "monthsOfYear") {
         sql = "SELECT DATE_FORMAT(data, '%M de %Y') AS mes, sum(gasto) as gasto FROM servicos WHERE DATE_FORMAT(data, '%Y') = ? GROUP BY DATE_FORMAT(data, '%M') ORDER BY mes;"
     } else {

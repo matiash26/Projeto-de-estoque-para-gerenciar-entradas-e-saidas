@@ -27,16 +27,11 @@ const Delete = async (id) => {
         return false
     }
 }
-const update = async (picture, user, newPassword) => {
+const update = async (picture, userName, password, id) => {
     const mysql = await client()
-    let sql = "UPDATE usuario set picture = ?, user = ? password = ?"
-    if (newPassword) {
-        sql = "UPDATE usuario set picture = ?, user = ? password = ?"
-    } else {
-        sql = "UPDATE usuario set picture = ?, user = ?"
-    }
+    let sql = "UPDATE usuarios set picture = ?, user = ?, password = ? WHERE id = ?"
     try {
-        mysql.query(sql, [picture, user, newPassword])
+        mysql.query(sql, [picture, userName, password, id])
         return true
     } catch {
         return false
@@ -48,7 +43,7 @@ const getDate = () => {
 }
 const signIn = async (user) => {
     const mysql = await client()
-    const sql = "SELECT id, user FROM usuarios WHERE user = ?"
+    const sql = "SELECT id, picture, user, password FROM usuarios WHERE user = ?"
     try {
         const [row] = await mysql.query(sql, [user])
         return row

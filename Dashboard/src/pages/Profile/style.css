@@ -6,19 +6,23 @@
 .profile-content > .search {
     height: 56px;
 }
-.input-img{
+.imageProfile{
     margin: auto;
     width: 160px;
     height: 160px;
+    background-size: cover;
+    background-repeat: no-repeat;
     border-radius: 50%;
     background-color: #949596;
     margin-bottom: 1rem;
     position: relative;
+    border: .4rem solid white;
+    background-position: center;
 }
-.input-img > #file{
+.imageProfile > #file{
     display: none;
 }
-.input-img > label {
+.imageProfile > label {
     width: 46px;
     height: 46px;
     display: flex;
@@ -32,7 +36,7 @@
     right: 10px;
     cursor: pointer;
 }
-.input-img > label > svg{
+.imageProfile > label > svg{
     font-size: 1.6rem;
 }
 .profile-content > .search {
@@ -40,10 +44,4 @@
 }
 .profile-content > .btn > button {
     margin: auto;
-}
-#img-profile{
-    width: 100%;
-    border-radius: 100%;
-    border: .4rem solid white;
-    object-fit: contain;
 }
