@@ -1,27 +1,28 @@
 const express = require("express")
 const entries = require("../Models/EntriesModel")
 const stock = require("../Models/StockModel")
+const jwt = require("jsonwebtoken")
 const routes = express.Router()
 
-routes.get("/entries/all", async (req, res) => {
+routes.get("/entries/all",verifyToken, async (req, res) => {
     const select = await entries.select();
     res.send(select)
 })
-routes.get("/entries/order/:order", async (req, res) => {
+routes.get("/entries/order/:order",verifyToken, async (req, res) => {
     const orderID = req.params.order
     const order = await entries.selectByOrder(orderID)
     res.send(order)
 })
-routes.get("/entries/filter/:start/:offset", async (req, res) => {
+routes.get("/entries/filter/:start/:offset",verifyToken, async (req, res) => {
     const found = await entries.filterDate(req.params)
     res.send(found)
 })
-routes.get("/entries/grafico", async (req, res) => {
+routes.get("/entries/grafico",verifyToken, async (req, res) => {
     const search = req.params.search
     const found = await entries.find(search)
     res.send(found)
 })
-routes.post("/entries/", async (req, res) => {
+routes.post("/entries/",verifyToken, async (req, res) => {
     const bodyData = req.body
     const orderID = await orderGenerate()
     if (bodyData) {
@@ -35,7 +36,7 @@ routes.post("/entries/", async (req, res) => {
         res.send({ status: "error", message: "verifique se todos os campos estão preenchidos!" })
     }
 })
-routes.delete("/entries/:order", async (req, res) => {
+routes.delete("/entries/:order",verifyToken, async (req, res) => {
     const order = req.params.order
     const response = await entries.Delete(order)
     if (response) {
@@ -44,7 +45,7 @@ routes.delete("/entries/:order", async (req, res) => {
         res.send({ status: "error", message: "falha ao deletar o pedido!" })
     }
 })
-routes.put("/entries/", async (req, res) => {
+routes.put("/entries/",verifyToken, async (req, res) => {
     const { cart, oldCart } = req.body
     if (cart && oldCart) {
         cart.forEach(update => {
@@ -79,7 +80,6 @@ function verifyToken(req, res, next) {
     }
     try {
         const secret = process.env.SECRET_KEY
-        console.log(token)
         jwt.verify(token, secret)
         next()
     } catch (error) {

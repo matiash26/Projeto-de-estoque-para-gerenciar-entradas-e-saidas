@@ -6,6 +6,7 @@ import "./style.css"
 function Header() {
     const [userMenu, setUserMenu] = useState(false)
     const { handleLogOut, userName, picture } = useContext(AuthContext)
+    
     const handleBtnUser = () => {
         setUserMenu(prev => !prev)
     }
@@ -21,7 +22,7 @@ function Header() {
                         <FiChevronDown onClick={handleBtnUser} />
                         <ul className={`userOptions ${userMenu ? "show" : ""}`}>
                             <li onClick={handleBtnUser}><Link to="perfil">Perfil</Link></li>
-                            <li onClick={handleBtnUser}><Link to="users">Usuários</Link></li>
+                            <li onClick={handleBtnUser}><Link to="usuarios">Usuários</Link></li>
                             <li onClick={handleLogOut}>Sair</li>
                         </ul>
                     </div>

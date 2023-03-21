@@ -1,15 +1,15 @@
 const fileUpload = require('express-fileupload');
 const express = require("express")
 const bcrypt = require("bcrypt")
-const path = require("path")
 const users = require("../Models/UsersModel.js")
+const path = require("path")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
+
 const routes = express.Router()
 
 const secret = process.env.SECRET_KEY
 const pathImage = path.join(__dirname, "../images/")
-bcrypt.hash("123",10,(a, b)=> console.log(b)) 
 routes.use("/images", express.static(pathImage))
 routes.use(fileUpload())
 
@@ -71,7 +71,7 @@ routes.post("/users/update", verifyToken, async (req, res) => {
     if (userName && password) {
         const tokenDetailt = jwt.decode(token, secret)
         const [userData] = await users.signIn(tokenDetailt.userName)
-        // pegar o nome de usuário via token, pq se ele alterar o nick no front o usuário n será encontrado
+        // pegar o nome do usuário via token para que ele possa fazer login sem alterar o usuário no front
         bcrypt.compare(password, userData.password, async (err, confirm) => {
             if (confirm) {
                 bcrypt.hash(newPassword, 10, async (erro, hash) => {
@@ -79,7 +79,7 @@ routes.post("/users/update", verifyToken, async (req, res) => {
                     const password = newPassword? hash : userData.password
                     const response = await users.update(picture, userName, password, tokenDetailt.id)
                     if (response) {
-                        res.send({ status: "success", message: "Senha atualizada com sucesso!" })
+                        res.send({ status: "success", message: "Perfil atualizado com sucesso!" })
                         file ? file.mv(pathImage + file.name) : null
                     }
                 })
@@ -101,7 +101,7 @@ function verifyToken(req, res, next) {
     const authHeader = req.headers["authorization"]
     const token = authHeader && authHeader.split(" ")[1]
     if (!token) {
-        return res.send({ status: "error", msg: "Acesso negado!" })
+        return res.send({ status: "error", msg: "Acesso negado!", permission: false })
     }
     try {
         const secret = process.env.SECRET_KEY

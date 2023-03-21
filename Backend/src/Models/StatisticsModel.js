@@ -6,7 +6,6 @@ const bestProducts = async (date, filter) => {
     if (filter === "day") {
         sql = "select e.data, p.produto, sum(e.valor * e.quantidade) lucro from entradas as e join estoque as es on es.id = e.idEstoque join produtos as p on es.idProduto = p.id WHERE e.data between ? and ? GROUP BY p.id ORDER BY lucro desc;"
     } else if (filter === "monthsOfYear") {
-        console.log(date)
         sql = "select e.data, p.produto, sum(e.valor * e.quantidade) lucro from entradas as e join estoque as es on es.id = e.idEstoque join produtos as p on es.idProduto = p.id WHERE DATE_FORMAT(e.data, '%Y') = ? GROUP BY p.id ORDER BY lucro desc LIMIT 10;"
     } else {
         sql = "select e.data, p.produto, sum(e.valor * e.quantidade) lucro from entradas as e join estoque as es on es.id = e.idEstoque join produtos as p on es.idProduto = p.id GROUP BY p.id ORDER BY lucro desc LIMIT 10;"

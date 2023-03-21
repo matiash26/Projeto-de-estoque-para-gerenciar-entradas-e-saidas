@@ -1,21 +1,37 @@
-import { BrowserRouter as Router} from "react-router-dom"
-import { AuthContext } from "../../Contexts/AuthContext"
-import { useContext } from "react"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import EntriesWithContext from "../../Contexts/WithContexts/EntriesWithContext"
+import ProductWithContext from "../../Contexts/WithContexts/ProductsWithContext"
+import ServiceWithContext from "../../Contexts/WithContexts/ServicesWithContext"
+import StockWithContext from "../../Contexts/WithContexts/StockWithContext"
 import GlobalProvider from "../../Contexts/GlobalContext"
-import Private from "./Private"
-import Login from "./Login"
+import AuthProvider from "../../Contexts/AuthContext"
+import Statistics from "../../pages/Statistics"
+import PrivateRoute from "./PrivateRoute"
+import Profile from "../../pages/Profile"
+import Users from "../../pages/Users"
+import Login from "../../pages/Login"
 
-function Routes() {
-    const {isLogged} = useContext(AuthContext)
+function AppRoutes() {
     return (
-        <div className="App">
+        <BrowserRouter>
             <GlobalProvider>
-                <Router>
-                    {isLogged ? <Private /> : <Login />}
-                </Router>
+                <AuthProvider>
+                    <Routes>
+                        <Route element={<PrivateRoute />}>
+                            <Route path="/*" element={<EntriesWithContext />} />
+                            <Route path="/produtos" element={<ProductWithContext />} />
+                            <Route path="/servicos" element={<ServiceWithContext />} />
+                            <Route path="/estoque" element={<StockWithContext />} />
+                            <Route path="/graficos" element={<Statistics />} />
+                            <Route path="/perfil" element={<Profile />} />
+                            <Route path="/usuarios" element={<Users />} />
+                        </Route>
+                        <Route path="/login" element={<Login />} />
+                    </Routes>
+                </AuthProvider>
             </GlobalProvider>
-        </div>
+        </BrowserRouter>
     )
 }
 
-export default Routes
+export default AppRoutes

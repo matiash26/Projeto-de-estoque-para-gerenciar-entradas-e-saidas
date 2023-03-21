@@ -62,8 +62,10 @@
     margin: auto;
     margin-top: 1rem;
 }
-.btn-login > button{
-    display: inline-block;
+.btn-login > a{
+    display: block;
+    text-align: center;
+    text-decoration: none;
     height: 44px;
     border-radius: .5rem;
     background-color: #2db84d;
@@ -74,7 +76,7 @@
     cursor: pointer;
 }
 
-.btn-login > button:active{
+.btn-login > a:active{
     background-color: #269741;
 }
 
@@ -86,18 +88,9 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    animation: rightSideAnimation 3s infinite alternate-reverse ease-in;
+
 }
 .rightside > div > h1{
     color: white;
     font-size: 3rem;
-}
-@keyframes rightSideAnimation {
-    from{
-        filter: brightness(.7);
-    }
-    to{
-        filter: brightness(1);
-    }
-
 }

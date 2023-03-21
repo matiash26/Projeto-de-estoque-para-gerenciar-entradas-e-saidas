@@ -1,23 +1,23 @@
-const service = require("../Models/ServiceModel")
 const bodyParser = require("body-parser")
-const jwt = require("jsonwebtoken")
+const service = require("../Models/ServiceModel")
 const express = require("express")
 const cors = require("cors")
+const jwt = require("jsonwebtoken")
 require("dotenv").config()
 
 const routes = express.Router()
 routes.use(bodyParser.json())
 routes.use(cors())
 
-routes.get("/services/all", async (req, res) => {
+routes.get("/services/all",verifyToken, async (req, res) => {
     const getData = await service.select()
     res.send(getData)
 })
-routes.get("/services/filter/:start/:offset", async (req, res) => {
+routes.get("/services/filter/:start/:offset",verifyToken, async (req, res) => {
     const found = await service.find(req.params)
     res.send(found)
 })
-routes.post("/services/", (req, res) => {
+routes.post("/services/",verifyToken, (req, res) => {
     const serviceJSON = req.body
     const checkIfExist = serviceJSON.every(el => el.service && el.gasto)
     const checkLenght = serviceJSON.every(el => el.service.length > 0 && el.service.length <= 100 && String(el.gasto).length <= 11)
@@ -34,7 +34,7 @@ routes.post("/services/", (req, res) => {
         res.send({ status: "error", message: "verifique se todos os campos estão preenchidos!" })
     }
 })
-routes.put("/services/", async (req, res) => {
+routes.put("/services/",verifyToken, async (req, res) => {
     const update = req.body
     if (update.service && update.gasto) {
         if (update.service.length > 0 && update.service.length <= 100 && String(update.gasto).length <= 11) {
@@ -51,7 +51,7 @@ routes.put("/services/", async (req, res) => {
         res.send({ status: "error", message: "verifique se todos os campos estão preenchidos!" })
     }
 })
-routes.delete("/services/:id", async (req, res) => {
+routes.delete("/services/:id",verifyToken, async (req, res) => {
     const id = req.params.id
     service.Delete(id)
     res.send(
@@ -62,4 +62,19 @@ routes.delete("/services/:id", async (req, res) => {
     )
 
 })
+function verifyToken(req, res, next) {
+    const authHeader = req.headers["authorization"]
+    const token = authHeader && authHeader.split(" ")[1]
+    if (!token) {
+        return res.send({ status: "error", msg: "Acesso negado!", permission: false })
+    }
+    try {
+        const secret = process.env.SECRET_KEY
+        jwt.verify(token, secret)
+        next()
+    } catch (error) {
+        res.send({ status: "error", msg: "Token inválido!" })
+    }
+
+}
 module.exports = routes

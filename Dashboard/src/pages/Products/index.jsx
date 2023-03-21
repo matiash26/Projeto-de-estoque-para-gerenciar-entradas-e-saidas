@@ -121,7 +121,6 @@ function Products() {
     }, [modalConfirmValue, alert])
     return (
         <div className="Container-Main">
-            {console.log("render")}
             <main className="main-content">
                 {alert && <Notification alert={alert} setAlert={setAlert} />}
                 {modalConfirmIsOpen && <ModalConfirm title="Ocultar" desc="Você realmente deseja ocultar o produto?" setObject={setUpdateOrDelete} />}

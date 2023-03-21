@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken")
 const routes = express.Router()
 require("dotenv").config()
 
-routes.get("/estatistica/historico/:filter", async (req, res) => {
+routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
     const filter = req.params.filter
     const date = new Date();
     const datSQL = { year: 'numeric', month: 'numeric', day: 'numeric' }
@@ -25,4 +25,19 @@ routes.get("/estatistica/historico/:filter", async (req, res) => {
     const expenses = await statistics.expenses(currentDate, filter)
     res.send({ revenue, graph, products, expenses })
 })
+function verifyToken(req, res, next) {
+    const authHeader = req.headers["authorization"]
+    const token = authHeader && authHeader.split(" ")[1]
+    if (!token) {
+        return res.send({ status: "error", msg: "Acesso negado!", permission: false })
+    }
+    try {
+        const secret = process.env.SECRET_KEY
+        jwt.verify(token, secret)
+        next()
+    } catch (error) {
+        res.send({ status: "error", msg: "Token inválido!" })
+    }
+
+}
 module.exports = routes;

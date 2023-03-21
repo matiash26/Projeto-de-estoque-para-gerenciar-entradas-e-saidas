@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react"
 import api from "../services/Api"
+
 export const AuthContext = createContext('')
 
 function AuthProvider({ children }) {
@@ -9,25 +10,30 @@ function AuthProvider({ children }) {
 
     const verifyToken = async () => {
         const token = window.localStorage.getItem("token")
-        if(token){
+        if (token) {
             const { data } = await api.post("/verifyToken", { token })
-            api.defaults.headers.authorization = `Bearer ${token}`
-            setUserName(data.userData.userName)
-            setIsLogged(data.permission)
-            setPicture(data.userData.picture)
+            const permission = data.permission
+            if(permission){
+                setIsLogged(permission)
+                setUserName(data.userData.userName)
+                setPicture(data.userData.picture)
+                api.defaults.headers.authorization = `Bearer ${token}`
+            }
         }
     }
     const handleLogOut = () => {
         window.localStorage.removeItem("token")
         setIsLogged(false)
     }
-    useEffect(()=>{
+    useEffect(() => {
         verifyToken()
-    },[])
+    }, [])
     return (
-        <AuthContext.Provider value={{ setIsLogged, isLogged, verifyToken,
-            handleLogOut,userName, setUserName,
-            setPicture, picture}}>
+        <AuthContext.Provider value={{
+            setIsLogged, isLogged, verifyToken,
+            handleLogOut, userName, setUserName,
+            setPicture, picture
+        }}>
             {children}
         </AuthContext.Provider>
     )
