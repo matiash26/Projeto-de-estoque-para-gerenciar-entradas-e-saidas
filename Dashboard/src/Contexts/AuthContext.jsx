@@ -17,16 +17,6 @@ function AuthProvider({ children }) {
             setPicture(data.userData.picture)
         }
     }
-    const handleLogin = async (userForm) => {
-        const { data } = await api.post("/sign-in/", userForm)
-        if (data.permission) {
-            window.localStorage.setItem("token", data.token)
-            api.defaults.headers.authorization = `Bearer ${data.token}`
-            setIsLogged(data.permission)
-            setUserName(data.userData.userName)
-            setPicture(data.userData.picture)
-        }
-    }
     const handleLogOut = () => {
         window.localStorage.removeItem("token")
         setIsLogged(false)
@@ -35,9 +25,8 @@ function AuthProvider({ children }) {
         verifyToken()
     },[])
     return (
-        <AuthContext.Provider value={{ setIsLogged, isLogged, verifyToken, 
-            handleLogin, handleLogOut,
-            userName, setUserName,
+        <AuthContext.Provider value={{ setIsLogged, isLogged, verifyToken,
+            handleLogOut,userName, setUserName,
             setPicture, picture}}>
             {children}
         </AuthContext.Provider>

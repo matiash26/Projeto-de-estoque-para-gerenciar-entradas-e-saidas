@@ -13,30 +13,33 @@ function Profile() {
     const [alert, setAlert] = useState('')
     const { userName, setUserName, setPicture, picture } = useContext(AuthContext)
     const handleUpdate = async () => {
-        const Token = window.localStorage.getItem("token")
-        if (Token) {
-            const update = {
-                picture,
-                userName,
-                password,
-                newPassword
+        const formData = new FormData();
+        console.log(picture)
+        formData.append('picture', picture?.[0]);
+        formData.append('userName', userName);
+        formData.append('password', password);
+        formData.append('newPassword', newPassword);
+
+        const { data } = await api.post("/users/update", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
             }
-            const { data } = await api.put("/users/update", update)
-            if (data.status === "success") {
-                setAlert(data)
-                setPassword('')
-                setNewPassword('')
-            }
+        });
+        if (data.status === "success") {
+            setPassword('')
+            setNewPassword('')
         }
+        setAlert(data)
     }
     return (
         <div className="Container-Main">
             <main className="main-content">
                 <section className="profile-content">
                     {alert && <Notification alert={alert} setAlert={setAlert} />}
-                    <div className="imageProfile" style={{ backgroundImage: (`url(http://127.0.0.1:3000/images/${picture}`) }}>
+                    <div className="imageProfile">
+                        <img id="imageProfile" src={`http://127.0.0.1:3000/images/${picture}`} alt="Profile Picture" />
                         <label htmlFor="file"><AiOutlineCamera /></label>
-                        <input type="file" name="file" id="file" onChange={({ target }) => setPicture(target.files[0])} />
+                        <input type="file" name="file" id="file" onChange={({ target }) => setPicture(target.files)} />
                     </div>
                     <Input placeholder="usuário..." onChange={({ target }) => setUserName(target.value)} value={userName} />
                     <Input placeholder="senha atual..." type="password" onChange={({ target }) => setPassword(target.value)} value={password} />
