@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import { Navigate, Outlet } from "react-router-dom"
 import { AuthContext } from "../../Contexts/AuthContext";
 import Header from "../Header"
@@ -15,7 +15,8 @@ function PrivateRoute() {
           <Outlet />
         </div>
       </>
-      : <Navigate to="login" />
+      : <Navigate to="/login" />
+
   )
 }
 export default PrivateRoute

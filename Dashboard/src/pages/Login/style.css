@@ -62,7 +62,7 @@
     margin: auto;
     margin-top: 1rem;
 }
-.btn-login > a{
+.btn-login > button{
     display: block;
     text-align: center;
     text-decoration: none;
@@ -76,7 +76,7 @@
     cursor: pointer;
 }
 
-.btn-login > a:active{
+.btn-login > button:active{
     background-color: #269741;
 }
 

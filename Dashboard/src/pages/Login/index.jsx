@@ -1,34 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { FiUser, FiUnlock } from "react-icons/fi"
-import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Contexts/AuthContext";
 import Notification from "../../components/Notification"
 import Input from "../../components/Input";
-import api from "../../services/Api";
 import "./style.css"
 
 function Login() {
     const [password, setPassword] = useState('')
-    const [alert, setAlert] = useState('')
     const [user, setUser] = useState('')
-    const navigate = useNavigate()
-    const { setIsLogged, setUserName, setPicture, isLogged } = useContext(AuthContext)
+    const { handleLogin, alert, setAlert } = useContext(AuthContext)
 
-    const handleLogin = async (user, password) => {
-        const { data } = await api.post("/sign-in/", { user, password })
-        if (data.permission) {
-            window.localStorage.setItem("token", data.token)
-            api.defaults.headers.authorization = `Bearer ${data.token}`
-            setIsLogged(data.permission)
-            setUserName(data.userData.userName)
-            setPicture(data.userData.picture)
-        }
-        setAlert(data)
-    }
-    useEffect(() => {
-        //se o token for válido, redirecione para o dashboard
-        isLogged ? navigate("/") : null
-    }, [isLogged])
     return (
         <div className="login-container">
             <main className="form-container">
@@ -43,7 +24,7 @@ function Login() {
                             <Input type="password" title="senha" value={password} onChange={({ target }) => setPassword(target.value)} icon={<FiUnlock />} />
                         </div>
                         <div className="btn-login">
-                            <Link to="/" onClick={() => handleLogin(user, password)}>ENTRAR</Link>
+                            <button type="button" onClick={() => handleLogin(user, password)}>ENTRAR</button>
                         </div>
                     </form>
                 </section>

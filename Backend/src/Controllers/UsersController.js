@@ -93,8 +93,12 @@ routes.post("/users/update", verifyToken, async (req, res) => {
 })
 routes.post("/verifyToken", (req, res) => {
     const token = req.body.token
-    const userData = jwt.decode(token)
-    res.send({ status: "success", permission: true, userData })
+    try {
+        const userData = jwt.verify(token, secret)
+        res.send({ status: "success", permission: true, userData })
+    } catch (error) {
+        res.send({ status: "success", permission: false})
+    }
 
 })
 function verifyToken(req, res, next) {

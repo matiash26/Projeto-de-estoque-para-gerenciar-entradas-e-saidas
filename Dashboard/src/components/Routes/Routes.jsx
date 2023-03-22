@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom"
 import EntriesWithContext from "../../Contexts/WithContexts/EntriesWithContext"
 import ProductWithContext from "../../Contexts/WithContexts/ProductsWithContext"
 import ServiceWithContext from "../../Contexts/WithContexts/ServicesWithContext"
@@ -14,22 +14,23 @@ import Login from "../../pages/Login"
 function AppRoutes() {
     return (
         <BrowserRouter>
-            <GlobalProvider>
-                <AuthProvider>
+            <AuthProvider>
+                <GlobalProvider>
                     <Routes>
-                        <Route element={<PrivateRoute />}>
-                            <Route path="/*" element={<EntriesWithContext />} />
+                        <Route path="/" element={<PrivateRoute />}>
+                            <Route index element={<EntriesWithContext />} />
                             <Route path="/produtos" element={<ProductWithContext />} />
-                            <Route path="/servicos" element={<ServiceWithContext />} />
+                            <Route path="/serviços" element={<ServiceWithContext />} />
                             <Route path="/estoque" element={<StockWithContext />} />
                             <Route path="/graficos" element={<Statistics />} />
                             <Route path="/perfil" element={<Profile />} />
                             <Route path="/usuarios" element={<Users />} />
                         </Route>
+                        <Route path="/*" element={<h1>PAGINA NÃO ENCONTRADA</h1>} />
                         <Route path="/login" element={<Login />} />
                     </Routes>
-                </AuthProvider>
-            </GlobalProvider>
+                </GlobalProvider>
+            </AuthProvider>
         </BrowserRouter>
     )
 }

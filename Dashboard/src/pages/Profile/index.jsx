@@ -14,7 +14,6 @@ function Profile() {
     const { userName, setUserName, setPicture, picture } = useContext(AuthContext)
     const handleUpdate = async () => {
         const formData = new FormData();
-        console.log(picture)
         formData.append('picture', picture?.[0]);
         formData.append('userName', userName);
         formData.append('password', password);

@@ -23,7 +23,7 @@ function Aside() {
                         <li><Link to="/"><BiLayout /><span className={modelOpen ? "text-btn" : "open"}>Dashboard</span></Link></li>
                         <li><Link to="/estoque"><BiBox /><span className={modelOpen ? "text-btn" : "open"}>Estoque</span></Link></li>
                         <li><Link to="/produtos"><FiBox /><span className={modelOpen ? "text-btn" : "open"}>Produtos</span></Link></li>
-                        <li><Link to="/serviço"><BsGear /><span className={modelOpen ? "text-btn" : "open"}>Serviços</span></Link></li>
+                        <li><Link to="/serviços"><BsGear /><span className={modelOpen ? "text-btn" : "open"}>Serviços</span></Link></li>
                         <li><Link to="/graficos"><BiBarChartAlt2 /><span className={modelOpen ? "text-btn" : "open"}>Gráficos</span></Link></li>
                     </ul>
                     <div className="btnAside ">
