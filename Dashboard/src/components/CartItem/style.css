@@ -3,13 +3,17 @@
     display: flex;
     justify-content: space-between;
 }
-.productTop > h4, .productTop > span{
+
+.productTop>h4,
+.productTop>span {
     color: #4c4e50;
 }
-#valueProduct{
+
+#valueProduct {
     font-size: .8rem;
     font-weight: 500;
 }
+
 .quantity-content {
     padding-left: 1rem;
 }
@@ -21,11 +25,11 @@
 
 .quantity-content>input[type="number"] {
     height: 25px;
-    width: 76px;
+    width: 60px;
     padding: .5rem;
     text-align: center;
     border: 1px solid #ced4da;
-    border-radius: .5rem;
+    border-radius: .3rem;
     outline: none;
 }
 

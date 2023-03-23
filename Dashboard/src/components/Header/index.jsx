@@ -23,7 +23,7 @@ function Header() {
                         <ul className={`userOptions ${userMenu ? "show" : ""}`}>
                             <li onClick={handleBtnUser}><Link to="perfil">Perfil</Link></li>
                             <li onClick={handleBtnUser}><Link to="usuarios">Usuários</Link></li>
-                            <li onClick={handleLogOut}>Sair</li>
+                            <li onClick={handleLogOut} id="exit">Sair</li>
                         </ul>
                     </div>
                 </ul>

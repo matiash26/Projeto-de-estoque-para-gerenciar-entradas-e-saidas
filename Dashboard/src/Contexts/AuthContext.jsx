@@ -18,10 +18,10 @@ function AuthProvider({ children }) {
             const { data } = await api.post("/verifyToken", { token })
             const permission = data.permission
             if (permission) {
+                api.defaults.headers.authorization = `Bearer ${token}`
                 setPicture(data.userData.picture)
                 setUserName(data.userData.userName)
                 setIsLogged(data.permission)
-                api.defaults.headers.authorization = `Bearer ${token}`
                 navigate(location.pathname)
             }
         }
@@ -40,8 +40,12 @@ function AuthProvider({ children }) {
         setAlert(data)
     }
     const handleLogOut = () => {
+        api.defaults.headers.authorization = ""
         window.localStorage.removeItem("token")
         setIsLogged(false)
+        setUserName(null)
+        setPicture(null)
+        setAlert(null)
     }
     useEffect(() => {
         verifyToken()

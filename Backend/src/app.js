@@ -19,4 +19,5 @@ app.use(EntriesController)
 app.use(ServiceController)
 app.use(StatisticsController)
 app.use(UsersController)
+//tive que utilizar o middlewar de verificar Token individualmente para não utilizar no end point de registro e login 
 app.listen(3000, () => console.log("API ON"))

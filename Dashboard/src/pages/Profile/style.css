@@ -11,7 +11,7 @@
     width: 160px;
     height: 160px;
     border-radius: 50%;
-    background-color: #949596;
+    background-color: #D98C71;
     margin-bottom: 1rem;
     position: relative;
 }
@@ -33,6 +33,7 @@
 }
 .imageProfile > label > svg{
     font-size: 1.6rem;
+    color: #D98C71;
 }
 .profile-content > .search {
     margin-bottom: 1rem;
@@ -46,5 +47,5 @@
     border-radius: 100%;
     object-fit: cover;
     object-position: center;
-    border: .4rem solid white;
+    border: .4rem solid #d98c71;
 }

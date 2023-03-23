@@ -8,8 +8,8 @@ const select = async () => {
 }
 const insert = async (userName, Password) => {
     const mysql = await client()
-    const sql = "INSERT INTO usuarios(user, data, password) VALUES(?, ?, ?)"
-    const insert = [userName, getDate(), Password]
+    const sql = "INSERT INTO usuarios(picture, user, data, password) VALUES(?, ?, ?, ?)"
+    const insert = ["default.jpg", userName, getDate(), Password]
     try {
         await mysql.query(sql, insert)
         return true

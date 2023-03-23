@@ -12,9 +12,14 @@ function Login() {
 
     return (
         <div className="login-container">
+            <div className="leftSide">
+                <div className="welcomeText">
+                    <h1>SISTEMA DE ESTOQUE</h1>
+                </div>
+            </div>
             <main className="form-container">
                 <section>
-                    <h3>Faça Login</h3>
+                    <h1>ENTRAR</h1>
                     <form className="form-login">
                         {alert && <Notification alert={alert} setAlert={setAlert} />}
                         <div>
@@ -29,11 +34,6 @@ function Login() {
                     </form>
                 </section>
             </main>
-            <div className="rightside">
-                <div>
-                    <h1>BEM VINDO AO SISTEMA</h1>
-                </div>
-            </div>
         </div>
     )
 }

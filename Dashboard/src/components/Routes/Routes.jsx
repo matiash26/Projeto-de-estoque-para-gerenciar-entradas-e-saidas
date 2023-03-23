@@ -19,15 +19,15 @@ function AppRoutes() {
                     <Routes>
                         <Route path="/" element={<PrivateRoute />}>
                             <Route index element={<EntriesWithContext />} />
-                            <Route path="/produtos" element={<ProductWithContext />} />
-                            <Route path="/serviços" element={<ServiceWithContext />} />
-                            <Route path="/estoque" element={<StockWithContext />} />
-                            <Route path="/graficos" element={<Statistics />} />
-                            <Route path="/perfil" element={<Profile />} />
-                            <Route path="/usuarios" element={<Users />} />
+                            <Route exact path="/produtos" element={<ProductWithContext />} />
+                            <Route exact path="/serviços" element={<ServiceWithContext />} />
+                            <Route exact path="/estoque" element={<StockWithContext />} />
+                            <Route exact path="/graficos" element={<Statistics />} />
+                            <Route exact path="/perfil" element={<Profile />} />
+                            <Route exact path="/usuarios" element={<Users />} />
                         </Route>
+                        <Route path="/login" element={<Login/>} />
                         <Route path="/*" element={<h1>PAGINA NÃO ENCONTRADA</h1>} />
-                        <Route path="/login" element={<Login />} />
                     </Routes>
                 </GlobalProvider>
             </AuthProvider>

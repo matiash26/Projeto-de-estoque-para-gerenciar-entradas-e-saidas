@@ -4,7 +4,7 @@ aside {
     min-height: 100%;
     position: fixed;
     z-index: 1;
-    background-color: #101a32;
+    background-color: #013440;
     transition: 150ms;
     box-shadow: -3px 3px 4px 1px #00000017;
 }
@@ -72,17 +72,18 @@ aside {
     border-bottom: 1px solid #ffffff18;
 }
 .menulist li:active {
-    background-color: #18233b;
+    background-color: #023946;
 }
 .menulist li:before {
     content: "";
     height: 95%;
-    width: .2rem;
+    width: .3rem;
     margin-right: .3rem;
+    border-radius: .1rem;
 }
 
 .menulist li:hover::before {
-    background-color: #28a745;
+    background-color: #D96E48;
 }
 .btnAside>button {
     width: 30px;

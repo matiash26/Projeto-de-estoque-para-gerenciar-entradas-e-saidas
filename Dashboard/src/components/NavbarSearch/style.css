@@ -7,7 +7,7 @@
     box-shadow: -3px 3px 4px 1px #00000017;
     border-radius: .5rem;
     padding: 1rem 2.4rem;
-    height: 14vh;
+    min-height: 14vh;
     gap: 1rem;
     width: 100%;
 }
@@ -39,7 +39,7 @@
 #date{
     width:36%;
     min-width: 160px;
-    height: 44px;
+    height: 48px;
     outline: none;
     padding: 0 1rem;
     border: 1px solid #ced4da;
@@ -48,4 +48,21 @@
 }
 .Container{
     width: 100%;
+}
+@media (max-width:808px){
+    .form-filter{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0;
+        text-align: center;
+    }
+    .filter-container{
+        display: flex;
+        flex: 1;
+        gap: 1rem;
+    }
+    .filter-search,.filter-active{
+        width: 160px;
+    }
 }

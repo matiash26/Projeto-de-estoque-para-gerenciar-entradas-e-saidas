@@ -1,6 +1,6 @@
-.login-container{
+.login-container  {
     display: grid;
-    grid-template-columns: 45% auto;
+    grid-template-columns: 1fr 1fr;
     min-height: 100vh;
     width: 100vw;
 }
@@ -18,21 +18,24 @@
     width: 100%;
     margin-bottom: 8rem;
 }
-.form-container section >  h3 {
+.form-container section >  h1 {
     color: #595b5cc7;
     font-weight: bold;
     text-transform: uppercase;
+    font-size: 2.2rem;
 }
 .form-login{
     display: flex;
     flex-direction: column;
     gap: 1.3rem;
+    padding-top: 1.6rem;
 }
-.form-login{
-    padding-top: 2rem;
+.welcomeText{
+    text-align: center;
+    -webkit-user-select: none;
 }
 .form-login #label{
-    color: #595b5c5e;
+    color: #3838385e;
     text-transform: capitalize;
     font-weight: 500;
 }
@@ -44,7 +47,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background-color: #94b2fd;
+    background-color: #1D5868;
     height: 3px;
     width: 0px;
     transition: .5s;
@@ -56,7 +59,6 @@
 }
 .btn-login{
     margin-top: 1rem;
-    background-color: black;
     border-radius: .5rem;
     width: 66%;
     margin: auto;
@@ -68,7 +70,7 @@
     text-decoration: none;
     height: 44px;
     border-radius: .5rem;
-    background-color: #2db84d;
+    background-color: #D96E48;
     padding: .5rem 0;
     width: 100%;
     border: none;
@@ -77,20 +79,32 @@
 }
 
 .btn-login > button:active{
-    background-color: #269741;
+    background-color: #d96f48a6;
 }
 
-.rightside{
+.leftSide{
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url("../../../public//background-login.jpg");
+    background-image: url("../../../public//background-login.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 
 }
-.rightside > div > h1{
+.leftSide > div > h1{
     color: white;
     font-size: 3rem;
+}
+@media (max-width:610px) {
+    .login-container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background-color: #f6f5fb;
+    }
+    .leftSide{
+        display: none;
+    }
 }

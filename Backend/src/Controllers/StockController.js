@@ -5,7 +5,7 @@ require("dotenv").config()
 
 const routes = express.Router()
 
-routes.get("/stock/all", async (req, res) => {
+routes.get("/stock/all",verifyToken, async (req, res) => {
     const stockItems = await stock.select()
     const onlyStatusActive = stockItems.filter(each => each.status === "1")
     res.send(onlyStatusActive)
