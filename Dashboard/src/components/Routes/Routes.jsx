@@ -26,7 +26,7 @@ function AppRoutes() {
                             <Route exact path="/perfil" element={<Profile />} />
                             <Route exact path="/usuarios" element={<Users />} />
                         </Route>
-                        <Route path="/login" element={<Login/>} />
+                        <Route path="/login" element={<Login />} />
                         <Route path="/*" element={<h1>PAGINA NÃO ENCONTRADA</h1>} />
                     </Routes>
                 </GlobalProvider>
@@ -34,5 +34,4 @@ function AppRoutes() {
         </BrowserRouter>
     )
 }
-
 export default AppRoutes

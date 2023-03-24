@@ -8,14 +8,19 @@ routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
     const filter = req.params.filter
     const date = new Date();
     const datSQL = { year: 'numeric', month: 'numeric', day: 'numeric' }
+
+    const day = date.getDate()
+    const month = (date.getMonth() + 1).toString().padStart(2, "0")
+    const year = date.getFullYear()
+
     let currentDate = {
         start: "",
         today: date.toLocaleDateString("pt-BR", datSQL).split("/").reverse().join("-"),
     }
     if (filter === "day") {
-        currentDate.start = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate() - 7}`
+        currentDate.start = `${year}-${month}-${day - 7}`
     } else if (filter === "monthsOfYear") {
-        currentDate.start = date.getFullYear()
+        currentDate.start = year
     } else if (filter === "year") {
         currentDate.start = "year"
     }
@@ -23,7 +28,19 @@ routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
     const graph = await statistics.graphRevenue(currentDate, filter)
     const products = await statistics.bestProducts(currentDate, filter)
     const expenses = await statistics.expenses(currentDate, filter)
-    res.send({ revenue, graph, products, expenses })
+    const expensesFilled = graph.map(sales => {
+        let newExpense = { mes: "", gasto: "" }
+        const getMonth = expenses.find(month => month.mes == sales.mes)
+        if (getMonth) {
+            return getMonth
+        } else {
+            newExpense.mes = sales.mes
+            newExpense.gasto = 0
+            return newExpense
+        }
+    })
+    //se não tiver despesas no mês retorne 0 para que tenha a mesma quantidade de dados na lista
+    res.send({ revenue, graph, products, expenses: expensesFilled })
 })
 function verifyToken(req, res, next) {
     const authHeader = req.headers["authorization"]

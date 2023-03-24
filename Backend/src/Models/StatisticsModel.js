@@ -32,7 +32,7 @@ const graphRevenue = async (date, filter) => {
     if (filter === "day") {
         sql = "SELECT DATE_FORMAT(data, '%d/%m/%Y') AS mes, COUNT(*) AS quantidade, SUM(valor * quantidade) AS lucro, DATE_FORMAT(data, '%Y-%m') AS mes_ordenado FROM entradas WHERE data between ? and ? GROUP BY DATE_FORMAT(data, '%d') ORDER BY mes;"
     } else if (filter === "monthsOfYear") {
-        sql = "SELECT DATE_FORMAT(data, '%M de %Y') AS mes, COUNT(*) AS quantidade, SUM(valor * quantidade) AS lucro, DATE_FORMAT(data, '%Y-%m') AS mes_ordenado FROM entradas WHERE DATE_FORMAT(data, '%Y') = ? GROUP BY DATE_FORMAT(data, '%M') ORDER BY mes;"
+        sql = "SELECT DATE_FORMAT(data, '%M de %Y') AS mes, COUNT(*) AS quantidade, SUM(valor * quantidade) AS lucro, DATE_FORMAT(data, '%Y-%m') AS mes_ordenado FROM entradas WHERE DATE_FORMAT(data, '%Y') = ? GROUP BY DATE_FORMAT(data, '%M') ORDER BY mes_ordenado;"
     } else {
         sql = "SELECT DATE_FORMAT(data, '%Y') AS mes, COUNT(*) AS quantidade, SUM(valor * quantidade) AS lucro, DATE_FORMAT(data, '%Y-%m') AS mes_ordenado FROM entradas GROUP BY DATE_FORMAT(data, '%Y') ORDER BY mes;"
     }

@@ -2,6 +2,7 @@ const express = require("express")
 const entries = require("../Models/EntriesModel")
 const stock = require("../Models/StockModel")
 const jwt = require("jsonwebtoken")
+
 const routes = express.Router()
 
 routes.get("/entries/all",verifyToken, async (req, res) => {

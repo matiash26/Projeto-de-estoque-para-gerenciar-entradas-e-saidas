@@ -75,7 +75,7 @@ function Statistics() {
             <section className="section-container">
                 <div className="left-content">
                     <div className="top-item">
-                        <Cards title="Total Ganho" icon={<BiDollar />} value={cardsData.ganhos} color="green" />
+                        <Cards title="Total de lucro" icon={<BiDollar />} value={cardsData.ganhos} color="green" />
                         <Cards title="Despesas" icon={<BiDetail />} value={cardsData.gasto} color="red" />
                     </div>
                     <div className="middle-item">
