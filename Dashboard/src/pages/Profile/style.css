@@ -41,11 +41,9 @@
 .profile-content > .btn > button {
     margin: auto;
 }
-#imageProfile{
-    width: 100%;
-    height: 100%;
+.imageProfile{
     border-radius: 100%;
-    object-fit: cover;
-    object-position: center;
+    background: transparent no-repeat center ;
+    background-size: cover;
     border: .4rem solid #d98c71;
 }

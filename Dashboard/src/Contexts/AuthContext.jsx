@@ -27,6 +27,7 @@ function AuthProvider({ children }) {
         }
     }
     const handleLogin = async (user, password) => {
+        setAlert('')
         const { data } = await api.post("/sign-in/", { user, password })
         if (!isLogged && data.permission) {
             window.localStorage.setItem("token", data.token)

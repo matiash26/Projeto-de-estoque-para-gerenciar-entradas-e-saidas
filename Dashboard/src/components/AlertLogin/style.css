@@ -1,0 +1,35 @@
+.alertLoginContainer{
+    max-width: 460px;
+    width: 100%;
+    height: 46px;
+    overflow: hidden;
+    position: absolute;
+}
+.alertLogin{
+    display: flex;
+    align-items: center;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: .6rem;
+    border-radius: .5rem;
+    max-width: 460px;
+    width: 100%;
+    position: absolute;
+    top: -44px;
+    animation: alertLogin .3s .2s forwards;
+}
+.alertLogin > svg{
+    color: #721c24;
+    font-size: 1.6rem;
+    margin-right: .6rem;
+    position: absolute;
+}
+.alertLogin > p {
+    color: #721c24;
+    margin: auto;
+}
+@keyframes alertLogin {
+    to{
+        top: 0;
+    }
+}

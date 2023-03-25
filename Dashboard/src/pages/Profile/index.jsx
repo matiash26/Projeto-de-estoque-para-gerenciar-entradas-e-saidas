@@ -35,8 +35,7 @@ function Profile() {
             <main className="main-content">
                 <section className="profile-content">
                     {alert && <Notification alert={alert} setAlert={setAlert} />}
-                    <div className="imageProfile">
-                        <img id="imageProfile" src={`http://127.0.0.1:3000/images/${picture}`} alt="Profile Picture" />
+                    <div className="imageProfile" style={{backgroundImage: `url(http://127.0.0.1:3000/images/${picture})`}}>
                         <label htmlFor="file"><AiOutlineCamera /></label>
                         <input type="file" name="file" id="file" onChange={({ target }) => setPicture(target.files)} />
                     </div>
