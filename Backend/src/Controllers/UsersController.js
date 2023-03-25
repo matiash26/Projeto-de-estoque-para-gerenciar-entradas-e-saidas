@@ -53,7 +53,10 @@ routes.post("/sign-in/", async (req, res) => {
 })
 routes.get("/users/list", verifyToken, async (req, res) => {
     const user = await users.select()
-    res.send(user)
+    const token = req.headers["authorization"].split(" ")[1]
+    const decode = jwt.decode(token)
+    const listWithOutUserLogged = user.filter(({user}) => user != decode.userName)
+    res.send(listWithOutUserLogged)
 })
 routes.delete("/users/delete", verifyToken, async (req, res) => {
     const id = req.query.id

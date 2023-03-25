@@ -9,6 +9,17 @@
     color: #4c4e50;
 }
 
+.cartItem {
+    max-width: 576px;
+    width: 100%;
+    padding: 1rem 1rem;
+    position: relative;
+    border-radius: .5rem;
+    opacity: 0;
+    top: -20px;
+    animation: modal .3s forwards;
+}
+
 #valueProduct {
     font-size: .8rem;
     font-weight: 500;

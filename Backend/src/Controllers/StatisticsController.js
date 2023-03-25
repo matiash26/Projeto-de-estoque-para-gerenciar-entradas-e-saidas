@@ -6,8 +6,8 @@ require("dotenv").config()
 
 routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
     const filter = req.params.filter
-    const date = new Date();
     const datSQL = { year: 'numeric', month: 'numeric', day: 'numeric' }
+    const date = new Date();
 
     const day = date.getDate()
     const month = (date.getMonth() + 1).toString().padStart(2, "0")

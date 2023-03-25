@@ -10,7 +10,7 @@ async function client() {
         port: 3306,
         user: 'root',
         password: '',
-        database: 'sistema',
+        database: 'teste',
         connectionLimit: 10
     });
     return globalPool;

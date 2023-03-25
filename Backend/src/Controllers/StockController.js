@@ -38,7 +38,6 @@ routes.post("/stock/", verifyToken, (req, res) => {
 })
 routes.put("/stock/", verifyToken, async (req, res) => {
     const update = req.body
-    console.log(update)
     if (update.produto && update.estoque) {
         if (update.produto.length >= 1 && update.produto.length <= 100 && String(update.estoque).length <= 8 && String(update.estoque).length >= 1) {
             const response = await stock.update(update)

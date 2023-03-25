@@ -35,6 +35,10 @@
     font-size: 3rem;
     color: #FFFFFF;
 }
+
+.cards_content .green-g:active {
+    background: initial;
+}
 .cards_content > span{
     display: flex;
     border-radius: .5rem;

@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "nodemon src/app.js"
+    "start": "nodemon src/app.js",
+    "migration": "node src/migration.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

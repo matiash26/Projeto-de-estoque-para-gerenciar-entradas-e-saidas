@@ -4,7 +4,7 @@ import "./style.css"
 
 function CartItem(props) {
     return (
-        <li className="modal-content">
+        <li className="cartItem">
             <div className="productTop">
                 <h4>{props.item.produto}<span id="valueProduct"> - R$: {props.item.valor}</span></h4>
                 <span>R$: {props.item.total}</span>
