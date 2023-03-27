@@ -1,4 +1,5 @@
 const { createPool } = require('mysql2/promise');
+require("dotenv").config()
 
 let globalPool = null;
 async function client() {
@@ -6,11 +7,11 @@ async function client() {
         return globalPool;
     }
     globalPool = await createPool({
-        host: 'localhost',
+        host: process.env.HOST,
         port: 3306,
-        user: 'root',
-        password: '',
-        database: 'teste',
+        user: process.env.USER,
+        password: process.env.PASS,
+        database: process.env.DATABASE,
         connectionLimit: 10
     });
     return globalPool;

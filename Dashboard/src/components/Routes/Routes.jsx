@@ -7,6 +7,7 @@ import GlobalProvider from "../../Contexts/GlobalContext"
 import AuthProvider from "../../Contexts/AuthContext"
 import Statistics from "../../pages/Statistics"
 import PrivateRoute from "./PrivateRoute"
+import NotFound from "../../pages/NotFound"
 import Profile from "../../pages/Profile"
 import Users from "../../pages/Users"
 import Login from "../../pages/Login"
@@ -27,7 +28,7 @@ function AppRoutes() {
                             <Route exact path="/usuarios" element={<Users />} />
                         </Route>
                         <Route path="/login" element={<Login />} />
-                        <Route path="/*" element={<h1>PAGINA NÃO ENCONTRADA</h1>} />
+                        <Route path="/*" element={<NotFound/>} />
                     </Routes>
                 </GlobalProvider>
             </AuthProvider>

@@ -32,12 +32,12 @@ function Statistics() {
                 borderWidth: 2.4,
                 fill: true,
                 borderColor: '#dc3545',
-                backgroundColor: ['rgb(32, 134, 55)'],
+                backgroundColor: ['#dc3545'],
                 data: filter != 'day' ? statistic?.expenses?.map(({ gasto }) => gasto) : null
             },
             {
                 type: "bar",
-                label: 'lucro R$ ',
+                label: 'Receita R$ ',
                 backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
                 borderWidth: 2,
                 fill: false,
