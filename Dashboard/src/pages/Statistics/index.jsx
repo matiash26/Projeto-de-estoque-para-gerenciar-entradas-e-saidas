@@ -33,7 +33,7 @@ function Statistics() {
                 fill: true,
                 borderColor: '#dc3545',
                 backgroundColor: ['#dc3545'],
-                data: filter != 'day' ? statistic?.expenses?.map(({ gasto }) => gasto) : null
+                data: filter != 'day' ? statistic?.expensesFilled?.map(({ gasto }) => gasto) : null
             },
             {
                 type: "bar",
