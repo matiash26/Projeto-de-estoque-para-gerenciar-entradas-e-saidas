@@ -1,79 +1,79 @@
-.notification{
-    background-color: #FFFFFF;
-    height: 70px;
-    width: 400px;
-    align-items: center;
-    display: flex;
-    position: fixed;
-    z-index: 1;
-    right: -400px;
-    z-index: 2;
-    border-radius: .3rem;
-    animation: toastOpen .8s forwards  cubic-bezier(0.3, 0.53, 0.5, 1.05);
+.notification {
+  background-color: #ffffff;
+  height: 70px;
+  width: 400px;
+  align-items: center;
+  display: flex;
+  position: fixed;
+  z-index: 1;
+  right: -400px;
+  z-index: 2;
+  border-radius: 0.3rem;
+  animation: toastOpen 0.8s forwards cubic-bezier(0.3, 0.53, 0.5, 1.05);
+  box-shadow: 1px 2px 10px -4px #000000ba;
 }
-.notification:before{
-    content: "";
-    width: 5px;
-    height: 100%;
-    border-radius: .3rem 0 0 .3rem;
+.notification:before {
+  content: "";
+  width: 5px;
+  height: 100%;
+  border-radius: 0.3rem 0 0 0.3rem;
 }
-.notification > svg{
-    margin: 0 .6rem;
-    font-size: 2rem;
+.notification > svg {
+  margin: 0 0.6rem;
+  font-size: 2rem;
 }
 
-.notification-msg > p{
-    color: #616466;
+.notification-msg > p {
+  color: #616466;
 }
-.btnExit{
-    position: absolute;
-    right: 5px;
-    top: 0;
-    font-size: 1.2rem;
-    cursor: pointer;
+.btnExit {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
-.success > svg{
-    color: #28A745;
+.success > svg {
+  color: #28a745;
 }
-.success > span{
-    color: #28A745;
+.success > span {
+  color: #28a745;
 }
-.error{
-    color: #DC3545;
+.error {
+  color: #dc3545;
 }
-.error > svg{
-    color: #DC3545;
+.error > svg {
+  color: #dc3545;
 }
-.notification-msg > span{
-    font-size: 1.3rem;
-
+.notification-msg > span {
+  font-size: 1.3rem;
 }
 
 .error .notification-msg > p {
-    font-size: .9rem;
+  font-size: 0.9rem;
 }
-.success::before{
-    background-color: #28A745;
+.success::before {
+  background-color: #28a745;
 }
-.error::before{
-    background-color: #DC3545;
+.error::before {
+  background-color: #dc3545;
 }
-.hidden{
-    animation: toastHidden .8s forwards  cubic-bezier(0.42, 0.16, 0.14, 0.95);
+.hidden {
+  animation: toastHidden 0.8s forwards cubic-bezier(0.42, 0.16, 0.14, 0.95);
 }
 @keyframes toastOpen {
-    from{
-        right: -400px;
-    }
-    to{
-        right: 10px;
-    }
+  from {
+    right: -400px;
+  }
+  to {
+    right: 10px;
+  }
 }
 @keyframes toastHidden {
-    from{
-        right: 10px;
-    }
-    to{
-        right: -400px;
-    }
+  from {
+    right: 10px;
+  }
+  to {
+    right: -400px;
+  }
 }

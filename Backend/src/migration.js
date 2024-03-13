@@ -1,10 +1,10 @@
-const { client } = require("../config/database")
+const { client } = require("../config/database");
 const date = new Date();
-const day = date.getDate()
-const month = (date.getMonth() + 1).toString().padStart(2, "0")
-const year = date.getFullYear()
+const day = date.getDate();
+const month = (date.getMonth() + 1).toString().padStart(2, "0");
+const year = date.getFullYear();
 async function createSchema() {
-  const mysql = await client()
+  const mysql = await client();
   mysql.query(`
     CREATE TABLE IF NOT EXISTS produtos(
       id int AUTO_INCREMENT not null,
@@ -12,7 +12,7 @@ async function createSchema() {
       status enum('1', '0') DEFAULT NULL,
       valor decimal(10, 2) DEFAULT NULL,
       PRIMARY KEY (id)
-    ) engine = INNODB CHARACTER SET utf8mb4;`)
+    ) engine = INNODB CHARACTER SET utf8mb4;`);
 
   mysql.query(`
     CREATE TABLE IF NOT EXISTS estoque(
@@ -23,21 +23,21 @@ async function createSchema() {
       estoque int not null,
       PRIMARY KEY (id),
       FOREIGN KEY (idProduto) REFERENCES produtos(id)
-      ) engine = INNODB CHARACTER SET utf8mb4;`)
+      ) engine = INNODB CHARACTER SET utf8mb4;`);
 
   mysql.query(`
     CREATE TABLE IF NOT EXISTS servicos(
     id int AUTO_INCREMENT not null,
-    servico varchar(100) unique not null,
+    servico varchar(100) not null,
     data DATE not null,
     gasto decimal(10,2) not null,
     PRIMARY KEY (id)
-    ) engine = INNODB CHARACTER SET utf8mb4;`)
+    ) engine = INNODB CHARACTER SET utf8mb4;`);
 
   mysql.query(`
     CREATE TABLE IF NOT EXISTS entradas(
       id int AUTO_INCREMENT not null,
-      pedido varchar(10) unique not null,
+      pedido varchar(10) not null,
       idEstoque int(11) NOT NULL,
       data DATE not null,
       valor decimal(10, 2) not null,
@@ -45,7 +45,7 @@ async function createSchema() {
       PRIMARY KEY(id),
       FOREIGN KEY(idEstoque) REFERENCES estoque(id)
     ) engine = INNODB CHARACTER SET utf8mb4;
-    `)
+    `);
   mysql.query(`
     CREATE TABLE IF NOT EXISTS usuarios (
       id int(11) NOT NULL AUTO_INCREMENT,
@@ -56,13 +56,16 @@ async function createSchema() {
       PRIMARY KEY (id),
       UNIQUE KEY user (user)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8
-    `)
+    `);
   try {
-    const response =  await mysql.query(`INSERT INTO usuarios(picture, user, data, password) VALUES("default.jpg", "admin", "${year}-${month}-${day}", "$2b$10$7DJEatoQOfdfmcryj1suaeFWnkU43LCgVss4UWtpR/9QXKnV9D4Ee")`)
-    response.code == "ER_DUP_ENTRY" ? console.log("Usuário já é registrado") : console.log("USUÁRIO: admin | SENHA: 123")
-    
+    const response = await mysql.query(
+      `INSERT INTO usuarios(picture, user, data, password) VALUES("default.jpg", "admin", "${year}-${month}-${day}", "$2b$10$7DJEatoQOfdfmcryj1suaeFWnkU43LCgVss4UWtpR/9QXKnV9D4Ee")`
+    );
+    response.code == "ER_DUP_ENTRY"
+      ? console.log("Usuário já é registrado")
+      : console.log("USUÁRIO: admin | SENHA: 123");
   } catch (error) {
-    console.log("ERRO: VERIFIQUE SE JÁ FOI CRIADO O USUÁRIO")
+    console.log("ERRO: VERIFIQUE SE JÁ FOI CRIADO O USUÁRIO");
   }
 }
-createSchema()
+createSchema();

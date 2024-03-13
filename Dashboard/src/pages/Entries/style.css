@@ -1,91 +1,77 @@
 .Container-Main {
-    display: flex;
-    justify-content: center;
-    max-width: 1400px;
-    width: 100%;
-    margin: auto;
-    margin-top: 1.5rem;
-    position: relative;
-    opacity: 0;
-    left: -20px;
-    animation: main-content .3s forwards;
+  display: flex;
+  justify-content: center;
+  max-width: 1400px;
+  width: 100%;
+  margin: auto;
+  margin-top: 1.5rem;
+  position: relative;
+  opacity: 0;
+  left: -20px;
+  animation: main-content 0.3s forwards;
 }
 .main-content {
-    width: 100%;
-    border-radius: .5rem;
-    margin-left: 50px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 .modal-search {
-    padding: 1rem 0;
-    border-bottom: 1px solid #EFF1F3;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eff1f3;
 }
-.modal-search > div{
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
+.modal-search > div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 .modal-search > div > h4 {
-    color: #6C757D;
+  color: #6c757d;
 }
 .modal-search > .btn > button {
-    margin: auto;
+  margin: auto;
 }
-.modal-search > div >.autocomplet-Container{
-    width: 70%;
-    margin-left: .8rem;
+.modal-search > div > .autocomplet-Container {
+  width: 70%;
+  margin-left: 0.8rem;
 }
-.modal-search >.btn {
- margin: auto;
+.modal-search > .btn {
+  margin: auto;
 }
 .form-historic {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 300px;
 }
 .listProductDatas {
-    overflow-y: auto;
-    height: 380px;
+  overflow-y: auto;
+  height: 380px;
 }
 
 .listProductDatas::-webkit-scrollbar {
-    width: 12px;
-    background-color: #F5F5F5;
+  width: 12px;
+  background-color: #f5f5f5;
 }
 
 .listProductDatas::-webkit-scrollbar-thumb {
-    background-color: #c5c7c9;
-    border-radius: .5rem;
+  background-color: #c5c7c9;
+  border-radius: 0.5rem;
 }
 
-.modal-total {
-    padding-top: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    border-top: 1px solid #EFF1F3;
-}
-
-.modal-total>p {
-    font-size: 1rem;
-    position: absolute;
-    right: 0;
-}
-.modal-search>.select-container {
-    width: 72.8%;
+.modal-search > .select-container {
+  width: 72.8%;
 }
 
 .btn-main {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 @keyframes main-content {
-    to{
-        opacity: 1;
-        left: 0;
-    }
+  to {
+    opacity: 1;
+    left: 0;
+  }
 }

@@ -1,16 +1,16 @@
-import "./style.css"
+import "./style.css";
 function Table({ th, children }) {
-    return (
-        <table className="tableScreen">
-            <thead>
-                <tr>
-                    {th?.map((column, x) => <th key={x}>{column}</th>)}
-                </tr>
-            </thead>
-            <tbody>
-                {children}
-            </tbody>
-        </table>
-    )
+  return (
+    <table className="tableScreen">
+      <thead>
+        <tr>
+          {th?.map((column, x) => (
+            <th key={x}>{column}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>{children}</tbody>
+    </table>
+  );
 }
-export default Table
+export default Table;

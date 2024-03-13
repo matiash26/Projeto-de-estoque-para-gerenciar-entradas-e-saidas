@@ -1,158 +1,100 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react"
-import { GlobalContext } from "../../Contexts/GlobalContext"
-import { StockContext } from "../../Contexts/StockContext"
-import { FiCheck, FiX } from "react-icons/fi"
-import { BiBox } from "react-icons/bi"
-import InputAutoComplet from "../../components/InputAutoComplet/Index"
-import DataTableStock from "../../components/DataTableStock"
-import ModalConfirm from "../../components/ModalConfirm"
-import NavbarSearch from "../../components/NavbarSearch"
-import Notification from "../../components/Notification"
-import Pagination from "../../components/Pagination"
-import StockItem from "../../components/StocktItem"
-import CheckBox from "../../components/CheckBox"
-import Button from "../../components/Button"
-import Input from "../../components/Input"
-import Table from "../../components/Table"
-import Modal from "../../components/Modal"
-import api from "../../services/Api"
-import "./style.css"
+import { useEffect, useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import api from "../../services/Api";
+
+//Actions
+import { AlertAdd } from "../../redux/alert/actions";
+import { productListAdd, addStockTable } from "../../redux/stock/action";
+import {
+  modalClearAll,
+  modalConfirmToggle,
+  ModalTableEdit,
+} from "../../redux/modals/actions";
+
+//selectors
+import { selectAlert, selectModals, selectStock } from "../../redux/selectors";
+
+//components
+import Table from "../../components/Table";
+import ModalStock from "../../components/ModalStock";
+import Pagination from "../../components/Pagination";
+import NavbarSearch from "../../components/NavbarSearch";
+import ModalConfirm from "../../components/ModalConfirm";
+import DataTableStock from "../../components/DataTableStock";
+
+import "./style.css";
 
 function Stock() {
-    const [copyTable, setCopyTable] = useState([])
-    const [productData, setProductData] = useState([])
-    const [stockModal, setStockModal] = useState([])
-    const [stockTable, setStockTable] = useState([])
-    const [alert, setAlert] = useState("")
-    const filterRef = useRef(undefined)
-    const statusRef = useRef(undefined)
+  const [copyTable, setCopyTable] = useState([]);
+  const filterRef = useRef("");
+  const statusRef = useRef("");
+  const dispatch = useDispatch();
 
-    const { modalConfirmIsOpen, modalValue, btnModalIsOpen,
-        modalConfirmValue, setModalConfirmValue } = useContext(GlobalContext)
-    const { produto, setProduto, estoque, setEstoque,
-        index, setIndex, updateOrDelete, setUpdateOrDelete, clearFields, checkbox, setCheckbox } = useContext(StockContext)
+  const { modal, answer, tableEdit, modalConfirm } = useSelector(selectModals);
+  const { stockTable } = useSelector(selectStock);
+  const { message } = useSelector(selectAlert);
 
-    const handleAddProductCart = () => {
-        const addProduct = productData.filter(el => el.produto === produto)[0]
-        const status = checkbox ? "ativo" : "desativado"
-        if (addProduct && estoque) {
-            setProductData(product => product.filter(el => el.produto != produto))
-            if (index != null) {
-                setStockModal(prev => prev.map((product, x) => x === index ? { ...addProduct, status, estoque } : product))
-                setIndex(null)
-            } else if (addProduct) {
-                setStockModal(prev => [...prev, { ...addProduct, status, estoque }])
-            }
-            clearFields()
-        }
-        //remover os produtos caso estiver no modal ou se existir a index edite o produto do modal
+  const handleDeleteProduct = async () => {
+    const id = tableEdit.id;
+    const active = tableEdit.active;
+    const { data } = await api.delete(`/stock/${id}?active=${active}`);
+    dispatch(AlertAdd(data));
+    dispatch(modalConfirmToggle(false));
+    dispatch(modalClearAll());
+  };
+  const handleFilter = async () => {
+    const filter = filterRef.current.value;
+    const active = statusRef.current.value;
+    if (filter || active) {
+      const { data } = await api.get(
+        `/stock/?search=${filter}&active=${active}`
+      );
+      setCopyTable(data);
+    } else {
+      const { data } = await api.get("/stock/all");
+      setCopyTable(data);
     }
-    const handleEditProductCart = (index) => {
-        setProduto(stockModal[index].produto)
-        setEstoque(stockModal[index].estoque)
-        setIndex(index)
+  };
+  const fetchData = async () => {
+    const products = await api.get("/product/filtered");
+    const stock = await api.get("/stock/all");
+    dispatch(productListAdd(products.data));
+    dispatch(addStockTable(stock.data));
+    setCopyTable(stock.data);
+  };
+  useEffect(() => {
+    if (answer) {
+      handleDeleteProduct();
     }
-    const handleRemoveProductCart = (index) => {
-        setStockModal(prev => prev.filter((el, x) => x != index))
-    }
-    const handleDeleteProduct = async () => {
-        const id = updateOrDelete.id
-        const active = updateOrDelete.active
-        const { data } = await api.delete(`/stock/${id}?active=${active}`)
-        setAlert(data)
-    }
-    const handleUpdateProduct = async () => {
-        const updateProduct = {
-            id: updateOrDelete.id,
-            produto,
-            status: checkbox,
-            estoque,
-        }
-        const { data } = await api.put("/stock/", updateProduct, updateOrDelete)
-        if (data.status === "success") {
-            clearFields()
-            setUpdateOrDelete(false)
-            btnModalIsOpen()
-        }
-        setAlert(data)
-    }
-    const handleFilter = async () => {
-        const filter = filterRef.current.value
-        const active = statusRef.current.value
-        if (filter || active) {
-            const { data } = await api.get(`/stock/?search=${filter}&active=${active}`)
-            setCopyTable(data)
-        } else {
-            const { data } = await api.get("/stock/all")
-            setCopyTable(data)
-        }
-    }
-    const handleSubmit = async () => {
-        const { data } = await api.post("/stock/", stockModal)
-        if (data.status === "success") {
-            setStockModal([])
-            clearFields()
-            btnModalIsOpen()
-        }
-        setAlert(data)
-    }
-    const fetchData = useCallback(async () => {
-        const products = await api.get("/product/filtered")
-        const stock = await api.get("/stock/all")
-        setProductData(products.data)
-        setCopyTable(stock.data)
-    }, [])
-
-    useEffect(() => {
-        fetchData()
-        if (alert.success) {
-            clearFields()
-        }
-        if (modalConfirmValue) {
-            handleDeleteProduct()
-            setModalConfirmValue(false)
-        }
-    }, [alert, modalConfirmValue])
-
-    return (
-        <div className="Container-Main">
-            {modalValue &&
-                <Modal title="ADICIONAR AO ESTOQUE" icon={<BiBox />} clearModal={setStockModal} clearFields={clearFields} updateExist={setUpdateOrDelete}>
-                    <form className="form-pop">
-                        <div className="form-content">
-                            <InputAutoComplet title="Nome do Produto" type="text" data={productData} value={produto} setValue={setProduto} disabled={updateOrDelete} />
-                            <Input title="Quantidade" type="number" value={estoque} onChange={({ target }) => setEstoque(target.value)} />
-                            <CheckBox title="status" checked={checkbox} onChange={({ target }) => setCheckbox(target.checked)} icon01={<FiX />} icon02={<FiCheck />} />
-                            {!updateOrDelete && <Button title="ADICIONAR" type="button" className="poolBlue" onClick={handleAddProductCart} />}
-                        </div>
-                    </form>
-                    <ol className="form-items">
-                        {
-                            stockModal.map((item, index) => <StockItem key={index}
-                                produto={item}
-                                editModal={() => handleEditProductCart(index)}
-                                removeModal={() => handleRemoveProductCart(index)} />)
-                        }
-                    </ol>
-                    <div className="modal-total">
-                        {updateOrDelete ? <Button title="ATUALIZAR" className="blue" type="button" onClick={handleUpdateProduct} /> : <Button title="FINALIZAR" type="submit" className="green" onClick={handleSubmit} />}
-                    </div>
-                </Modal>
-            }
-            <main className="main-content">
-                {alert && <Notification alert={alert} setAlert={setAlert} />}
-                {modalConfirmIsOpen && <ModalConfirm setObject={setUpdateOrDelete} title="Deletar o produto" desc="Você realmente deseja deletar o produto?" />}
-                <NavbarSearch btnFilter={handleFilter} search={filterRef} status={statusRef} />
-                <section className="table-content">
-                    <Pagination dataItem={copyTable} itemTable={setStockTable} />
-                    <Table th={["#ID", "produto", "data", "status", "em estoque", "preço"]}>
-                        {
-                            stockTable.map((product, index) => <DataTableStock key={index} data={product} />)
-                        }
-                    </Table>
-                </section>
-            </main>
-        </div>
-    )
+    fetchData();
+  }, [answer, message]);
+  return (
+    <div className="Container-Main">
+      {modal && <ModalStock />}
+      <main className="main-content">
+        {modalConfirm && (
+          <ModalConfirm
+            title="Deletar o produto"
+            desc="Você realmente deseja desativar o produto?"
+          />
+        )}
+        <NavbarSearch
+          btnFilter={handleFilter}
+          search={filterRef}
+          status={statusRef}
+        />
+        <section className="table-content">
+          <Pagination dataItem={copyTable} itemTable={addStockTable} />
+          <Table
+            th={["#ID", "produto", "data", "status", "em estoque", "preço"]}
+          >
+            {stockTable?.map((product) => (
+              <DataTableStock key={product.id} data={product} />
+            ))}
+          </Table>
+        </section>
+      </main>
+    </div>
+  );
 }
-export default Stock
+export default Stock;

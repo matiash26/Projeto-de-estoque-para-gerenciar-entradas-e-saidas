@@ -1,45 +1,54 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+
+//Actions
+import {
+  ModalTableEdit,
+  modalConfirmToggle,
+  modalToggle,
+} from "../../redux/modals/actions";
+import { fillInFields } from "../../redux/service/action";
+
+//icons
 import { FiMoreVertical } from "react-icons/fi";
-import { GlobalContext } from "../../Contexts/GlobalContext";
-import { EntriesContext } from "../../Contexts/EntriesContext"
+
 import "./style.css";
 
-function DataTableEntries({ item }) {
-    const [optionModal, setOptionModal] = useState(false)
-    const { btnModalIsOpen, btnModalConfirmIsOpen } = useContext(GlobalContext)
-    const { getOrderForEdit, setUpdate, setOrderID} = useContext(EntriesContext)
-    const handleOptionModal = () => {
-        setOptionModal(prev => !prev)
-    }
-    const handleEdit = async (order) => {
-        btnModalIsOpen()
-        handleOptionModal()
-        setUpdate(true)
-        getOrderForEdit(order.pedido)
-    }
+function DataTableEntries({ data }) {
+  const [optionModal, setOptionModal] = useState(false);
+  const dispatch = useDispatch();
 
-    const handleDelete = (order) => {
-        btnModalConfirmIsOpen()
-        handleOptionModal()
-        setOrderID(order.pedido)
-    }
-    return (
-        <>
-            <tr id="tableEntries">
-                <td>#{item.id}</td>
-                <td>#{item.pedido}</td>
-                <td>{item.data}</td>
-                <td>{item.produtos}</td>
-                <td>R$:{item.total}</td>
-                <td className="options-container">
-                    <FiMoreVertical onClick={handleOptionModal} />
-                    <ul className={`options-btn ${optionModal ? 'active-options' : ''}`}>
-                        <li onClick={() => handleEdit(item)} >ver / editar</li>
-                        <li onClick={() => handleDelete(item)}>Deletar</li>
-                    </ul>
-                </td>
-            </tr>
-        </>
-    )
+  const handleOptionModal = () => {
+    setOptionModal((prev) => !prev);
+  };
+  const handleEdit = () => {
+    dispatch(ModalTableEdit(data));
+    dispatch(fillInFields(data));
+    dispatch(modalToggle());
+    handleOptionModal();
+  };
+  const handleDelete = () => {
+    dispatch(modalConfirmToggle());
+    dispatch(ModalTableEdit(data));
+    handleOptionModal();
+  };
+  return (
+    <>
+      <tr id="tableEntries">
+        <td>#{data.id}</td>
+        <td>#{data.pedido}</td>
+        <td>{data.data}</td>
+        <td>{data.produtos}</td>
+        <td>R$:{data.total}</td>
+        <td className="options-container">
+          <FiMoreVertical onClick={handleOptionModal} />
+          <ul className={`options-btn ${optionModal ? "active-options" : ""}`}>
+            <li onClick={handleEdit}>ver / editar</li>
+            <li onClick={handleDelete}>Deletar</li>
+          </ul>
+        </td>
+      </tr>
+    </>
+  );
 }
-export default DataTableEntries
+export default DataTableEntries;

@@ -43,8 +43,13 @@ routes.post("/entries/", verifyToken, async (req, res) => {
 routes.delete("/entries/:order", verifyToken, async (req, res) => {
   const order = req.params.order;
   const response = await entries.Delete(order);
+  const select = await entries.select();
   if (response) {
-    res.send({ status: "success", message: "Pedido deletado com sucesso!" });
+    res.send({
+      status: "success",
+      message: "Pedido deletado com sucesso!",
+      data: select,
+    });
   } else {
     res.send({ status: "error", message: "falha ao deletar o pedido!" });
   }
