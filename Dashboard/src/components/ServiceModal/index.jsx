@@ -9,7 +9,7 @@ import {
   serviceInputValue,
   serviceClearnInputValue,
   serviceClear,
-} from "./../../redux/service/action";
+} from "../../redux/service/actions";
 
 //Selectors
 import { selectModals, selectService } from "../../redux/selectors";
@@ -54,7 +54,6 @@ export default function ServiceModal() {
     if (data.status === "success") {
       dispatch(serviceClear());
       handleCloseModal();
-      
     }
     dispatch(AlertAdd(data));
   };

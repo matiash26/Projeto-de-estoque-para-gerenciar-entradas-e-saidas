@@ -18,14 +18,15 @@ export default function stockReducer(state = initialState, action) {
       const thereIsProduct = state.stockModal.some(
         (product) => product.produto === state.product
       );
-      if (!thereIsProduct) {
-        const selectProduct = state.productList.find(
-          ({ produto }) => produto === state.product
-        );
+      const AlreadyExistInStock = state.stockTable.some(
+        (el) => el.produto === state.product
+      );
+      const selectProduct = state.productList.find(
+        ({ produto }) => produto === state.product
+      );
+      if (!thereIsProduct && !AlreadyExistInStock && selectProduct?.id) {
         return {
           ...state,
-          product: "",
-          stock: "",
           stockModal: [
             ...state.stockModal,
             {
@@ -34,6 +35,8 @@ export default function stockReducer(state = initialState, action) {
               status: state.status,
             },
           ],
+          product: "",
+          stock: "",
         };
       }
     case actionTypesStock.add:
@@ -59,11 +62,12 @@ export default function stockReducer(state = initialState, action) {
         stockModal: removedFromList,
       };
     case actionTypesStock.fillInFields:
+      const status = action.payload.status === "1";
       return {
         ...state,
         product: action.payload.produto,
         stock: action.payload.estoque,
-        status: action.payload.status,
+        status,
       };
     case actionTypesStock.Clear:
       return {

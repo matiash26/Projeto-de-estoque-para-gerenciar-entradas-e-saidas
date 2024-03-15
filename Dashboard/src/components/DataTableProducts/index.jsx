@@ -7,7 +7,7 @@ import {
   ModalTableEdit,
   modalConfirmToggle,
   modalToggle,
-} from "./../../redux/modals/actions";
+} from "../../redux/modals/actions";
 
 //Icons
 import { FiMoreVertical } from "react-icons/fi";
@@ -49,7 +49,7 @@ function DataTableProducts({ data }) {
         <FiMoreVertical onClick={handleOptionModal} />
         <ul className={`options-btn ${optionModal && "active-options"}`}>
           <li onClick={handleEdit}>Editar</li>
-          <li onClick={handleDelete}>ativar/desativar</li>
+          <li onClick={handleDelete}>deletar/desativar</li>
         </ul>
       </td>
     </tr>

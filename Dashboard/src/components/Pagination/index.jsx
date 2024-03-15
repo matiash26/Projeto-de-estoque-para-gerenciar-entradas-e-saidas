@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 
 //Icons
@@ -6,33 +6,35 @@ import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 
 import "./style.css";
 
-function Pagination({ dataItem, itemTable }) {
+function Pagination({ dataItem, addTable }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [start, setStart] = useState(0);
-  const [offset, setOffset] = useState(20);
-  const row = dataItem.length;
+  const [pag, setPag] = useState({ start: 0, offset: 20 });
+  const row = useMemo(() => dataItem.length, [pag.start, dataItem]);
   const totalPages = Math.ceil(row / 20);
+
   const dispatch = useDispatch();
+
   const nextPage = () => {
     if (currentPage < totalPages) {
-      setOffset((prev) => prev + 20);
-      setStart((prev) => prev + 20);
+      setPag((prev) => ({
+        offset: prev.offset + 20,
+        start: prev.start + 20,
+      }));
       setCurrentPage((prev) => (prev += 1));
     }
   };
   const prevPage = () => {
     if (currentPage > 1) {
-      setOffset((prev) => (prev -= 20));
-      setStart((prev) => (prev -= 20));
+      setPag((prev) => ({
+        offset: (prev.offset -= 20),
+        start: (prev.start -= 20),
+      }));
       setCurrentPage((prev) => (prev -= 1));
     }
   };
   useEffect(() => {
-    if (start) {
-      dispatch(itemTable(dataItem.slice(start, offset)));
-    }
-  }, [dataItem, start]);
-
+    dispatch(addTable(dataItem.slice(pag.start, pag.offset)));
+  }, [pag, dataItem]);
   return (
     <div className="paginationContainer">
       <button className="btnPagination" onClick={prevPage}>

@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 
 //Actions
-import { serviceEdit, serviceRemove } from "../../redux/service/action";
+import { serviceEdit, serviceRemove } from "../../redux/service/actions";
 
 //Icons
 import { FiX } from "react-icons/fi";

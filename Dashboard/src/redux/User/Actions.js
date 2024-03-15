@@ -12,3 +12,6 @@ export function addPwd(payload) {
 export function userLogOut() {
   return { type: actionTypesUser.logOut };
 }
+export function userUpdate(payload) {
+  return { type: actionTypesUser.update, payload };
+}

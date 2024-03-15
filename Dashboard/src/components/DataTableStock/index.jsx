@@ -50,7 +50,7 @@ function DataTableStock({ data }) {
         <FiMoreVertical onClick={handleOptionModal} />
         <ul className={`options-btn ${optionModal && "active-options"}`}>
           <li onClick={handleEdit}>Editar</li>
-          <li onClick={handleDelete}>Deletar</li>
+          <li onClick={handleDelete}>Deletar/desativar</li>
         </ul>
       </td>
     </tr>

@@ -7,7 +7,6 @@ import {
   modalConfirmToggle,
   modalToggle,
 } from "../../redux/modals/actions";
-import { fillInFields } from "../../redux/service/action";
 
 //icons
 import { FiMoreVertical } from "react-icons/fi";
@@ -23,7 +22,6 @@ function DataTableEntries({ data }) {
   };
   const handleEdit = () => {
     dispatch(ModalTableEdit(data));
-    dispatch(fillInFields(data));
     dispatch(modalToggle());
     handleOptionModal();
   };

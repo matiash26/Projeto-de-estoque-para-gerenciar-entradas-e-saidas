@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../../services/Api";
 
 //Actions
 import { AlertAdd } from "../../redux/alert/actions";
 import { ReplyModalConfirm, modalClearAll } from "../../redux/modals/actions";
-import { serviceClear, serviceDatabase } from "../../redux/service/action";
+import { serviceClear, serviceDatabase } from "../../redux/service/actions";
 
 //selectors
 import {
@@ -23,6 +23,7 @@ import NavbarSearch from "../../components/NavbarSearch";
 import DataTableService from "../../components/DataTableService";
 
 function Service() {
+  const [copyTable, setCopyTable] = useState([]);
   const startDateRef = useRef("");
   const offsetDateRef = useRef("");
 
@@ -61,7 +62,7 @@ function Service() {
     try {
       const response = await api.get("/services/all");
       if (response.data) {
-        dispatch(serviceDatabase(response.data));
+        setCopyTable(response.data);
       }
     } catch (error) {
       console.error(error);
@@ -77,13 +78,13 @@ function Service() {
   return (
     <div className="Container-Main">
       <main className="main-content">
+        {modal && <ServiceModal />}
         {modalConfirm && (
           <ModalConfirm
-            title="Deletar o produto"
-            desc="Você realmente deseja desativar o produto?"
+            title="Aviso"
+            desc="Você realmente deseja deletar o serviço?"
           />
         )}
-        {modal && <ServiceModal />}
         <NavbarSearch
           entrada={startDateRef}
           saida={offsetDateRef}
@@ -92,10 +93,10 @@ function Service() {
           value="Filtro"
         />
         <section className="table-content">
-          <Pagination dataItem={serviceFromDB} itemTable={serviceDatabase} />
+          <Pagination dataItem={copyTable} addTable={serviceDatabase} />
           <Table th={["#ID", "serviço", "data", "gasto"]}>
             {serviceFromDB?.map((service) => (
-              <DataTableService key={service.servico} data={service} />
+              <DataTableService key={service.id} data={service} />
             ))}
           </Table>
         </section>

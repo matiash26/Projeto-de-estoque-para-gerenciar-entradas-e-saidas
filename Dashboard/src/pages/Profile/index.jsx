@@ -3,7 +3,8 @@ import { useState } from "react";
 import api from "../../services/Api";
 
 //Actions
-import { userLogin } from "../../redux/User/Actions";
+import { userUpdate } from "../../redux/User/Actions";
+import { AlertAdd } from "../../redux/alert/actions";
 
 //Selectors
 import { selectUser } from "../../redux/selectors";
@@ -18,28 +19,32 @@ import { AiOutlineCamera } from "react-icons/ai";
 import "./style.css";
 
 function Profile() {
-  const [newPassword, setNewPassword] = useState("");
-  const [password, setPassword] = useState("");
   const { user, picture } = useSelector(selectUser);
+  const [photo, setPhoto] = useState("");
+  const [userName, setUserName] = useState(user);
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const dispatch = useDispatch();
-  //pegar os dados atualizados e mandar para o redux
+
   const handleUpdate = async () => {
     const formData = new FormData();
-    formData.append("picture", picture?.[0]);
-    formData.append("userName", user);
+    formData.append("picture", photo[0]);
+    formData.append("userName", userName);
     formData.append("password", password);
     formData.append("newPassword", newPassword);
 
     try {
-      const { data } = await api.post("/users/update", formData, {
+      const { data } = await api.post(`/users/update`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Cache-Control": "no-cache",
+          Pragma: "no-cache",
         },
       });
-      if (data.status === "success") {
-        console.log(data);
-        // dispatch(userLogin(data));
+      dispatch(AlertAdd(data.alert));
+      if (data.alert.status === "success") {
+        dispatch(userUpdate(data.updated));
         setPassword("");
         setNewPassword("");
       }
@@ -64,13 +69,13 @@ function Profile() {
               type="file"
               name="file"
               id="file"
-              onChange={({ target }) => setPicture(target.files)}
+              onChange={({ target }) => setPhoto(target.files)}
             />
           </div>
           <Input
             placeholder="usuário..."
             onChange={({ target }) => setUserName(target.value)}
-            value={user}
+            value={userName}
           />
           <Input
             placeholder="senha atual..."

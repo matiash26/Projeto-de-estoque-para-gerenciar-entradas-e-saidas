@@ -1,4 +1,4 @@
-import { actionTypeService } from "./actionType";
+import { actionTypeService } from "./actionTypes";
 
 export function serviceAdd() {
   return { type: actionTypeService.Add };

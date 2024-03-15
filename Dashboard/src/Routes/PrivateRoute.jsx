@@ -28,7 +28,6 @@ function PrivateRoute() {
   useEffect(() => {
     checkToken();
   }, [isLogged]);
-
   return isLogged ? (
     <>
       <Aside />

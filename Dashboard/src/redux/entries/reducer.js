@@ -21,42 +21,53 @@ function entriesReducer(state = initialState, action) {
       if (typeof action.payload === "object") {
         return { ...state, entriesModal: action.payload };
       }
-
-      const thereIs = state.entriesModal.some(
+      const notInModal = state.entriesModal.some(
+        (item) => item.product === state.product
+      );
+      const productExist = state.entriesProduct.some(
         (item) => item.produto === state.product
       );
-      if (!thereIs) {
+      if (!notInModal && productExist) {
         const [findStock] = state.entriesProduct
           .filter((item) => item.produto === state.product)
-          .map((el) => ({ ...el, total: el.quantidade * +el.valor }));
+          .map((el) => ({
+            ...el,
+            total: el.quantidade * +el.valor,
+            estoque: el.estoque - el.quantidade,
+          }));
         return {
           ...state,
           product: "",
           entriesModal: [...state.entriesModal, findStock],
         };
       }
+      return state;
     case actionTypeEntries.addToTable:
       return { ...state, entriesTable: action.payload };
     case actionTypeEntries.AddValue:
       return { ...state, value: action.payload };
     case actionTypeEntries.addQuantity:
+      //se eu adicionar uma entrada nova o id será do estoque, mas se der update na tabela, vai ser a id da entrada
+      const typeOfId = action.payload.idEstoque ? "idEstoque" : "id";
+      const quantity = +action.payload.quantityInput;
+      const id = action.payload[typeOfId];
+
       const quantityUpdate = state.entriesModal.map((item) => {
-        const id = action.payload.id;
-
-        const quantity = +action.payload.quantityInput;
-        if (item.id === id && item.quantidade > quantity && quantity > 0) {
+        const chooseID = item.idEstoque || item.id;
+        if (id === chooseID && item.quantidade > quantity && quantity > 0) {
           return {
             ...item,
             quantidade: quantity,
+            estoque: item.estoque + 1,
           };
         }
-        if (item.id === id && item.estoque - quantity >= 0 && quantity > 0) {
+        if (id === chooseID && item.estoque > 0 && quantity > 0) {
           return {
             ...item,
             quantidade: quantity,
+            estoque: item.estoque - 1,
           };
         }
-
         return item;
       });
       return { ...state, entriesModal: quantityUpdate };

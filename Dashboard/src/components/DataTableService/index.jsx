@@ -3,7 +3,7 @@ import { useState } from "react";
 
 //Actions
 import { ModalTableEdit } from "./../../redux/modals/actions";
-import { fillInFields } from "../../redux/service/action";
+import { fillInFields } from "../../redux/service/actions";
 import { modalToggle, modalConfirmToggle } from "./../../redux/modals/actions";
 
 //Icons

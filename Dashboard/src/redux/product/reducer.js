@@ -17,21 +17,26 @@ function productReducer(state = initialState, action) {
       const product = state.productName;
       const status = state.status;
       const value = state.value;
-      const isNotEmpty = product.length && value.length;
-      if (isNotEmpty) {
+      const isNotEmpty = product?.length && value?.length;
+      const AlreadyExist = state.productTable.some(
+        (item) => item?.produto.toLowerCase() === product.toLowerCase()
+      );
+      if (isNotEmpty && !AlreadyExist) {
         return {
+          ...state,
           productList: [...state.productList, { product, status, value }],
           value: "",
           productName: "",
           status: false,
         };
       }
+      return state;
     case actionTypesProducts.Edit:
-      console.log(action.payload.produto);
       const removeFromList = state.productList.filter(
-        ({ produto }) => produto !== action.payload.product
+        ({ product }) => product !== action.payload.product
       );
       return {
+        ...state,
         productName: action.payload.product,
         value: action.payload.value,
         status: action.payload.status,

@@ -1,73 +1,72 @@
-.modalConfirm{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.274);
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
+.modalConfirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.274);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
-.confirm-container{
-    background-color: #FFFFFF;
-    height: 163px;
-    width: 410px;
-    border-radius: .5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.confirm-container {
+  background-color: #ffffff;
+  min-height: 163px;
+  width: 410px;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.text-confirm{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: .5rem .5rem 0 0;
-    padding: .3rem .3rem 0 .5rem;
-    border: 1px solid #ced4da9a;
+.text-confirm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0.3rem 0.3rem 0 0.5rem;
+  border: 1px solid #ced4da9a;
 }
 .text-confirm > p {
-    font-size: 1rem;
-    color: #343a40c2;
+  font-size: 1rem;
+  color: #343a40c2;
 }
-.text-confirm > span{
-    font-size: 1.8rem;
-    color: #dc3545;
-    cursor: pointer;
-    -webkit-user-select: none; 
+.text-confirm > span {
+  font-size: 1.8rem;
+  color: #dc3545;
+  cursor: pointer;
+  -webkit-user-select: none;
 }
-.text-confirm > span:active{
-    color: #dc3546c2;
+.text-confirm > span:active {
+  color: #dc3546c2;
 }
 .confirm-container > p {
-    color: #343a40c2;
-    padding: 1rem;
-    font-size: .9rem;
-
+  color: #343a40c2;
+  padding: 1rem;
+  font-size: 0.9rem;
 }
-.btn-confirm{
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    padding: .6rem;
+.btn-confirm {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 0.6rem;
 }
-.btn-confirm > button{
-    border: none;
-    outline: none;
-    padding: .6rem 1rem;
-    border-radius: .4rem;
-    color: #FFFFFF;
-    cursor: pointer;
+.btn-confirm > button {
+  border: none;
+  outline: none;
+  padding: 0.6rem 1rem;
+  border-radius: 0.4rem;
+  color: #ffffff;
+  cursor: pointer;
 }
-.btn-confirm > button:nth-child(1){
-    background-color: #343a40;
+.btn-confirm > button:nth-child(1) {
+  background-color: #343a40;
 }
-.btn-confirm > button:nth-child(1):active{
-    background-color: #343a40de;
+.btn-confirm > button:nth-child(1):active {
+  background-color: #343a40de;
 }
-.btn-confirm > button:nth-child(2){
-    background-color: #28a745;
+.btn-confirm > button:nth-child(2) {
+  background-color: #28a745;
 }
-.btn-confirm > button:nth-child(2):active{
-    background-color: #218838;
+.btn-confirm > button:nth-child(2):active {
+  background-color: #218838;
 }

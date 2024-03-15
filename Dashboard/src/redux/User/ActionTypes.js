@@ -3,4 +3,5 @@ export const actionTypesUser = {
   addPwd: "user/addPwd",
   logOut: "user/logOut",
   addLogin: "user/login",
+  update: "user/update",
 };

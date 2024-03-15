@@ -3,14 +3,14 @@ const { client } = require("../../config/database");
 const select = async () => {
   const mysql = await client();
   const sql =
-    "SELECT pedido, DATE_FORMAT(data, '%d/%m/%Y') as data, COUNT(pedido) AS produtos, SUM(quantidade * valor) AS total FROM entradas GROUP BY pedido, DATE_FORMAT(data, '%d/%m/%Y') ORDER BY pedido DESC;";
+    "SELECT MAX(id) AS id, pedido, DATE_FORMAT(data, '%d/%m/%Y') as data, COUNT(pedido) AS produtos, SUM(quantidade * valor) AS total FROM entradas GROUP BY pedido, DATE_FORMAT(data, '%d/%m/%Y') ORDER BY id DESC;";
   const [row] = await mysql.query(sql);
   return row;
 };
 const selectByOrder = async (order) => {
   const mysql = await client();
   const sql =
-    "select e.id, e.idEstoque, es.idProduto, p.produto, e.valor * e.quantidade as total, es.estoque, e.quantidade, e.valor from entradas as e join estoque as es on es.id = e.idEstoque join produtos as p on p.id = es.idProduto WHERE e.pedido = ?;";
+    "select e.id, e.pedido,e.idEstoque, es.idProduto, p.produto, e.valor * e.quantidade as total, es.estoque, e.quantidade, e.valor from entradas as e join estoque as es on es.id = e.idEstoque join produtos as p on p.id = es.idProduto WHERE e.pedido = ?;";
   const [row] = await mysql.query(sql, order);
   return row;
 };
@@ -26,7 +26,7 @@ const insert = async (entries) => {
     +entries.valor,
   ];
   try {
-    mysql.query(sql, insert);
+    await mysql.query(sql, insert);
     return true;
   } catch {
     return false;
@@ -53,10 +53,20 @@ const Delete = async (id) => {
     return false;
   }
 };
+const DeleteByID = async (id) => {
+  const mysql = await client();
+  const sql = "DELETE FROM entradas WHERE id = ?";
+  try {
+    await mysql.query(sql, id);
+    return true;
+  } catch {
+    return false;
+  }
+};
 const filterDate = async (search) => {
   const mysql = await client();
   let sql =
-    "SELECT pedido, DATE_FORMAT(MAX(data), '%d/%m/%Y') AS data, COUNT(pedido) AS produtos, SUM(quantidade * valor) AS total FROM entradas WHERE data BETWEEN '2024-03-01' AND '2024-03-08' GROUP BY pedido ORDER BY MAX(data) DESC;";
+    "SELECT pedido, DATE_FORMAT(MAX(data), '%d/%m/%Y') AS data, COUNT(pedido) AS produtos, SUM(quantidade * valor) AS total FROM entradas WHERE data BETWEEN ? AND ? GROUP BY pedido ORDER BY MAX(data) DESC;";
   const [found] = await mysql.query(sql, [search.start, search.offset]);
   return found;
 };
@@ -77,6 +87,7 @@ module.exports = {
   insert,
   update,
   Delete,
+  DeleteByID,
   filterDate,
   verifyOrderIfExist,
 };

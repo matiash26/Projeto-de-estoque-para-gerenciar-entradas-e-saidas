@@ -36,8 +36,8 @@ function Stock() {
 
   const handleDeleteProduct = async () => {
     const id = tableEdit.id;
-    const active = tableEdit.active;
-    const { data } = await api.delete(`/stock/${id}?active=${active}`);
+    const status = tableEdit.status;
+    const { data } = await api.delete(`/stock/${id}?active=${status}`);
     dispatch(AlertAdd(data));
     dispatch(modalConfirmToggle(false));
     dispatch(modalClearAll());
@@ -50,16 +50,15 @@ function Stock() {
         `/stock/?search=${filter}&active=${active}`
       );
       setCopyTable(data);
-    } else {
-      const { data } = await api.get("/stock/all");
-      setCopyTable(data);
+      return;
     }
+    const { data } = await api.get("/stock/all");
+    setCopyTable(data);
   };
   const fetchData = async () => {
     const products = await api.get("/product/filtered");
     const stock = await api.get("/stock/all");
     dispatch(productListAdd(products.data));
-    dispatch(addStockTable(stock.data));
     setCopyTable(stock.data);
   };
   useEffect(() => {
@@ -74,8 +73,10 @@ function Stock() {
       <main className="main-content">
         {modalConfirm && (
           <ModalConfirm
-            title="Deletar o produto"
-            desc="Você realmente deseja desativar o produto?"
+            title="Aviso"
+            desc={
+              "se o estoque foi utilizado nas entradas, ele será desativado e para ativar novamente, basta clicar em (desativar/deletar), caso ao ele será deletado!"
+            }
           />
         )}
         <NavbarSearch
@@ -84,7 +85,7 @@ function Stock() {
           status={statusRef}
         />
         <section className="table-content">
-          <Pagination dataItem={copyTable} itemTable={addStockTable} />
+          <Pagination dataItem={copyTable} addTable={addStockTable} />
           <Table
             th={["#ID", "produto", "data", "status", "em estoque", "preço"]}
           >

@@ -71,11 +71,10 @@ function Entries() {
     const entries = await api.get("/entries/all");
     const stock = await api.get("/stock/all");
     if (entries.statusText === "OK" && stock.statusText === "OK") {
-      dispatch(entriesAddTable(entries.data));
       dispatch(entriesAddToProductList(stock.data));
+      setCopyTable(entries.data);
     }
   };
-
   useEffect(() => {
     if (tableEdit?.pedido) {
       fetchOrder();
@@ -87,15 +86,15 @@ function Entries() {
   }, [tableEdit, message, answer]);
   return (
     <div className="Container-Main">
+      {modal && <ModalEntries />}
       {modalConfirm && (
         <ModalConfirm
           clearData={entriesClear}
-          title="Desativar o pedido"
+          title="Aviso"
           desc="Você realmente deseja deletar o pedido?"
         />
       )}
       <main className="main-content">
-        {modal && <ModalEntries />}
         <NavbarSearch
           entrada={startDateRef}
           saida={offsetDateRef}
@@ -104,7 +103,7 @@ function Entries() {
           value="Filtro"
         />
         <section className="table-content">
-          <Pagination dataItem={copyTable} itemTable={entriesAddTable} />
+          <Pagination dataItem={copyTable} addTable={entriesAddTable} />
           <Table th={["#id", "pedido", "data do pedido", "produtos", "total"]}>
             {entriesTable?.map((item) => (
               <DataTableEntries key={item.pedido} data={item} />

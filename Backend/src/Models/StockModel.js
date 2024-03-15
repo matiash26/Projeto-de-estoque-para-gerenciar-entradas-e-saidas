@@ -14,7 +14,7 @@ const insert = async (stock) => {
     "INSERT INTO estoque(idProduto, data, status, estoque) VALUES(?, ?, ?, ?);";
   const insert = [stock.id, getDate(), status, +stock.estoque];
   try {
-    mysql.query(sql, insert);
+    await mysql.query(sql, insert);
     return true;
   } catch (error) {
     return false;
@@ -43,13 +43,30 @@ const Delete = async (id) => {
     return false;
   }
 };
+const desativeStock = async (active, id) => {
+  const mysql = await client();
+  const sql = "UPDATE estoque set status = ? WHERE id = ?;";
+  const update = [active, id];
+  try {
+    await mysql.query(sql, update);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+const findById = async (id) => {
+  const mysql = await client();
+  const sql = "select * from entradas where idEstoque = ?";
+  const [row] = await mysql.query(sql, [id]);
+  return row;
+};
 const find = async (search, active) => {
   const mysql = await client();
   let sql = "";
   let params = [];
   if (search && active) {
     sql =
-      "SELECT e.id, e.idProduto, p.produto, e.estoque, e.data, e.status, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE e.id = ? OR p.produto LIKE ? and e.status = ? ORDER BY e.id DESC;";
+      "SELECT e.id, e.idProduto, p.produto, e.estoque, e.data, e.status, p.valor FROM estoque as e join produtos as p on p.id = e.idProduto WHERE p.produto LIKE ? and e.status = ? OR e.status = ? ORDER BY e.id DESC;";
     params.push(search, `${search}%`, active);
   } else {
     sql =
@@ -59,11 +76,10 @@ const find = async (search, active) => {
   const [row] = await mysql.query(sql, params);
   return row;
 };
-const stockModify = async (estoque, id) => {
+const stockModify = async (stock, id) => {
   const mysql = await client();
-  const status = estoque === 0 ? "0" : "1";
-  const sql = "UPDATE estoque set estoque = ?, status = ?  WHERE id = ?";
-  return await mysql.query(sql, [estoque, status, id]);
+  const sql = "UPDATE estoque set estoque = ? WHERE id = ?";
+  return await mysql.query(sql, [stock, id]);
 };
 const desative = async (active, id) => {
   const mysql = await client();
@@ -85,11 +101,13 @@ const getDate = () => {
     )}/${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`;
 };
 module.exports = {
+  find,
   select,
   insert,
   update,
   Delete,
-  find,
-  stockModify,
+  findById,
   desative,
+  stockModify,
+  desativeStock,
 };

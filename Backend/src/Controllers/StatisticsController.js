@@ -1,6 +1,7 @@
+const { verifyToken } = require("./../utils/verifyToken");
 const statistics = require("../Models/StatisticsModel");
 const express = require("express");
-const jwt = require("jsonwebtoken");
+
 const routes = express.Router();
 require("dotenv").config();
 
@@ -47,22 +48,5 @@ routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
   //se não tiver despesas no mês retorne 0 para que tenha a mesma quantidade de dados na lista
   res.send({ revenue, graph, products, expenses, expensesFilled });
 });
-function verifyToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  if (!token) {
-    return res.send({
-      status: "error",
-      msg: "Acesso negado!",
-      permission: false,
-    });
-  }
-  try {
-    const secret = process.env.SECRET_KEY;
-    jwt.verify(token, secret);
-    next();
-  } catch (error) {
-    res.send({ status: "error", msg: "Token inválido!" });
-  }
-}
+
 module.exports = routes;

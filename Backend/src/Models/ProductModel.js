@@ -21,6 +21,16 @@ const find = async (search, status) => {
   const [row] = await mysql.query(sql, params);
   return row;
 };
+const findById = async (id) => {
+  const mysql = await client();
+  const sql = "SELECT * from estoque where idProduto = ?";
+  try {
+    const [row] = await mysql.query(sql, [id]);
+    return row;
+  } catch (error) {
+    return false;
+  }
+};
 const insert = async ({ product, status, value }) => {
   const mysql = await client();
   const active = status ? "1" : "0";
@@ -34,10 +44,11 @@ const insert = async ({ product, status, value }) => {
   }
 };
 const update = async ({ produto, status, valor, id }) => {
+  const statusToggle = status ? "1" : "0";
   const mysql = await client();
   const sql =
-    "UPDATE produtos set produto = ?, status = ?, valor = ? WHERE id = ?;";
-  const update = [produto, status, valor, id];
+    "UPDATE produtos set  produto = ?, status = ?, valor = ? WHERE id = ?;";
+  const update = [produto, statusToggle, valor, id];
   try {
     mysql.query(sql, update);
     return true;
@@ -45,20 +56,32 @@ const update = async ({ produto, status, valor, id }) => {
     return false;
   }
 };
-const desative = async (active, id) => {
+const desative = async (id) => {
   const mysql = await client();
-  const sql = "UPDATE produtos set status = ?  WHERE id = ?";
+  const sql = "UPDATE produtos set status = '0'  WHERE id = ?";
   try {
-    await mysql.query(sql, [active, id]);
+    await mysql.query(sql, [id]);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+const deleteProduct = async (id) => {
+  const mysql = await client();
+  const sql = "DELETE from produtos where id = ?";
+  try {
+    await mysql.query(sql, [id]);
     return true;
   } catch (error) {
     return false;
   }
 };
 module.exports = {
-  select,
-  insert,
-  update,
-  desative,
   find,
+  select,
+  update,
+  insert,
+  desative,
+  findById,
+  deleteProduct,
 };

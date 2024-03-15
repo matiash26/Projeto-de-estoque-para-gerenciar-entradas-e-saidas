@@ -56,7 +56,6 @@ function Products() {
   const fetchAllData = async () => {
     const { data } = await api.get("/product/all");
     if (data.status != "error") {
-      dispatch(productTabletAdd(data));
       setCopyTable(data);
     }
   };
@@ -73,8 +72,10 @@ function Products() {
         {modal && <ModalProducts />}
         {modalConfirm && (
           <ModalConfirm
-            title="Ocultar"
-            desc="Você realmente deseja ocultar o produto?"
+            title="Aviso"
+            desc={
+              "se o produto foi utilizado no estoque, ele será desativado e para ativar novamente, basta clicar em (atualizar), caso ao ele será deletado"
+            }
           />
         )}
         <NavbarSearch
@@ -83,7 +84,7 @@ function Products() {
           status={statusRef}
         />
         <section className="table-content">
-          <Pagination dataItem={copyTable} itemTable={productTabletAdd} />
+          <Pagination dataItem={copyTable} addTable={productTabletAdd} />
           <Table th={["#id", "produtos", "status", "valor"]}>
             {productTable?.map((product) => (
               <DataTableProducts key={product.id} data={product} />

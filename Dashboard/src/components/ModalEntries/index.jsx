@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import api from "../../services/Api";
 
 //Actions
-import {
-  ModalTableEdit,
-  modalClearAll,
-  modalToggle,
-} from "../../redux/modals/actions";
+import { modalClearAll, modalToggle } from "../../redux/modals/actions";
 import {
   entriesAddProductName,
   entriesAddModalData,
@@ -49,9 +45,8 @@ export default function ModalEntries() {
   };
 
   const handleSubmit = async () => {
-    const method = tableEdit?.id ? "put" : "post";
-    const body = tableEdit?.id ? tableEdit : entriesModal;
-    const { data } = await api[method]("/entries/", body);
+    const method = tableEdit?.pedido ? "put" : "post";
+    const { data } = await api[method]("/entries/", entriesModal);
     if (data.status === "success") {
       handleCloseModal();
     }
@@ -78,7 +73,7 @@ export default function ModalEntries() {
             data={entriesProduct}
             value={product}
             setValue={handleAddProductName}
-            disabled={tableEdit?.id}
+            disabled={tableEdit?.pedido}
           />
         </div>
       </div>
