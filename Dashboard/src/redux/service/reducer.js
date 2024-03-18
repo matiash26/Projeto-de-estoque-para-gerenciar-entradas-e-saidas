@@ -18,7 +18,8 @@ function serviceReducer(state = initialState, action) {
       const serviceAlready = state.service.some(
         (item) => item.serviceName === state.serviceName
       );
-      if (!serviceAlready) {
+      const isNotEmpty = !!state.serviceName && !!state.spent;
+      if (!serviceAlready && isNotEmpty) {
         return {
           ...state,
           service: [
@@ -44,8 +45,6 @@ function serviceReducer(state = initialState, action) {
       return { ...state, service: removed };
     case actionTypeService.AddServiceDatabase:
       return { ...state, serviceFromDB: action.payload };
-    case actionTypeService.Modal:
-      return { ...state, modal: !state.modal };
     case actionTypeService.fillInFields:
       return {
         ...state,

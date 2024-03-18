@@ -5,7 +5,7 @@ const month = (date.getMonth() + 1).toString().padStart(2, "0");
 const year = date.getFullYear();
 async function createSchema() {
   const mysql = await client();
-  mysql.query(`
+  await mysql.query(`
     CREATE TABLE IF NOT EXISTS produtos(
       id int AUTO_INCREMENT not null,
       produto varchar(100) unique not null,
@@ -14,7 +14,7 @@ async function createSchema() {
       PRIMARY KEY (id)
     ) engine = INNODB CHARACTER SET utf8mb4;`);
 
-  mysql.query(`
+  await mysql.query(`
     CREATE TABLE IF NOT EXISTS estoque(
       id int AUTO_INCREMENT not null,
       idProduto int unique not null,
@@ -25,7 +25,7 @@ async function createSchema() {
       FOREIGN KEY (idProduto) REFERENCES produtos(id)
       ) engine = INNODB CHARACTER SET utf8mb4;`);
 
-  mysql.query(`
+  await mysql.query(`
     CREATE TABLE IF NOT EXISTS servicos(
     id int AUTO_INCREMENT not null,
     servico varchar(100) not null,
@@ -34,7 +34,7 @@ async function createSchema() {
     PRIMARY KEY (id)
     ) engine = INNODB CHARACTER SET utf8mb4;`);
 
-  mysql.query(`
+  await mysql.query(`
     CREATE TABLE IF NOT EXISTS entradas(
       id int AUTO_INCREMENT not null,
       pedido varchar(10) not null,
@@ -46,7 +46,7 @@ async function createSchema() {
       FOREIGN KEY(idEstoque) REFERENCES estoque(id)
     ) engine = INNODB CHARACTER SET utf8mb4;
     `);
-  mysql.query(`
+  await mysql.query(`
     CREATE TABLE IF NOT EXISTS usuarios (
       id int(11) NOT NULL AUTO_INCREMENT,
       picture varchar(255),
@@ -63,7 +63,9 @@ async function createSchema() {
     );
     response.code == "ER_DUP_ENTRY"
       ? console.log("Usuário já é registrado")
-      : console.log("USUÁRIO: admin | SENHA: 123");
+      : console.log(
+          "USUÁRIO: admin | SENHA: 123, inicialize o server: npm run start"
+        );
   } catch (error) {
     console.log("ERRO: VERIFIQUE SE JÁ FOI CRIADO O USUÁRIO");
   }

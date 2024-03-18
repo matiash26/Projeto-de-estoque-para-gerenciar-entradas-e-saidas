@@ -15,11 +15,10 @@ const secret = process.env.SECRET_KEY;
 const pathImage = path.join(__dirname, "../images/");
 routes.use("/images", express.static(pathImage));
 routes.use(fileUpload());
-
 routes.post("/sign-up", verifyToken, (req, res) => {
   const userName = req.body.userName;
   const password = req.body.password;
-  if (!userName && !password) {
+  if (!userName || !password) {
     res.send({ status: "error", message: "Preencha todos os campos!" });
     return;
   }

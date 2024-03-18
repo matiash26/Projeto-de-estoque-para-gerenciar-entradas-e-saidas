@@ -6,10 +6,18 @@ require("dotenv").config();
 
 const routes = express.Router();
 
-routes.get("/stock/all", verifyToken, async (req, res) => {
+routes.get("/stock/:all", verifyToken, async (req, res) => {
+  const params = req.params.all;
   const stockItems = await stock.select();
-  const onlyStatusActive = stockItems.filter((each) => each.status === "1");
-  res.send(onlyStatusActive);
+  if (params === "all") {
+    const onlyStatusActive = stockItems.filter((each) => each.status === "1");
+    res.send(onlyStatusActive);
+    return;
+  }
+  const needToHaveStock = stockItems.filter(
+    (each) => each.status === "1" && each.estoque
+  );
+  res.send(needToHaveStock);
 });
 routes.get("/stock/", verifyToken, async (req, res) => {
   const search = req.query.search;

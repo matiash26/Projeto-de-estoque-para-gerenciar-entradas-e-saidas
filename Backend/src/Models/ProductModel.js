@@ -14,10 +14,10 @@ const find = async (search, status) => {
     sql =
       "SELECT * FROM produtos WHERE id = ? OR produto LIKE ? and status = ? ORDER BY id DESC;";
     params.push(search, `${search}%`, status);
-  } else {
-    sql = "SELECT * FROM produtos WHERE id = ? or status = ? ORDER BY id DESC;";
-    params.push(search, status);
+    return;
   }
+  sql = "SELECT * FROM produtos WHERE id = ? or status = ? ORDER BY id DESC;";
+  params.push(search, status);
   const [row] = await mysql.query(sql, params);
   return row;
 };

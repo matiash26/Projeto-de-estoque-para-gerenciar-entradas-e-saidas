@@ -7,7 +7,6 @@ require("dotenv").config();
 
 routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
   const filter = req.params.filter;
-  const datSQL = { year: "numeric", month: "numeric", day: "numeric" };
   const date = new Date();
 
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -15,12 +14,9 @@ routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
 
   let currentDate = {
     start: "",
-    today: date
-      .toLocaleDateString("pt-BR", datSQL)
-      .split("/")
-      .reverse()
-      .join("-"),
+    today: date.toLocaleDateString("pt-BR").split("/").reverse().join("-"),
   };
+
   if (filter === "day") {
     date.setDate(date.getDate() - 7);
     const day = date.getDate();
@@ -35,6 +31,7 @@ routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
   const products = await statistics.bestProducts(currentDate, filter);
   const expenses = await statistics.expenses(currentDate, filter);
 
+  //se não tiver despesas no mês retorne 0 para que tenha a mesma quantidade de dados na lista
   const expensesFilled = graph.map((sales) => {
     let newExpense = { mes: "", gasto: 0 };
     const getMonth = expenses.find((month) => month.mes == sales.mes);
@@ -45,7 +42,6 @@ routes.get("/estatistica/historico/:filter", verifyToken, async (req, res) => {
       return newExpense;
     }
   });
-  //se não tiver despesas no mês retorne 0 para que tenha a mesma quantidade de dados na lista
   res.send({ revenue, graph, products, expenses, expensesFilled });
 });
 

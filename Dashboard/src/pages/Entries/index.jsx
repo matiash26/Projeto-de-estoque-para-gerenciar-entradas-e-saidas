@@ -69,7 +69,7 @@ function Entries() {
   };
   const fetchAllData = async () => {
     const entries = await api.get("/entries/all");
-    const stock = await api.get("/stock/all");
+    const stock = await api.get("/stock/onlyStock");
     if (entries.statusText === "OK" && stock.statusText === "OK") {
       dispatch(entriesAddToProductList(stock.data));
       setCopyTable(entries.data);

@@ -62,10 +62,9 @@ function ModalProducts() {
       : productList;
     const { data } = await api[method]("/product/", isUpdate);
     if (data.status === "success") {
-      console.log("render");
-      // dispatch(productClear());
-      // dispatch(modalToggle());
-      // dispatch(modalClearAll());
+      dispatch(productClear());
+      dispatch(modalToggle());
+      dispatch(modalClearAll());
     }
     dispatch(AlertAdd(data));
   };
