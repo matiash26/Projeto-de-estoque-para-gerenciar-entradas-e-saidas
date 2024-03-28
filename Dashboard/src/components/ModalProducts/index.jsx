@@ -10,6 +10,7 @@ import {
   productStatusToggle,
   productListAdd,
   productClear,
+  productUpdateOrSubmit,
 } from "../../redux/product/action";
 
 //Selectors
@@ -50,23 +51,12 @@ function ModalProducts() {
       dispatch(modalClearAll());
     }
   };
-  const handleSubmit = async () => {
-    const method = tableEdit?.id ? "put" : "post";
-    const isUpdate = tableEdit?.id
-      ? {
-          id: tableEdit.id,
-          produto: productName,
-          status: status,
-          valor: value,
-        }
-      : productList;
-    const { data } = await api[method]("/product/", isUpdate);
-    if (data.status === "success") {
-      dispatch(productClear());
-      dispatch(modalToggle());
-      dispatch(modalClearAll());
-    }
-    dispatch(AlertAdd(data));
+  const handleSubmit = () => {
+    dispatch(
+      productUpdateOrSubmit(tableEdit, productName, status, value, productList)
+    );
+    dispatch(modalToggle());
+    dispatch(modalClearAll());
   };
   return (
     <Modal

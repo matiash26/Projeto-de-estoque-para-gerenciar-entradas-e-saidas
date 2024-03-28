@@ -1,6 +1,5 @@
 export const actionTypeEntries = {
   addProductName: "Entries/addProductName",
-  AddToList: "Entries/AddToList",
   AddValue: "Entries/addValue",
   addQuantity: "Entries/addQuantity",
   addTotal: "Entries/addTotal",
@@ -10,5 +9,7 @@ export const actionTypeEntries = {
   statusToggle: "Entries/StatusToggle",
   fillInFields: "Entries/fillInFields",
   addToTable: "Entries/addToTable",
-  addToProductList: "Entries/addToProductList",
+  addToModal: "Entries/addToModal",
+  fetchAllData: "Entries/FetchAll",
+  addToCopyTable: "Entries/addCopyTable",
 };

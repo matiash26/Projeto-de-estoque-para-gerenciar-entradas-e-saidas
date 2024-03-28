@@ -8,4 +8,5 @@ export const actionTypeService = {
   ClearService: "service/ClearService",
   Modal: "modal/toggle",
   fillInFields: "service/fillInFields",
+  addCopyService: "service/addCopyService",
 };

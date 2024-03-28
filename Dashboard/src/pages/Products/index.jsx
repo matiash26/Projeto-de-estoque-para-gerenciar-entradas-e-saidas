@@ -1,11 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import api from "../../services/Api";
 
 //Actions
-import { AlertAdd } from "../../redux/alert/actions";
 import { ReplyModalConfirm } from "../../redux/modals/actions";
-import { productTabletAdd } from "../../redux/product/action";
+import {
+  productDelete,
+  productFetchAllData,
+  productFilter,
+  productTabletAdd,
+} from "../../redux/product/action";
 
 //selectors
 import {
@@ -25,46 +28,33 @@ import Table from "../../components/Table";
 import "./style.css";
 
 function Products() {
-  const [copyTable, setCopyTable] = useState([]);
   const statusRef = useRef("");
   const filterRef = useRef("");
 
   const dispatch = useDispatch();
 
   const { modal, tableEdit, answer, modalConfirm } = useSelector(selectModals);
-  const { productTable } = useSelector(selectProducts);
+  const { productTable, copyTable } = useSelector(selectProducts);
   const { message } = useSelector(selectAlert);
-  const handleDeleteProduct = async () => {
+
+  const handleDeleteProduct = () => {
     const id = tableEdit.id;
     const active = tableEdit.status;
-    const { data } = await api.delete(`/product/${id}?status=${active}`);
-    dispatch(AlertAdd(data));
+    dispatch(productDelete(id, active));
   };
-  const handleFilter = async () => {
+
+  const handleFilter = () => {
     const filter = filterRef.current.value;
     const status = statusRef.current.value;
-    if (filter || status) {
-      const { data } = await api.get(
-        `/product/?search=${filter}&status=${status}`
-      );
-      dispatch(productTabletAdd(data));
-    } else {
-      const { data } = await api.get("/product");
-      dispatch(productTabletAdd(data));
-    }
+    dispatch(productFilter(filter, status));
   };
-  const fetchAllData = async () => {
-    const { data } = await api.get("/product/all");
-    if (data.status != "error") {
-      setCopyTable(data);
-    }
-  };
+
   useEffect(() => {
     if (answer) {
       handleDeleteProduct();
       dispatch(ReplyModalConfirm(false));
     }
-    fetchAllData();
+    dispatch(productFetchAllData());
   }, [answer, message]);
   return (
     <div className="Container-Main">

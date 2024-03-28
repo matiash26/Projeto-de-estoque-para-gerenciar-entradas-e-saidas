@@ -35,6 +35,7 @@ function Pagination({ dataItem, addTable }) {
   useEffect(() => {
     dispatch(addTable(dataItem.slice(pag.start, pag.offset)));
   }, [pag, dataItem]);
+  
   return (
     <div className="paginationContainer">
       <button className="btnPagination" onClick={prevPage}>

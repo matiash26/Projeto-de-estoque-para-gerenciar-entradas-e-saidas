@@ -11,7 +11,7 @@ import Notification from "../components/Notification";
 import { selectAlert, selectUser } from "../redux/selectors";
 
 //utils
-import { verifyToken } from "./../Utils/verifyToken";
+import { tokenValidate } from "../redux/User/Actions";
 
 function PrivateRoute() {
   const { message } = useSelector(selectAlert);
@@ -21,13 +21,10 @@ function PrivateRoute() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const checkToken = async () => {
-    const permission = await verifyToken(dispatch);
-    if (permission) navigate(location.pathname);
-  };
   useEffect(() => {
-    checkToken();
+    dispatch(tokenValidate(navigate, location));
   }, [isLogged]);
+  
   return isLogged ? (
     <>
       <Aside />

@@ -3,6 +3,7 @@ const initialState = {
   entriesModal: [],
   entriesTable: [],
   entriesProduct: [],
+  copyTable: [],
   product: "",
   quantity: 0,
 };
@@ -11,13 +12,7 @@ function entriesReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypeEntries.addProductName:
       return { ...state, product: action.payload };
-    case actionTypeEntries.addToProductList:
-      const addQuantity = action.payload?.map((product) => ({
-        ...product,
-        quantidade: 1,
-      }));
-      return { ...state, entriesProduct: addQuantity };
-    case actionTypeEntries.AddToList:
+    case actionTypeEntries.addToModal:
       if (typeof action.payload === "object") {
         return { ...state, entriesModal: action.payload };
       }
@@ -81,6 +76,18 @@ function entriesReducer(state = initialState, action) {
       return { ...state, entriesModal: removed };
     case actionTypeEntries.Clear:
       return { ...state, entriesModal: [], product: "" };
+    case actionTypeEntries.fetchAllData:
+      const addQuantity = action.payload.stock?.map((product) => ({
+        ...product,
+        quantidade: 1,
+      }));
+      return {
+        ...state,
+        entriesProduct: addQuantity,
+        copyTable: action.payload.table,
+      };
+    case action.addToCopyTable:
+      return { ...state, copyTable: action.payload.table };
     default:
       return state;
   }

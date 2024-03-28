@@ -1,14 +1,14 @@
 const { verifyToken } = require("./../utils/verifyToken");
-const express = require("express");
 const product = require("../Models/ProductModel");
 const stock = require("../Models/StockModel");
+const express = require("express");
 const routes = express.Router();
 
-routes.get("/product/all", verifyToken, async (req, res) => {
+routes.get("/api/product/all", verifyToken, async (req, res) => {
   const getProduct = await product.select();
   res.send(getProduct);
 });
-routes.get("/product/filtered", verifyToken, async (req, res) => {
+routes.get("/api/product/filtered", verifyToken, async (req, res) => {
   const stockData = await stock.select();
   const productData = await product.select();
 
@@ -20,13 +20,13 @@ routes.get("/product/filtered", verifyToken, async (req, res) => {
   //esse filtro é para mostrar somente produtos que não está no estoque
   res.send(productNotInStock);
 });
-routes.get("/product/", verifyToken, async (req, res) => {
+routes.get("/api/product/", verifyToken, async (req, res) => {
   const search = req.query.search;
   const status = req.query.status;
   const found = await product.find(search, status);
-  res.send(found);
+  res.send(found ?? []);
 });
-routes.post("/product", verifyToken, (req, res) => {
+routes.post("/api/product", verifyToken, (req, res) => {
   const productJSON = req.body;
   const checkIfExist =
     productJSON.length > 0 && productJSON.every((el) => el.product && el.value);
@@ -53,7 +53,7 @@ routes.post("/product", verifyToken, (req, res) => {
   productJSON.forEach((item) => product.insert(item));
   res.send({ status: "success", message: "Produto inserido com sucesso!" });
 });
-routes.put("/product", verifyToken, async (req, res) => {
+routes.put("/api/product", verifyToken, async (req, res) => {
   const update = req.body;
   if (!update.produto && !update.valor) {
     res.send({
@@ -83,7 +83,7 @@ routes.put("/product", verifyToken, async (req, res) => {
   }
   res.send({ status: "error", message: "falha ao atualizar o Produto!" });
 });
-routes.delete("/product/:id", verifyToken, async (req, res) => {
+routes.delete("/api/product/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
   const existsInStock = await product.findById(id);
   if (!existsInStock.length) {

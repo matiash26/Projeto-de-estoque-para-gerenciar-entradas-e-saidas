@@ -6,6 +6,7 @@ import productReducer from "./product/reducer";
 import stockReducer from "./stock/reducer";
 import entriesReducer from "./entries/reducer";
 import userReducer from "./User/reducer";
+
 export const rootReducer = combineReducers({
   productReducer,
   serviceReducer,

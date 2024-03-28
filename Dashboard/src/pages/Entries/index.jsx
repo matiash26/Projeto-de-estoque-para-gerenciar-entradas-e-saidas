@@ -1,15 +1,15 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import api from "../../services/Api";
 
 //Actions
-import { AlertAdd } from "../../redux/alert/actions";
 import { modalClearAll } from "../../redux/modals/actions";
 import {
-  entriesAddToProductList,
   entriesAddTable,
-  entriesAddModalData,
   entriesClear,
+  entriesFetchAll,
+  entriesOrder,
+  entriesFilter,
+  entriesOrderDelete,
 } from "../../redux/entries/actions";
 
 //selectors
@@ -30,50 +30,34 @@ import DataTableEntries from "../../components/DataTableEntries";
 import "./style.css";
 
 function Entries() {
-  const [copyTable, setCopyTable] = useState([]);
+  const { modal, tableEdit, modalConfirm, answer } = useSelector(selectModals);
+  const { entriesTable, copyTable } = useSelector(selectEntries);
+  const { message } = useSelector(selectAlert);
 
   const dispatch = useDispatch();
-
-  const { modal, tableEdit, modalConfirm, answer } = useSelector(selectModals);
-  const { entriesTable } = useSelector(selectEntries);
-  const { message } = useSelector(selectAlert);
 
   const startDateRef = useRef("");
   const offsetDateRef = useRef("");
 
-  const handleFilter = async () => {
+  const handleFilter = () => {
     const startDate = startDateRef.current.value;
     const offsetDate = offsetDateRef.current.value;
-    if (startDate && offsetDate) {
-      const { data } = await api.get(
-        `/entries/filter/${startDate}/${offsetDate}`
-      );
-      dispatch(entriesAddTable(data));
+    if (startDate || offsetDate) {
+      dispatch(entriesFilter({ startDate, offsetDate }));
     }
     if (!entriesTable.length) {
-      fetchAllData();
+      dispatch(entriesFetchAll());
       startDateRef.current.value = "";
       offsetDateRef.current.value = "";
     }
   };
-  const handleDelete = async () => {
+  const handleDelete = () => {
     const orderId = tableEdit?.pedido;
-    const response = await api.delete("/entries/" + orderId);
-    dispatch(AlertAdd(response.data));
+    dispatch(entriesOrderDelete(orderId));
     dispatch(modalClearAll());
-    dispatch(entriesClear());
   };
-  const fetchOrder = async () => {
-    const order = await api.get("/entries/order/" + tableEdit.pedido);
-    dispatch(entriesAddModalData(order.data));
-  };
-  const fetchAllData = async () => {
-    const entries = await api.get("/entries/all");
-    const stock = await api.get("/stock/onlyStock");
-    if (entries.statusText === "OK" && stock.statusText === "OK") {
-      dispatch(entriesAddToProductList(stock.data));
-      setCopyTable(entries.data);
-    }
+  const fetchOrder = () => {
+    dispatch(entriesOrder(tableEdit.pedido));
   };
   useEffect(() => {
     if (tableEdit?.pedido) {
@@ -82,7 +66,7 @@ function Entries() {
     if (answer) {
       handleDelete();
     }
-    fetchAllData();
+    dispatch(entriesFetchAll());
   }, [tableEdit, message, answer]);
   return (
     <div className="Container-Main">

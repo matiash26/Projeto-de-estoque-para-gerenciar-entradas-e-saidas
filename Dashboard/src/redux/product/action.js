@@ -1,4 +1,6 @@
 import { actionTypesProducts } from "./actionTypes";
+import { AlertAdd } from "../alert/actions";
+import api from "../../services/Api";
 
 export function productNameAdd(payload) {
   return { type: actionTypesProducts.AddProductName, payload };
@@ -27,4 +29,71 @@ export function productStatusToggle() {
 
 export function productfillInFields(payload) {
   return { type: actionTypesProducts.fillInFields, payload };
+}
+export function productFetchAllData() {
+  return function (dispatch) {
+    try {
+      api.get("/product/all").then((res) =>
+        dispatch({
+          type: actionTypesProducts.addToCopyTable,
+          payload: res.data,
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
+export function productFilter(filter, status) {
+  return function (dispatch) {
+    if (filter || status) {
+      api.get(`/product/?search=${filter}&status=${status}`).then((res) => {
+        dispatch({
+          type: actionTypesProducts.addToCopyTable,
+          payload: res.data,
+        });
+      });
+      return;
+    }
+    api.get("/product/all").then((res) => {
+      dispatch({
+        type: actionTypesProducts.addToCopyTable,
+        payload: res.data,
+      });
+    });
+  };
+}
+export function productDelete(id, active) {
+  return function (dispatch) {
+    try {
+      api.delete(`/product/${id}?status=${active}`).then((res) => {
+        dispatch(AlertAdd(res.data));
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}
+
+export function productUpdateOrSubmit(
+  tableEdit,
+  productName,
+  status,
+  value,
+  productList
+) {
+  return function (dispatch) {
+    const method = tableEdit?.id ? "put" : "post";
+    const isUpdate = tableEdit?.id
+      ? {
+          id: tableEdit.id,
+          produto: productName,
+          status: status,
+          valor: value,
+        }
+      : productList;
+    api[method]("/product/", isUpdate).then((res) => {
+      dispatch(AlertAdd(res.data));
+    });
+  };
 }

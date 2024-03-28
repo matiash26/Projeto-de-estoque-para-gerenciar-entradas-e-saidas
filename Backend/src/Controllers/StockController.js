@@ -6,7 +6,7 @@ require("dotenv").config();
 
 const routes = express.Router();
 
-routes.get("/stock/:all", verifyToken, async (req, res) => {
+routes.get("/api/stock/:all", verifyToken, async (req, res) => {
   const params = req.params.all;
   const stockItems = await stock.select();
   if (params === "all") {
@@ -19,13 +19,13 @@ routes.get("/stock/:all", verifyToken, async (req, res) => {
   );
   res.send(needToHaveStock);
 });
-routes.get("/stock/", verifyToken, async (req, res) => {
+routes.get("/api/stock/", verifyToken, async (req, res) => {
   const search = req.query.search;
   const active = req.query.active;
   const found = await stock.find(search, active);
   res.send(found);
 });
-routes.post("/stock/", verifyToken, (req, res) => {
+routes.post("/api/stock/", verifyToken, (req, res) => {
   const body = req.body;
 
   const checkAllTheFieldsExist =
@@ -51,7 +51,7 @@ routes.post("/stock/", verifyToken, (req, res) => {
   body.forEach((item) => stock.insert(item));
   res.send({ status: "success", message: "Estoque inserido com sucesso!" });
 });
-routes.put("/stock/", verifyToken, async (req, res) => {
+routes.put("/api/stock/", verifyToken, async (req, res) => {
   const update = req.body;
   if (!update.produto && !update.estoque) {
     res.send({
@@ -82,7 +82,7 @@ routes.put("/stock/", verifyToken, async (req, res) => {
   }
   res.send({ status: "error", message: "falha ao atualizar o Estoque!" });
 });
-routes.delete("/stock/:id", verifyToken, async (req, res) => {
+routes.delete("/api/stock/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
   const activeToggle = req.query.active === "0" ? "1" : "0";
   const isEqualZero = req.query.active === "0";

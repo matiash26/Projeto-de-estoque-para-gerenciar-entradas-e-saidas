@@ -8,4 +8,5 @@ export const actionTypesProducts = {
   statusToggle: "product/StatusToggle",
   fillInFields: "product/fillInFields",
   addToTable: "product/addToTable",
+  addToCopyTable: "product/addCopyTable",
 };

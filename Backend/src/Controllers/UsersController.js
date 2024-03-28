@@ -5,8 +5,6 @@ const bcrypt = require("bcrypt");
 const users = require("../Models/UsersModel.js");
 const jwt = require("jsonwebtoken");
 const path = require("path");
-const { info } = require("console");
-
 require("dotenv").config();
 
 const routes = express.Router();
@@ -15,7 +13,8 @@ const secret = process.env.SECRET_KEY;
 const pathImage = path.join(__dirname, "../images/");
 routes.use("/images", express.static(pathImage));
 routes.use(fileUpload());
-routes.post("/sign-up", verifyToken, (req, res) => {
+
+routes.post("/api/sign-up", verifyToken, (req, res) => {
   const userName = req.body.userName;
   const password = req.body.password;
   if (!userName || !password) {
@@ -34,7 +33,7 @@ routes.post("/sign-up", verifyToken, (req, res) => {
     res.send({ status: "error", message: "Erro ao cadastrar o usuário!" });
   });
 });
-routes.post("/sign-in/", async (req, res) => {
+routes.post("/api/sign-in/", async (req, res) => {
   const { userName, password } = req.body;
   const [getUser] = await users.signIn(userName);
   if (!getUser) {
@@ -58,14 +57,14 @@ routes.post("/sign-in/", async (req, res) => {
     res.send({ status: "success", permission: results, token, userData });
   });
 });
-routes.get("/users/list", verifyToken, async (req, res) => {
+routes.get("/api/users/list", verifyToken, async (req, res) => {
   const user = await users.select();
   const token = req.headers["authorization"].split(" ")[1];
   const decode = jwt.decode(token);
   const userList = user.filter(({ user }) => user !== decode.userName);
   res.send(userList);
 });
-routes.delete("/users/delete", verifyToken, async (req, res) => {
+routes.delete("/api/users/delete", verifyToken, async (req, res) => {
   const id = req.query.id;
   const user = await users.Delete(id);
   if (!user) {
@@ -74,7 +73,7 @@ routes.delete("/users/delete", verifyToken, async (req, res) => {
   }
   res.send({ status: "success", message: "Usuário deletado com sucesso!" });
 });
-routes.post("/users/update", verifyToken, async (req, res) => {
+routes.post("/api/users/update", verifyToken, async (req, res) => {
   const { userName, password, newPassword } = req.body;
   const file = req.files?.picture;
   const token = req.headers["authorization"].split(" ")[1];
@@ -111,7 +110,7 @@ routes.post("/users/update", verifyToken, async (req, res) => {
     });
   });
 });
-routes.post("/verifyToken", async (req, res) => {
+routes.post("/api/verifyToken", async (req, res) => {
   const token = req.body.token;
   try {
     const jwtData = jwt.verify(token, secret);

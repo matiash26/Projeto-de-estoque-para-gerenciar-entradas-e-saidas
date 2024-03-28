@@ -1,8 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import api from "../../services/Api";
 
 //Actions
-import { AlertAdd } from "../../redux/alert/actions";
 import {
   ModalTableEdit,
   modalClearAll,
@@ -14,6 +12,7 @@ import {
   addStatus,
   addStockModal,
   stockClear,
+  stockSubmitOrUpdate,
 } from "../../redux/stock/action";
 
 //Selectors
@@ -55,23 +54,12 @@ export default function ModalStock() {
       dispatch(modalClearAll());
     }
   };
-  const handleOnSubmit = async () => {
-    const updateProduct = {
-      id: tableEdit.id,
-      produto: product,
-      status: status,
-      estoque: stock,
-    };
-    const method = tableEdit?.id ? "put" : "post";
-    const body = tableEdit?.id ? updateProduct : stockModal;
-    const { data } = await api[method]("/stock/", body);
-    if (data.status === "success") {
-      dispatch(stockClear());
-      dispatch(modalToggle());
-      dispatch(ModalTableEdit({}));
-    }
-
-    dispatch(AlertAdd(data));
+  const handleOnSubmit = () => {
+    dispatch(
+      stockSubmitOrUpdate(tableEdit, product, status, stock, stockModal)
+    );
+    dispatch(modalToggle());
+    dispatch(ModalTableEdit({}));
   };
   return (
     <Modal

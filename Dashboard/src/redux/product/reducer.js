@@ -2,6 +2,7 @@ import { actionTypesProducts } from "./actionTypes";
 const initialState = {
   productList: [],
   productTable: [],
+  copyTable: [],
   productName: "",
   value: "",
   status: true,
@@ -66,7 +67,12 @@ function productReducer(state = initialState, action) {
         status: true,
       };
     case actionTypesProducts.addToTable:
-      return { ...state, productTable: action.payload };
+      return {
+        ...state,
+        productTable: action.payload,
+      };
+    case actionTypesProducts.addToCopyTable:
+      return { ...state, copyTable: action.payload };
     default:
       return state;
   }

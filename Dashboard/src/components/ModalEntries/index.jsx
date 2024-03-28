@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import api from "../../services/Api";
 
 //Actions
 import { modalClearAll, modalToggle } from "../../redux/modals/actions";
@@ -8,6 +7,7 @@ import {
   entriesAddProductName,
   entriesAddModalData,
   entriesClear,
+  entriesSubmitOrUpdate,
 } from "../../redux/entries/actions";
 
 //Selectors
@@ -20,7 +20,6 @@ import InputAutoComplet from "../../components/InputAutoComplet/Index";
 
 //Icons
 import { BsCart4 } from "react-icons/bs";
-import { AlertAdd } from "../../redux/alert/actions";
 
 export default function ModalEntries() {
   const dispatch = useDispatch();
@@ -45,12 +44,8 @@ export default function ModalEntries() {
   };
 
   const handleSubmit = async () => {
-    const method = tableEdit?.pedido ? "put" : "post";
-    const { data } = await api[method]("/entries/", entriesModal);
-    if (data.status === "success") {
-      handleCloseModal();
-    }
-    dispatch(AlertAdd(data));
+    dispatch(entriesSubmitOrUpdate(tableEdit));
+    handleCloseModal();
   };
 
   const calculateTotal = useMemo(() => {

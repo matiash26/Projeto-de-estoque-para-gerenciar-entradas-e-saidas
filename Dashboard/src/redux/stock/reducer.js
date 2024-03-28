@@ -3,6 +3,7 @@ const initialState = {
   productList: [],
   stockModal: [],
   stockTable: [],
+  copyStockTable: [],
   product: "",
   stock: "",
   status: true,
@@ -24,7 +25,12 @@ export default function stockReducer(state = initialState, action) {
       const selectProduct = state.productList.find(
         ({ produto }) => produto === state.product
       );
-      if (!thereIsProduct && !AlreadyExistInStock && selectProduct?.id) {
+      if (
+        !thereIsProduct &&
+        !AlreadyExistInStock &&
+        selectProduct?.id &&
+        parseInt(state.stock) > 0
+      ) {
         return {
           ...state,
           stockModal: [
@@ -39,6 +45,7 @@ export default function stockReducer(state = initialState, action) {
           stock: "",
         };
       }
+      return state;
     case actionTypesStock.add:
       return { ...state, product: action.payload };
     case actionTypesStock.addStatus:
@@ -79,6 +86,14 @@ export default function stockReducer(state = initialState, action) {
       };
     case actionTypesStock.addStockTable:
       return { ...state, stockTable: action.payload };
+    case actionTypesStock.fetchAllData:
+      return {
+        ...state,
+        copyStockTable: action.payload.copyTable,
+        productList: action.payload.product,
+      };
+    case actionTypesStock.addCopyTable:
+      return { ...state, copyStockTable: action.payload };
     default:
       return state;
   }

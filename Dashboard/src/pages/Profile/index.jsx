@@ -1,10 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import api from "../../services/Api";
 
 //Actions
 import { userUpdate } from "../../redux/User/Actions";
-import { AlertAdd } from "../../redux/alert/actions";
 
 //Selectors
 import { selectUser } from "../../redux/selectors";
@@ -27,30 +25,13 @@ function Profile() {
 
   const dispatch = useDispatch();
 
-  const handleUpdate = async () => {
+  const handleUpdate = () => {
     const formData = new FormData();
     formData.append("picture", photo[0]);
     formData.append("userName", userName);
     formData.append("password", password);
     formData.append("newPassword", newPassword);
-
-    try {
-      const { data } = await api.post(`/users/update`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "Cache-Control": "no-cache",
-          Pragma: "no-cache",
-        },
-      });
-      dispatch(AlertAdd(data.alert));
-      if (data.alert.status === "success") {
-        dispatch(userUpdate(data.updated));
-        setPassword("");
-        setNewPassword("");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(userUpdate(formData, setPassword, setNewPassword));
   };
   return (
     <div className="Container-Main">

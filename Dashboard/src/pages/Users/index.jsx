@@ -1,12 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import api from "../../services/Api";
-
-//Actions
-import { AlertAdd } from "../../redux/alert/actions";
 
 //Selectors
-import { selectAlert } from "../../redux/selectors";
+import { selectAlert, selectUser } from "../../redux/selectors";
 
 //Components
 import Input from "../../components/Input";
@@ -14,38 +10,33 @@ import Button from "../../components/Button";
 import UserList from "../../components/UserList";
 
 import "./style.css";
+import { userDelete, userFechList, userSignUp } from "../../redux/User/Actions";
 
 function Users() {
-  const [listUsers, setListUsers] = useState([]);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
+
   const { message } = useSelector(selectAlert);
+  const { userList } = useSelector(selectUser);
 
   const clearFields = () => {
     setPassword("");
     setUserName("");
   };
-  
-  const signUp = async () => {
-    const { data } = await api.post("/sign-up", { userName, password });
-    dispatch(AlertAdd(data));
+
+  const signUp = () => {
+    dispatch(userSignUp(userName, password));
     clearFields();
   };
 
-  const deleteUser = async (id) => {
-    const { data } = await api.delete("/users/delete?id=" + id);
-    dispatch(AlertAdd(data));
+  const deleteUser = (id) => {
+    dispatch(userDelete(id));
   };
-
-  const fetchUser = useCallback(async () => {
-    const { data } = await api.get("/users/list");
-    setListUsers(data);
-  });
-
+  
   useEffect(() => {
-    fetchUser();
+    dispatch(userFechList());
   }, [message]);
 
   return (
@@ -69,7 +60,7 @@ function Users() {
         </div>
         <section className="user-content">
           <ul>
-            {listUsers.map((user) => (
+            {userList?.map((user) => (
               <UserList
                 key={user.id}
                 data={user}

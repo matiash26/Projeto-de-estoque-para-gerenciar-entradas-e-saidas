@@ -9,4 +9,6 @@ export const actionTypesStock = {
   Remove: "stock/ModalRemove",
   Clear: "stock/Clear",
   fillInFields: "stock/fillInFields",
+  fetchAllData: "stock/fetchAllData",
+  addCopyTable: "stock/addCopyTable",
 };

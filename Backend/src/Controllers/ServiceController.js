@@ -9,15 +9,19 @@ const routes = express.Router();
 routes.use(bodyParser.json());
 routes.use(cors());
 
-routes.get("/services/all", verifyToken, async (req, res) => {
+routes.get("/api/services/all", verifyToken, async (req, res) => {
   const getData = await service.select();
   res.send(getData);
 });
-routes.get("/services/filter/:start/:offset", verifyToken, async (req, res) => {
-  const found = await service.find(req.params);
-  res.send(found);
-});
-routes.post("/services/", verifyToken, (req, res) => {
+routes.get(
+  "/api/services/filter/:start/:offset",
+  verifyToken,
+  async (req, res) => {
+    const found = await service.find(req.params);
+    res.send(found);
+  }
+);
+routes.post("/api/services/", verifyToken, (req, res) => {
   const body = req.body;
   const checkIfExist = body.every((el) => el.serviceName && el.spent);
   const checkLenght = body.every(
@@ -45,7 +49,7 @@ routes.post("/services/", verifyToken, (req, res) => {
   });
   res.send({ status: "success", message: "Serviço inserido com sucesso!" });
 });
-routes.put("/services/", verifyToken, async (req, res) => {
+routes.put("/api/services/", verifyToken, async (req, res) => {
   const update = req.body;
   if (!update.servico && !update.gasto) {
     res.send({
@@ -75,7 +79,7 @@ routes.put("/services/", verifyToken, async (req, res) => {
   }
   res.send({ status: "error", message: "falha ao atualizar o Serviço!" });
 });
-routes.delete("/services/:id", verifyToken, async (req, res) => {
+routes.delete("/api/services/:id", verifyToken, async (req, res) => {
   const id = req.params.id;
   service.Delete(id);
   res.send({

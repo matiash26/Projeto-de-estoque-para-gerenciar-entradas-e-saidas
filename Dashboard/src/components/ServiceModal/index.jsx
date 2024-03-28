@@ -1,14 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
-import api from "../../services/Api";
 
 //Actions
-import { AlertAdd } from "../../redux/alert/actions";
 import { ModalTableEdit, modalToggle } from "../../redux/modals/actions";
 import {
   serviceAdd,
   serviceInputValue,
   serviceClearnInputValue,
   serviceClear,
+  serviceUpdateOrSubmit,
 } from "../../redux/service/actions";
 
 //Selectors
@@ -41,22 +40,12 @@ export default function ServiceModal() {
     dispatch(ModalTableEdit({}));
     dispatch(serviceClear());
   };
+
   const handleSubmit = async () => {
-    const method = tableEdit.id ? "put" : "post";
-    const body = tableEdit?.id
-      ? {
-          id: tableEdit.id,
-          servico: serviceName,
-          gasto: spent,
-        }
-      : service;
-    const { data } = await api[method]("/services/", body);
-    if (data.status === "success") {
-      dispatch(serviceClear());
-      handleCloseModal();
-    }
-    dispatch(AlertAdd(data));
+    dispatch(serviceUpdateOrSubmit(tableEdit, serviceName, spent));
+    handleCloseModal();
   };
+
   return (
     <Modal
       title="ADICIONAR AO ESTOQUE"

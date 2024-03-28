@@ -17,7 +17,7 @@ function ModalConfirm({ title, desc, clearData }) {
     dispatch(modalClearAll());
     dispatch(clearData());
   };
-  const accept = async () => {
+  const accept = () => {
     dispatch(modalConfirmToggle());
     dispatch(ReplyModalConfirm(true));
   };

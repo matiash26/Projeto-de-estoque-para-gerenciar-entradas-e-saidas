@@ -1,13 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-import api from "../../services/Api";
 //Actions
 import { userLogin } from "../../redux/User/Actions";
-
-//Selects
-import { selectUser } from "./../../redux/selectors";
 
 //Components
 import Input from "../../components/Input";
@@ -26,19 +22,9 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { isLogged } = useSelector(selectUser);
-
   const handleLogin = async () => {
-    setAlertLogin("");
-    const { data } = await api.post("/sign-in/", { userName, password });
-    if (!isLogged && data.permission) {
-      window.localStorage.setItem("token", data.token);
-      api.defaults.headers.authorization = `Bearer ${data.token}`;
-      dispatch(userLogin(data));
-      navigate("/");
-      return;
-    }
-    setAlertLogin(data);
+    if (alertLogin) setAlertLogin("");
+    dispatch(userLogin({ userName, password }, navigate, setAlertLogin));
   };
   return (
     <div className="login-container">

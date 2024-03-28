@@ -2,6 +2,7 @@ import { actionTypeService } from "./actionTypes";
 const initialState = {
   service: [],
   serviceFromDB: [],
+  serviceCopyTable: [],
   serviceName: "",
   spent: "",
 };
@@ -51,6 +52,8 @@ function serviceReducer(state = initialState, action) {
         serviceName: action.payload.servico,
         spent: action.payload.gasto,
       };
+    case actionTypeService.addCopyService:
+      return { ...state, serviceCopyTable: action.payload };
     default:
       return state;
   }

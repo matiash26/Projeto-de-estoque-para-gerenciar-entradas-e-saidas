@@ -5,25 +5,29 @@ const stock = require("../Models/StockModel");
 
 const routes = express.Router();
 
-routes.get("/entries/all", verifyToken, async (req, res) => {
+routes.get("/api/entries/all", verifyToken, async (req, res) => {
   const select = await entries.select();
   res.send(select);
 });
-routes.get("/entries/order/:order", verifyToken, async (req, res) => {
+routes.get("/api/entries/order/:order", verifyToken, async (req, res) => {
   const orderID = req.params.order;
   const order = await entries.selectByOrder(orderID);
   res.send(order);
 });
-routes.get("/entries/filter/:start/:offset", verifyToken, async (req, res) => {
-  const found = await entries.filterDate(req.params);
-  res.send(found);
-});
-routes.get("/entries/grafico", verifyToken, async (req, res) => {
+routes.get(
+  "/api/entries/filter/:start/:offset",
+  verifyToken,
+  async (req, res) => {
+    const found = await entries.filterDate(req.params);
+    res.send(found);
+  }
+);
+routes.get("/api/entries/grafico", verifyToken, async (req, res) => {
   const search = req.params.search;
   const found = await entries.find(search);
   res.send(found);
 });
-routes.post("/entries/", verifyToken, async (req, res) => {
+routes.post("/api/entries/", verifyToken, async (req, res) => {
   const bodyData = req.body;
   const orderID = await orderGenerate();
   if (!bodyData.length) {
@@ -41,7 +45,7 @@ routes.post("/entries/", verifyToken, async (req, res) => {
   });
   res.send({ status: "success", message: "Pedido inserido com sucesso!" });
 });
-routes.delete("/entries/:order", verifyToken, async (req, res) => {
+routes.delete("/api/entries/:order", verifyToken, async (req, res) => {
   const order = req.params.order;
   const getOrder = await entries.selectByOrder(order);
   entries.Delete(order);
@@ -56,7 +60,7 @@ routes.delete("/entries/:order", verifyToken, async (req, res) => {
   });
   return;
 });
-routes.put("/entries/", verifyToken, async (req, res) => {
+routes.put("/api/entries/", verifyToken, async (req, res) => {
   const body = req.body;
   if (body.length) {
     body.forEach((update) => {

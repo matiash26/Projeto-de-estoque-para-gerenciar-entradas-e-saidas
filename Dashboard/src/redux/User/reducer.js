@@ -1,5 +1,6 @@
 import { actionTypesUser } from "./ActionTypes";
 const initialState = {
+  userList: [],
   id: null,
   user: "",
   picture: "",
@@ -22,6 +23,8 @@ function userReducer(state = initialState, action) {
         ...state,
         ...action.payload,
       };
+    case actionTypesUser.addUserList:
+      return { ...state, userList: action.payload };
     default:
       return state;
   }
