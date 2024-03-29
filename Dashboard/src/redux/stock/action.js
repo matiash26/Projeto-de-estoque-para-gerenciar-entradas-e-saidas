@@ -8,9 +8,6 @@ export function addStock(payload) {
 export function addProduct(payload) {
   return { type: actionTypesStock.addProduct, payload };
 }
-export function productListAdd(payload) {
-  return { type: actionTypesStock.addProductList, payload };
-}
 export function addStatus() {
   return { type: actionTypesStock.addStatus };
 }
@@ -34,25 +31,33 @@ export function stockFillIFields(payload) {
 }
 export function stockFetchAllData() {
   return function (dispatch) {
-    Promise.all([api.get("/product/filtered"), api.get("/stock/all")]).then(
-      ([product, stock]) => {
-        dispatch({
-          type: actionTypesStock.fetchAllData,
-          payload: { product: product.data, copyTable: stock.data },
-        });
-      }
-    );
+    try {
+      Promise.all([api.get("/product/filtered"), api.get("/stock/all")]).then(
+        ([product, stock]) => {
+          dispatch({
+            type: actionTypesStock.fetchAllData,
+            payload: { product: product.data, copyTable: stock.data },
+          });
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 }
 export function stockFilter(filter, active) {
   return function (dispatch) {
-    if (filter || active) {
-      api.get(`/stock/?search=${filter}&active=${active}`).then((res) => {
-        dispatch({ type: actionTypesStock.addCopyTable, payload: res.data });
-      });
-      return;
+    try {
+      if (filter || active) {
+        api.get(`/stock/?search=${filter}&active=${active}`).then((res) => {
+          dispatch({ type: actionTypesStock.addCopyTable, payload: res.data });
+        });
+        return;
+      }
+      dispatch(stockFetchAllData());
+    } catch (error) {
+      console.error(error)
     }
-    dispatch(stockFetchAllData());
   };
 }
 export function stockDelete(id, status) {

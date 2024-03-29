@@ -39,8 +39,6 @@ function entriesReducer(state = initialState, action) {
       return state;
     case actionTypeEntries.addToTable:
       return { ...state, entriesTable: action.payload };
-    case actionTypeEntries.AddValue:
-      return { ...state, value: action.payload };
     case actionTypeEntries.addQuantity:
       //se eu adicionar uma entrada nova o id será do estoque, mas se der update na tabela, vai ser a id da entrada
       const typeOfId = action.payload.idEstoque ? "idEstoque" : "id";

@@ -1,8 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-import api from "../../services/Api";
 
 //Actions
-import { AlertAdd } from "../../redux/alert/actions";
 import { modalClearAll, modalToggle } from "../../redux/modals/actions";
 import {
   productNameAdd,

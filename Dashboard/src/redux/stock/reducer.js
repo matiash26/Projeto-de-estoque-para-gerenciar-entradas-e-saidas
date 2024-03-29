@@ -50,8 +50,6 @@ export default function stockReducer(state = initialState, action) {
       return { ...state, product: action.payload };
     case actionTypesStock.addStatus:
       return { ...state, status: !state.status };
-    case actionTypesStock.addProductList:
-      return { ...state, productList: action.payload };
     case actionTypesStock.Remove:
       const removed = state.stockModal.filter(
         (product) => product.produto !== action.payload.produto

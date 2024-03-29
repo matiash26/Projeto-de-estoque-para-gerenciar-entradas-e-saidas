@@ -17,7 +17,6 @@ export function entriesAddModalData(payload) {
 export function entriesAddTable(payload) {
   return { type: actionTypeEntries.addToTable, payload };
 }
-
 export function entriesRemoveFromModal(payload) {
   return { type: actionTypeEntries.Remove, payload };
 }

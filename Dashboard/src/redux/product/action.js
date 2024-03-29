@@ -46,21 +46,25 @@ export function productFetchAllData() {
 }
 export function productFilter(filter, status) {
   return function (dispatch) {
-    if (filter || status) {
-      api.get(`/product/?search=${filter}&status=${status}`).then((res) => {
+    try {
+      if (filter || status) {
+        api.get(`/product/?search=${filter}&status=${status}`).then((res) => {
+          dispatch({
+            type: actionTypesProducts.addToCopyTable,
+            payload: res.data,
+          });
+        });
+        return;
+      }
+      api.get("/product/all").then((res) => {
         dispatch({
           type: actionTypesProducts.addToCopyTable,
           payload: res.data,
         });
       });
-      return;
+    } catch (error) {
+      console.error(error);
     }
-    api.get("/product/all").then((res) => {
-      dispatch({
-        type: actionTypesProducts.addToCopyTable,
-        payload: res.data,
-      });
-    });
   };
 }
 export function productDelete(id, active) {

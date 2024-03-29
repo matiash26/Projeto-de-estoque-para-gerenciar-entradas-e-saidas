@@ -57,9 +57,6 @@ export function userFechList() {
 export function addUser(payload) {
   return { type: actionTypesUser.AddUser, payload };
 }
-export function addPwd(payload) {
-  return { type: actionTypesUser.addPwd, payload };
-}
 export function userLogOut() {
   return { type: actionTypesUser.logOut };
 }

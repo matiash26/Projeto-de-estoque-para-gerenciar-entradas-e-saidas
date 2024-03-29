@@ -6,7 +6,6 @@ export const actionTypeService = {
   ClearInputValue: "service/ClearInputValue",
   AddServiceDatabase: "service/AddServiceDatabase",
   ClearService: "service/ClearService",
-  Modal: "modal/toggle",
   fillInFields: "service/fillInFields",
   addCopyService: "service/addCopyService",
 };

@@ -23,9 +23,6 @@ export function serviceClearnInputValue() {
 export function serviceDatabase(payload) {
   return { type: actionTypeService.AddServiceDatabase, payload };
 }
-export function serviceModalToggle() {
-  return { type: actionTypeService.Modal };
-}
 export function fillInFields(payload) {
   return { type: actionTypeService.fillInFields, payload };
 }
@@ -74,16 +71,20 @@ export function serviceDelete(id) {
 }
 export function serviceUpdateOrSubmit(tableEdit, serviceName, spent) {
   return function (dispatch) {
-    const method = tableEdit.id ? "put" : "post";
-    const body = tableEdit?.id
-      ? {
-          id: tableEdit.id,
-          servico: serviceName,
-          gasto: spent,
-        }
-      : service;
-    api[method]("/services/", body).then((res) => {
-      dispatch(AlertAdd(res.data));
-    });
+    try {
+      const method = tableEdit.id ? "put" : "post";
+      const body = tableEdit?.id
+        ? {
+            id: tableEdit.id,
+            servico: serviceName,
+            gasto: spent,
+          }
+        : service;
+      api[method]("/services/", body).then((res) => {
+        dispatch(AlertAdd(res.data));
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 }
